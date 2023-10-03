@@ -144,10 +144,12 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
                                                  price: String(model.price),
                                                  image: model.image,
                                                  type: .burger)
+        
 //            let modelCell = ProductCellViewModel(title: model.name,
 //                                                 price: String(model.price),
 //                                                 image: UIImage(named: "bill"))
             cell.update(modelCell)
+        
         }
         
         //Секция 1 - Пицца
@@ -179,9 +181,11 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         if indexPath.section == 0 {
             guard let model = burgers?[indexPath.item] else { return }
             openDetailProductVC(model)
+            
         }
         if indexPath.section == 1 {
             guard let model = pizzas?[indexPath.item] else { return }
@@ -201,4 +205,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         print("\(type)")
     }
+    
+    
 }

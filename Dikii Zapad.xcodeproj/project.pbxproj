@@ -26,7 +26,7 @@
 		B6DF271D2ACC63A500FC45D0 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF271C2ACC63A500FC45D0 /* MainTabBarController.swift */; };
 		B6DF271F2ACC640700FC45D0 /* ActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF271E2ACC640700FC45D0 /* ActionsViewController.swift */; };
 		B6DF27212ACC643600FC45D0 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF27202ACC643500FC45D0 /* ContactsViewController.swift */; };
-		B6DF27232ACC649E00FC45D0 /* ShoppingCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF27222ACC649E00FC45D0 /* ShoppingCartViewController.swift */; };
+		B6DF27232ACC649E00FC45D0 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF27222ACC649E00FC45D0 /* CartViewController.swift */; };
 		B6DF27252ACC7E2A00FC45D0 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF27242ACC7E2A00FC45D0 /* UIColorExtension.swift */; };
 		B6F3EA542AD57B4000270662 /* SectionHeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */; };
 		B6F3EA562AD5DD1400270662 /* CustomRegisterTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */; };
@@ -54,7 +54,7 @@
 		B6DF271C2ACC63A500FC45D0 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		B6DF271E2ACC640700FC45D0 /* ActionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsViewController.swift; sourceTree = "<group>"; };
 		B6DF27202ACC643500FC45D0 /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
-		B6DF27222ACC649E00FC45D0 /* ShoppingCartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCartViewController.swift; sourceTree = "<group>"; };
+		B6DF27222ACC649E00FC45D0 /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		B6DF27242ACC7E2A00FC45D0 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderReusableView.swift; sourceTree = "<group>"; };
 		B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRegisterTextfield.swift; sourceTree = "<group>"; };
@@ -128,7 +128,7 @@
 				B6306BBC2AC088D800B0BF80 /* MainViewController.swift */,
 				B645C3642AC365FC0079C8F2 /* DetailsProductViewController.swift */,
 				B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */,
-				B6DF27222ACC649E00FC45D0 /* ShoppingCartViewController.swift */,
+				B6DF27222ACC649E00FC45D0 /* CartViewController.swift */,
 				B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */,
 			);
 			path = viewControllers;
@@ -243,7 +243,7 @@
 				B6306BCE2AC0A41000B0BF80 /* Product.swift in Sources */,
 				B645C3652AC365FC0079C8F2 /* DetailsProductViewController.swift in Sources */,
 				B645C3632AC353060079C8F2 /* UIView + extension.swift in Sources */,
-				B6DF27232ACC649E00FC45D0 /* ShoppingCartViewController.swift in Sources */,
+				B6DF27232ACC649E00FC45D0 /* CartViewController.swift in Sources */,
 				B667A04A2AE58C1E003D8069 /* AdditiveCell.swift in Sources */,
 				B6306BB92AC088D800B0BF80 /* AppDelegate.swift in Sources */,
 				B6F3EA5A2AD9604000270662 /* DeliveryFormViewController.swift in Sources */,

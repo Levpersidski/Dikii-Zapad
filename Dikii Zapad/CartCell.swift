@@ -9,16 +9,16 @@ import UIKit
 import EasyPeasy
 
 
-struct CartCellVIewModel {
+struct CartCellViewModel {
     let title: String
     let price: String
-    let description: String
+    let additives: [String]
     let image: UIImage?
     
-    let type: TypeCell
+    let count: Int
 }
 
-class cartCell: UICollectionViewCell {
+class CartCell: UITableViewCell {
     
     private lazy var image: UIImageView = {
         let image = UIImageView()
@@ -29,7 +29,7 @@ class cartCell: UICollectionViewCell {
         return image
     }()
     
-    private var productNameLabel: UILabel = {
+    private lazy var productNameLabel: UILabel = {
         let name = UILabel()
         name.font = UIFont(name: "Capture it", size: 12)
         name.textColor = .white
@@ -40,8 +40,7 @@ class cartCell: UICollectionViewCell {
         
     }()
     
-    
-    private var  descriptionLabel: UILabel = {
+    private lazy var  descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Здесь должна быть ваша добавка", size: 12)
         label.textColor = .white
@@ -52,7 +51,7 @@ class cartCell: UICollectionViewCell {
         
     }()
     
-    private var priceLabel : UILabel = {
+    private lazy var priceLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.white
         label.font = UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .bold)
@@ -60,7 +59,7 @@ class cartCell: UICollectionViewCell {
         return label
     }()
     
-    let quantityStepper: UIStepper = {
+    private lazy var quantityStepper: UIStepper = {
         let stepper = UIStepper()
         stepper.minimumValue = 0
         stepper.maximumValue = 10
@@ -75,27 +74,20 @@ class cartCell: UICollectionViewCell {
         return stepper
     }()
     
-    var model: CartCellVIewModel?
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupView()
-        setupConstrains()
-      //  shadowSettingCell()
-       
-    }
+    var model: CartCellViewModel? = nil
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setupView()
+        setupConstrains()
     }
     
     
-    func update(_ model: CartCellVIewModel) {
+    func update(_ model: CartCellViewModel) {
         self.model = model
         productNameLabel.text = model.title
         image.image = model.image
         priceLabel.text = "\(model.price) РУБ."
-        descriptionLabel.text = "\(model.description)"
     }
     
     private func setupView() {
@@ -105,9 +97,6 @@ class cartCell: UICollectionViewCell {
         addSubview(priceLabel)
         addSubview(quantityStepper)
         
-   
-        
-//        backgroundColor = .white.withAlphaComponent(0.2)
         image.clipsToBounds = true
     }
     

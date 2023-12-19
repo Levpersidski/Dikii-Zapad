@@ -541,7 +541,7 @@ class DataStore {
         AdditiveProduct(name: "Ананас", price: 30)
     ]
     
-    var buscet: [Product] = []
+    var cartViewModel: [CartViewModel] = []
     
     
     

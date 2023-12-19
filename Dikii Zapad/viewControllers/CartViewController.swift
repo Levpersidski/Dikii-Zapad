@@ -1,5 +1,5 @@
 //
-//  ShoppingCartViewController.swift
+//  CartViewController.swift
 //  Dikii Zapad
 //
 //  Created by Роман Бакаев on 03.10.2023.
@@ -8,7 +8,14 @@
 import UIKit
 import EasyPeasy
 
-class ShoppingCartViewController: UIViewController {
+struct CartViewModel {
+    let product: Product
+    let additives: [AdditiveProduct]
+    
+    var count: Int
+}
+
+class CartViewController: UIViewController {
     
     private lazy var backgroundImage: UIImageView = {
         let image = UIImageView()
@@ -17,8 +24,8 @@ class ShoppingCartViewController: UIViewController {
         return image
     }()
     
-    private lazy var halfBlackView: UIImageView = {
-        let view = UIImageView()
+    private lazy var halfBlackView: UIView = {
+        let view = UIView()
         view.backgroundColor = .black
         view.layer.opacity = 0.5
         return view
@@ -51,7 +58,7 @@ class ShoppingCartViewController: UIViewController {
         title.textAlignment = .center
         title.textColor = .white
         title.layer.opacity = 0.7
-      return title
+        return title
     }()
     
     private let descriptionLabel: UILabel = {
@@ -64,7 +71,7 @@ class ShoppingCartViewController: UIViewController {
         description.numberOfLines = 0
         description.textAlignment = .center
         description.textColor = .init(white: 18, alpha: 0.8)
-      return description
+        return description
     }()
     
     private lazy var menuButton: UIButton = {
@@ -78,6 +85,19 @@ class ShoppingCartViewController: UIViewController {
         return button
     }()
     
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(CartCell.self, forCellReuseIdentifier: "CartCell")
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.backgroundColor = .clear
+        return tableView
+    }()
+    
+    private var model: [CartViewModel] {
+        DataStore.shared.cartViewModel
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubViews()
@@ -86,22 +106,31 @@ class ShoppingCartViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        containerEmpty.isHidden = !DataStore.shared.buscet.isEmpty
-        containerFull.isHidden = DataStore.shared.buscet.isEmpty
+        
+        containerEmpty.isHidden = !model.isEmpty
+        containerFull.isHidden = model.isEmpty
     }
 }
 
-private extension ShoppingCartViewController {
+private extension CartViewController {
     func addSubViews() {
-        view.addSubViews(backgroundImage,
-                         halfBlackView,
-                         containerEmpty)
+        view.addSubViews(
+            backgroundImage,
+            containerEmpty,
+            containerFull
+        )
         
-        containerEmpty.addSubViews(emptyBurgerImage,
-                                   titleLabel,
-                                   descriptionLabel,
-                                   menuButton)
-        containerFull.addSubViews(  )
+        containerEmpty.addSubViews(
+            halfBlackView,
+            emptyBurgerImage,
+            titleLabel,
+            descriptionLabel,
+            menuButton
+        )
+        
+        containerFull.addSubViews(
+            tableView
+        )
     }
     
     @objc private func openMainVC() {
@@ -129,7 +158,7 @@ private extension ShoppingCartViewController {
         )
         
         containerFull.easy.layout(
-            Top(20), CenterX(), Left(), Right()
+            Top(20), Left(), Right(), Bottom()
         )
         
         
@@ -158,6 +187,32 @@ private extension ShoppingCartViewController {
             Height(60),
             Bottom()
         )
+        
+        tableView.easy.layout(
+        Edges()
+        )
     }
 }
 
+
+extension CartViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        model.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CartCell", for: indexPath) as? CartCell else {
+            return UITableViewCell()
+        }
+        
+        let cartModel = model[indexPath.row]
+        let stringAdditives = cartModel.additives.map { $0.name }
+        
+        cell.model = CartCellViewModel(title: cartModel.product.name,
+                                       price: "99",
+                                       additives: stringAdditives,
+                                       image: cartModel.product.image,
+                                       count: 1)
+        return cell
+    }
+}

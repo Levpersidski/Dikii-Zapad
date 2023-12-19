@@ -22,7 +22,7 @@ class MainTabBarController: UITabBarController,UITabBarControllerDelegate {
                 generateVC(viewController: MainViewController(), title: "Меню", image: UIImage(systemName:"menucard.fill"), changeImageTo: UIImage(systemName:"menucard.fill")),
                 generateVC(viewController: ActionsViewController(), title: "Акции", image: UIImage(systemName:"percent"), changeImageTo: UIImage(systemName:"figure.basketball")),
                 generateVC(viewController: ContactsViewController(), title: "Контакты", image: UIImage(systemName:"phone.bubble.left"), changeImageTo: UIImage(systemName:"figure.basketball")),
-                generateVC(viewController: ShoppingCartViewController(), title: "Корзина", image: UIImage(systemName:"trash"), changeImageTo: UIImage(systemName:"figure.basketball"))
+                generateVC(viewController: CartViewController(), title: "Корзина", image: UIImage(systemName:"trash"), changeImageTo: UIImage(systemName:"figure.basketball"))
             ]
         
     }

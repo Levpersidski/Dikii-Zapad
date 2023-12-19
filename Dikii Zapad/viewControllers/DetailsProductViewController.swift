@@ -186,13 +186,13 @@ private extension DetailsProductViewController {
         let selectedAdditives = additives.filter({ $0.selected })
         
         if let model = modelProduct {
-            DataStore.shared.buscet.append(model)
         }
         
+
+        guard let product = modelProduct else { return }
         
-        selectedAdditives.forEach { aditive in
-            print("= \(aditive.name)")
-        }
+        let cartModel = CartViewModel(product: product, additives: selectedAdditives, count: 0)
+        DataStore.shared.cartViewModel.append(cartModel)
     }
     
     @objc func stepperValueChanged(_ sender: UIStepper) {

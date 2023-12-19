@@ -14,6 +14,12 @@ struct Product {
     let image: UIImage?
 }
 
+struct AdditiveProduct {
+    let name: String
+    let price: Int
+    var selected: Bool = false
+}
+
 class DataStore {
     var burgers: [Product]? = [
         Product(name: "Малыш Билли",
@@ -161,20 +167,384 @@ class DataStore {
                 image: UIImage(named: "NoPizza")),
     ]
     
+    
+    var hotdogs: [Product] = [
+    Product(name: "Классичесикй",
+            price: 199,
+            description: "Говяжья сосиска, соленые огурчики, жареный бекон, хрустящий жаренный лучок, соус барбекю, фирменный соус", 
+            image: UIImage(named: "HotDogClassic")),
+    Product(name: "Острый",
+            price: 199,
+            description: "Говяжья сосиска, соленые огурчики, красный лук,перчик халапеньо, фирменный соус",
+            image: UIImage(named: "HotDogSpicy"))
+    
+    ]
+    
+    var snacks: [Product] = [
+    Product(name: "Картофель Фри",
+            price: 99,
+            description: "Порция картофеля фри (110гр)",
+            image: UIImage(named: "frenchFries")),
+    
+    Product(name: "картофельные дольки",
+            price: 109,
+            description: "Молодой картофель прямиком из деревни (110гр)",
+            image: UIImage(named: "friedDolki")),
+    
+    Product(name: "Рифленный картофель",
+            price: 109,
+            description: "Благодаря рифлёной форме данный картофель является более хрустящим и прожаренным ",
+            image: UIImage(named: "")),
+    
+    Product(name: "Наггетсы",
+            price: 139,
+            description: "Наггетсы (9шт)",
+            image: UIImage(named: "naggets")),
+    
+    Product(name: "Крылышки в острой панировке",
+            price: 249,
+            description: "Крылышки в острой панировке",
+            image: UIImage(named: "Friedwings")),
+    
+    Product(name: "сырные палочки 5шт.",
+            price: 129,
+            description: "Сыр гауда в хрустящей панировке",
+            image: UIImage(named: "cheeseSticks")),
+    
+    Product(name: "сырные палочки 10шт.",
+            price: 199,
+            description: "Сыр гауда в хрустящей панировке",
+            image: UIImage(named: "cheeseSticks")),
+    
+    Product(name: "Медальоны с халапеньо 5 шт.",
+            price: 109,
+            description: "Сыр моцарелла с кусочками острого перчика халапеньо (5шт.)",
+            image: UIImage(named: "medalionsHot")),
+    
+    Product(name: "Куринные стрипсы 5шт.",
+            price: 199,
+            description: "Сочные ломтики куринного филе в панировке",
+            image: UIImage(named: "strips")),
+    
+    Product(name: "Креветки в панировке 6шт.",
+            price: 199,
+            description: "Очищенные королевские креветки в хрустящей панировке",
+            image: UIImage(named: "friedShrimps")),
+    
+    Product(name: "Фри по-техасски",
+            price: 149,
+            description: "Золотистые брусочки картофеля, кусочки обжаренного бекона, под нежным сырным соусом",
+            image: UIImage(named: "FriesTexas")),
+    
+    Product(name: "Луковые колечки",
+            price: 89,
+            description: "Луковые колечки 5 шт",
+            image: UIImage(named: "Onionrings")),
+    
+    Product(name: "Кольца кальмара 5 шт.",
+            price: 189,
+            description: "Жаренные кольца кальмара 5 шт",
+            image: UIImage(named: "squadRings"))
+    
+            ]
+    
+    var milkshakes: [Product] = [
+        Product(name: "Милкшейк 'Snickers'",
+                price: 209,
+                description: "Молочный коктейль с добавлением мягкого шоколада, карамели и арахиса",
+                image: UIImage(named: "Snickers")),
+        
+        Product(name: "Милкшейк 'Oreo'",
+                price: 209,
+                description: "Молочный коктейль с добавлением печенья Oreo и мягкого шоколада",
+                image: UIImage(named: "Oreo")),
+        
+        Product(name: "Милкшейк 'Bounty'",
+                price: 209,
+                description: "Молочный коктейль с добавлением кокоса и мягкого шоколада",
+                image: UIImage(named: "Bounty")),
+        
+        Product(name: "Милкшейк малиновый",
+                price: 199,
+                description: "Молочный коктейль со вкусом малины",
+                image: UIImage(named: "raspberry")),
+        
+        Product(name: "Милкшейк 'Попкорн'",
+                price: 209,
+                description: "Молочный коктейль со вкусом попкорна",
+                image: UIImage(named: "popcorn")),
+        
+        Product(name: "Милкшейк клубничный",
+                price: 199,
+                description: "Молочный коктейль со вкусом клубники",
+                image: UIImage(named: "strawberry")),
+        
+        Product(name: "Милкшейк ванильный",
+                price: 199,
+                description: "Молочный коктейль со вкусом ванили",
+                image: UIImage(named: "vanilla")),
+        
+        Product(name: "Милкшейк 'Фисташка-Малина'",
+                price: 209,
+                description: "Молочный коктейль со вкусом фисташки и малины",
+                image: UIImage(named: "pistachio")),
+        
+        
+        Product(name: "Милкшейк 'Бабл Гам'",
+                price: 199,
+                description: "Молочный коктейль со вкусом жевачки",
+                image: UIImage(named: "bublegum")),
+        
+        Product(name: "Милкшейк 'Банановый'",
+                price: 199,
+                description: "Молочный коктейль со вкусом банана",
+                image: UIImage(named: "Banana")),
+        
+    ]
+    
+    var lemonades: [Product] = [
+        
+    Product(name: "Блю Кюрасао",
+            price: 159,
+            description: "Освежающий лимонад с добавлением свежих фруктов и лимонного сока 450мл",
+            image: UIImage(named: "blueCuracao")),
+    
+    Product(name: "Малиновый",
+            price: 159,
+            description: "Освежающий лимонад с добавлением свежих фруктов и лимонного сока 450мл",
+            image: UIImage(named: "malina")),
+    
+    Product(name: "Цитрусовый",
+            price: 159,
+            description: "Освежающий лимонад с добавлением свежих фруктов и лимонного сока 450мл",
+            image: UIImage(named: "citrus")),
+    
+    Product(name: "Ежевичный",
+            price: 159,
+            description: "Освежающий лимонад с добавлением свежих фруктов и лимонного сока 450мл",
+            image: UIImage(named: "ezhevika")),
+    
+    Product(name: "Тархун",
+            price: 159,
+            description: "Освежающий лимонад с добавлением свежих фруктов и лимонного сока 450мл",
+            image: UIImage(named: "Tarhun")),
+
+    
+    Product(name: "Тропический",
+            price: 159,
+            description: "Освежающий лимонад с добавлением свежих фруктов и лимонного сока 450мл",
+            image: UIImage(named: "blueCuracao")),
+    
+    Product(name: "Мохито",
+            price: 159,
+            description: "Освежающий лимонад с добавлением свежих фруктов и лимонного сока 450мл",
+            image: UIImage(named: "blueCuracao"))
+    ]
+    
+    
+    var coffeeDrinks: [Product] = [
+    Product(name: "Бамбл би (двойной)",
+            price: 190,
+            description: "Лёд, апельсиновый сок, двойная порция эспрессо, сироп",
+            image: UIImage(named: "BumbleBee")),
+    
+    Product(name: "Кофе-Тоник (двойной)",
+            price: 190,
+            description: "Двойная порция эспрессо, тоник, лёд, ванильный сироп",
+            image: UIImage(named: "tonic")),
+    
+    Product(name: "Бамбл би",
+            price: 160,
+            description: "Лёд, апельсиновый сок, двойная порция эспрессо, сироп",
+            image: UIImage(named: "BumbleBee")),
+    
+    Product(name: "Кофе-Тоник",
+            price: 160,
+            description: "Двойная порция эспрессо, тоник, лёд, ванильный сироп",
+            image: UIImage(named: "tonic")),
+    
+    Product(name: "Карамельный Айс Латте",
+            price: 150,
+            description: "Лед, сироп,молоко 1,5% ,порция эспрессо",
+            image: UIImage(named: "IceLatte")),
+    
+    Product(name: "Дабл Капучино",
+            price: 159,
+            description: "Лед, сироп,молоко 1,5% ,порция эспрессо",
+            image: UIImage(named: "doublecapuchino")),
+    
+    Product(name: "Эспрессо",
+            price: 60,
+            description: "Лед, сироп,молоко 1,5% ,порция эспрессо",
+            image: UIImage(named: "espresso")),
+    
+    Product(name: "Американо",
+            price: 60,
+            description: "Лед, сироп,молоко 1,5% ,порция эспрессо",
+            image: UIImage(named: "capuchino")),
+    
+    
+    Product(name: "Капучино",
+            price: 120,
+            description: "Лед, сироп,молоко 1,5% ,порция эспрессо",
+            image: UIImage(named: "capuchino")),
+    
+    
+    Product(name: "Флэт Уайт",
+            price: 120,
+            description: "Лед, сироп,молоко 1,5% ,порция эспрессо",
+            image: UIImage(named: "capuchino")),
+    
+    
+    Product(name: "Латте Макиато",
+            price: 130,
+            description: "Лед, сироп,молоко 1,5% ,порция эспрессо",
+            image: UIImage(named: "capuchino")),
+    
+    Product(name: "Английский фраппучино",
+            price: 130,
+            description: "Лед, сироп,молоко 1,5% ,порция эспрессо",
+            image: UIImage(named: "capuchino")),
+    
+    ]
+    
+    var desserts: [Product] = [
+        Product(name: "Донат ягодный",
+                price: 180,
+                description: "донат",
+                image: UIImage(named: "donutberry")),
+        
+        Product(name: "Донат кокосовый",
+                price: 180,
+                description: "донат",
+                image: UIImage(named: "donutcoconut")),
+        
+        Product(name: "Донат шоколадный",
+                price: 80,
+                description: "донат",
+                image: UIImage(named: "donutchocolate")),
+        
+        
+        Product(name: "Донат карамельный",
+                price: 80,
+                description: "донат",
+                image: UIImage(named: "donutcaramel")),
+        
+        Product(name: "Донат малиновый",
+                price: 80,
+                description: "донат",
+                image: UIImage(named: "donutraspberry")),
+        
+        Product(name: "Донат клубничный",
+                price: 80,
+                description: "донат",
+                image: UIImage(named: "DonatStrawberry")),
+        
+        Product(name: "Сырники",
+                price: 80,
+                description: "Сырники",
+                image: UIImage(named: "sirniki")),
+        
+        Product(name: "Шоколадный маффин",
+                price: 99,
+                description: "Маффин",
+                image: UIImage(named: "")),
+        
+        Product(name: "Чизкейк Нью-йорк",
+                price: 120,
+                description: "Чизкейк",
+                image: UIImage(named: "cheesecake")),
+        
+        Product(name: "Чизкейк Сникерс",
+                price: 130,
+                description: "Чизкейк",
+                image: UIImage(named: "cheesecakeSnik")),
+
+        
+        
+        
+        
+        
+        
+    ]
+    
         var drinks: [Product] = [
         Product(name: "Кола",
-                price: 100,
+                price: 99,
                 description: "Газированный напиток",
                 image: UIImage(named: "cola")),
-        Product(name: "Лимонад",
-                price: 120,
+        
+        Product(name: "Лимон-лайм",
+                price: 99,
                 description: "Лимонный напиток",
-                image: UIImage(named: "lemonade")),
-        Product(name: "Чай",
+                image: UIImage(named: "sprite")),
+        
+        Product(name: "Апельсин",
+                price: 99,
+                description: "Лимонный напиток",
+                image: UIImage(named: "fanta")),
+        
+        
+        Product(name: "Чай “Rich” черный",
                 price: 80,
                 description: "Черный чай",
-                image: UIImage(named: "tea"))
+                image: UIImage(named: "blacktea")),
+        
+        Product(name: "Чай “Rich” зеленый",
+                price: 80,
+                description: "Зеленый чай",
+                image: UIImage(named: "greentea")),
+        
+        Product(name: "Адреналин",
+                price: 169,
+                description: "Энергетик",
+                image: UIImage(named: "adrenalin")),
+        
+        Product(name: "Vinut в асс.",
+                price: 119,
+                description: "винат в ассортименте",
+                image: UIImage(named: "vinuts")),
+        
+        Product(name: "Chupa Chups",
+                price: 139,
+                description: "чупа чупс",
+                image: UIImage(named: "chupa")),
+        
+        
+        Product(name: "Швепс",
+                price: 139,
+                description: "Швепс в асс.",
+                image: UIImage(named: "shewepes")),
+        
+        Product(name: "Coca-Cola (original)",
+                price: 139,
+                description: "Энергетик",
+                image: UIImage(named: "colaoriginal")),
+        
     ]
+    
+    
+    var additiveBurger: [AdditiveProduct] = [
+        AdditiveProduct(name: "Ломтик сыра чеддер", price: 25),
+        AdditiveProduct(name: "Острый перчик халапеньо", price: 20),
+        AdditiveProduct(name: "Котлета 150 грамм", price: 110),
+        AdditiveProduct(name: "Картофельный дранник", price: 30),
+        AdditiveProduct(name: "Ломтик сыра чеддер", price: 25),
+        AdditiveProduct(name: "Острый перчик халапеньо", price: 20),
+        AdditiveProduct(name: "Котлета 150 грамм", price: 110),
+        AdditiveProduct(name: "Картофельный дранник", price: 30)
+    ]
+    
+    var additivePizza: [AdditiveProduct] = [
+        AdditiveProduct(name: "Еще больше сыра", price: 500),
+        AdditiveProduct(name: "Острый перчик халапеньо", price: 20),
+        AdditiveProduct(name: "Ананас", price: 30)
+    ]
+    
+    var buscet: [Product] = []
+    
+    
+    
     
     static let shared = DataStore()
     private init() {}

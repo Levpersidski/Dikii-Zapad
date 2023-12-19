@@ -10,8 +10,14 @@ import EasyPeasy
 
 enum TypeCell {
     case burger
-    case drink
     case pizza
+    case hotDog
+    case snack
+    case milkshake
+    case coffeeDrinks
+    case desserts
+    case drink
+    
 }
 
 struct ProductCellViewModel {
@@ -23,25 +29,25 @@ struct ProductCellViewModel {
 }
 
 class ProductCell: UICollectionViewCell {
-//    private lazy var containerView: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = .white.withAlphaComponent(0.2)
-//        view.layer.cornerRadius = 20
-//        return view
-//    }()
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .customClearGray
+        view.layer.cornerRadius = 15
+        return view
+    }()
     
     private lazy var image: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
-        image.layer.borderColor = UIColor(hex: "#FE6F1F").cgColor
-        image.layer.cornerRadius = 20
+        image.layer.borderColor = UIColor.customOrange.withAlphaComponent(0.5).cgColor
+        image.layer.cornerRadius = 8
         image.layer.borderWidth = 1
         return image
     }()
     
     private lazy var whiteOverlayView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .black
         view.alpha = 0.0 // Задайте нужную прозрачность (от 0.0 до 1.0)
         view.layer.cornerRadius = 20
         return view
@@ -50,16 +56,19 @@ class ProductCell: UICollectionViewCell {
     
     private lazy var labelName: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont(name: "Capture it", size: 12)
         label.textColor = .white
         label.textAlignment = .center
+        label.numberOfLines = 0
+        //label.adjustsFontSizeToFitWidth = true // Разрешаем уменьшение размера шрифта
+        label.minimumScaleFactor = 0.5 //
         return label
     }()
   
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .bold)
-        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.textColor = .customOrange
         label.textAlignment = .center
         return label
     }()
@@ -72,17 +81,21 @@ class ProductCell: UICollectionViewCell {
         super.init(frame: frame)
         setupView()
         setupConstrains()
+      //  shadowSettingCell()
+       
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    
     //методы по нажатию и отпусканию на экран
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
 
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: 0.1) {
            // self.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             self.whiteOverlayView.alpha = 0.5
             self.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
@@ -113,24 +126,44 @@ class ProductCell: UICollectionViewCell {
         self.model = model
         labelName.text = model.title
         image.image = model.image
-        priceLabel.text = model.price
+        priceLabel.text = "\(model.price) РУБ."
     }
     
     private func setupView() {
+        addSubview(containerView)
         addSubview(image)
         addSubview(labelName)
         addSubview(priceLabel)
         addSubview(whiteOverlayView)
         
+   
+        
 //        backgroundColor = .white.withAlphaComponent(0.2)
         image.clipsToBounds = true
     }
     
+//    private func shadowSettingCell() {
+//        let path = UIBezierPath(roundedRect: bounds, cornerRadius: 20).cgPath
+//        self.backgroundColor = .clear
+//        self.layer.cornerRadius = 20
+//        self.layer.shadowColor = UIColor.customOrange.cgColor
+//        self.layer.shadowOffset = CGSize(width: 4, height: 4)
+//        self.layer.shadowOpacity = 0.2
+//        self.layer.shadowRadius = 5
+//        self.layer.shadowOffset = CGSize(width: 0, height: 3)
+//        self.layer.shadowPath = path
+//        
+//    }
+    
     private func setupConstrains() {
         let heightImage = (widthCell * 1.25) * 0.7
         
+        containerView.easy.layout(
+        Edges()
+        )
+        
         image.easy.layout(
-            Top(), Left(), Right(), Height(heightImage)
+            Top(8), Left(8), Right(8), Height(heightImage)
         )
         
         labelName.easy.layout(
@@ -138,11 +171,13 @@ class ProductCell: UICollectionViewCell {
         )
         
         priceLabel.easy.layout(
-            Top(10).to(labelName, .bottom), Left(), Right()
+            Top(8).to(labelName, .bottom),
+            CenterX().to(labelName)
         )
         whiteOverlayView.easy.layout(
             Top(), Left(), Right(), Height(heightImage)
         )
+    
     }
     
     

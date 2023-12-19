@@ -18,7 +18,19 @@
 		B645C3632AC353060079C8F2 /* UIView + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645C3622AC353060079C8F2 /* UIView + extension.swift */; };
 		B645C3652AC365FC0079C8F2 /* DetailsProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645C3642AC365FC0079C8F2 /* DetailsProductViewController.swift */; };
 		B645C36C2AC9D06B0079C8F2 /* Capture it.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B645C36B2AC9D06B0079C8F2 /* Capture it.ttf */; };
+		B667A04A2AE58C1E003D8069 /* AdditiveCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B667A0492AE58C1E003D8069 /* AdditiveCell.swift */; };
+		B66D7BA92AFD271F009C34CB /* CheckBoxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66D7BA82AFD271F009C34CB /* CheckBoxButton.swift */; };
+		B66D7BAC2B0A9307009C34CB /* CartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66D7BAB2B0A9307009C34CB /* CartCell.swift */; };
+		B6DB40FE2AEFF2E6005963ED /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB40FD2AEFF2E6005963ED /* CustomButton.swift */; };
 		B6DF27182ACC387F00FC45D0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */; };
+		B6DF271D2ACC63A500FC45D0 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF271C2ACC63A500FC45D0 /* MainTabBarController.swift */; };
+		B6DF271F2ACC640700FC45D0 /* ActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF271E2ACC640700FC45D0 /* ActionsViewController.swift */; };
+		B6DF27212ACC643600FC45D0 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF27202ACC643500FC45D0 /* ContactsViewController.swift */; };
+		B6DF27232ACC649E00FC45D0 /* ShoppingCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF27222ACC649E00FC45D0 /* ShoppingCartViewController.swift */; };
+		B6DF27252ACC7E2A00FC45D0 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF27242ACC7E2A00FC45D0 /* UIColorExtension.swift */; };
+		B6F3EA542AD57B4000270662 /* SectionHeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */; };
+		B6F3EA562AD5DD1400270662 /* CustomRegisterTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */; };
+		B6F3EA5A2AD9604000270662 /* DeliveryFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,7 +46,19 @@
 		B645C3622AC353060079C8F2 /* UIView + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + extension.swift"; sourceTree = "<group>"; };
 		B645C3642AC365FC0079C8F2 /* DetailsProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsProductViewController.swift; sourceTree = "<group>"; };
 		B645C36B2AC9D06B0079C8F2 /* Capture it.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Capture it.ttf"; sourceTree = "<group>"; };
+		B667A0492AE58C1E003D8069 /* AdditiveCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditiveCell.swift; sourceTree = "<group>"; };
+		B66D7BA82AFD271F009C34CB /* CheckBoxButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxButton.swift; sourceTree = "<group>"; };
+		B66D7BAB2B0A9307009C34CB /* CartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCell.swift; sourceTree = "<group>"; };
+		B6DB40FD2AEFF2E6005963ED /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		B6DF271C2ACC63A500FC45D0 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		B6DF271E2ACC640700FC45D0 /* ActionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsViewController.swift; sourceTree = "<group>"; };
+		B6DF27202ACC643500FC45D0 /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
+		B6DF27222ACC649E00FC45D0 /* ShoppingCartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCartViewController.swift; sourceTree = "<group>"; };
+		B6DF27242ACC7E2A00FC45D0 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderReusableView.swift; sourceTree = "<group>"; };
+		B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRegisterTextfield.swift; sourceTree = "<group>"; };
+		B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryFormViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,28 +92,64 @@
 		B6306BB72AC088D800B0BF80 /* Dikii Zapad */ = {
 			isa = PBXGroup;
 			children = (
-				B645C3662AC9CF080079C8F2 /* New Group */,
-				B6306BB82AC088D800B0BF80 /* AppDelegate.swift */,
-				B6306BBA2AC088D800B0BF80 /* SceneDelegate.swift */,
+				B645C3662AC9CF080079C8F2 /* FONT */,
+				B6DF27272ACD5F0000FC45D0 /* Scene */,
+				B6DF27262ACD5EB800FC45D0 /* Extension */,
 				B6306BCD2AC0A41000B0BF80 /* Product.swift */,
-				B6306BBC2AC088D800B0BF80 /* MainViewController.swift */,
-				B645C3642AC365FC0079C8F2 /* DetailsProductViewController.swift */,
+				B66D7BAA2B054610009C34CB /* viewControllers */,
 				B645C3602AC34F960079C8F2 /* ProductCell.swift */,
-				B645C3622AC353060079C8F2 /* UIView + extension.swift */,
+				B66D7BAB2B0A9307009C34CB /* CartCell.swift */,
 				B645C35E2AC349D80079C8F2 /* DataStore.swift */,
 				B6306BC12AC088D900B0BF80 /* Assets.xcassets */,
 				B6306BC62AC088D900B0BF80 /* Info.plist */,
-				B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */,
+				B6DB40FD2AEFF2E6005963ED /* CustomButton.swift */,
+				B6DF271C2ACC63A500FC45D0 /* MainTabBarController.swift */,
+				B6DF271E2ACC640700FC45D0 /* ActionsViewController.swift */,
+				B6DF27202ACC643500FC45D0 /* ContactsViewController.swift */,
+				B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */,
+				B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */,
+				B667A0492AE58C1E003D8069 /* AdditiveCell.swift */,
+				B66D7BA82AFD271F009C34CB /* CheckBoxButton.swift */,
 			);
 			path = "Dikii Zapad";
 			sourceTree = "<group>";
 		};
-		B645C3662AC9CF080079C8F2 /* New Group */ = {
+		B645C3662AC9CF080079C8F2 /* FONT */ = {
 			isa = PBXGroup;
 			children = (
 				B645C36B2AC9D06B0079C8F2 /* Capture it.ttf */,
 			);
-			path = "New Group";
+			path = FONT;
+			sourceTree = "<group>";
+		};
+		B66D7BAA2B054610009C34CB /* viewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B6306BBC2AC088D800B0BF80 /* MainViewController.swift */,
+				B645C3642AC365FC0079C8F2 /* DetailsProductViewController.swift */,
+				B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */,
+				B6DF27222ACC649E00FC45D0 /* ShoppingCartViewController.swift */,
+				B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */,
+			);
+			path = viewControllers;
+			sourceTree = "<group>";
+		};
+		B6DF27262ACD5EB800FC45D0 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				B6DF27242ACC7E2A00FC45D0 /* UIColorExtension.swift */,
+				B645C3622AC353060079C8F2 /* UIView + extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		B6DF27272ACD5F0000FC45D0 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				B6306BBA2AC088D800B0BF80 /* SceneDelegate.swift */,
+				B6306BB82AC088D800B0BF80 /* AppDelegate.swift */,
+			);
+			path = Scene;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,12 +229,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6306BBD2AC088D800B0BF80 /* MainViewController.swift in Sources */,
+				B66D7BAC2B0A9307009C34CB /* CartCell.swift in Sources */,
+				B6DB40FE2AEFF2E6005963ED /* CustomButton.swift in Sources */,
+				B66D7BA92AFD271F009C34CB /* CheckBoxButton.swift in Sources */,
+				B6F3EA562AD5DD1400270662 /* CustomRegisterTextfield.swift in Sources */,
+				B6F3EA542AD57B4000270662 /* SectionHeaderReusableView.swift in Sources */,
+				B6DF27252ACC7E2A00FC45D0 /* UIColorExtension.swift in Sources */,
 				B6DF27182ACC387F00FC45D0 /* LaunchViewController.swift in Sources */,
+				B6DF271F2ACC640700FC45D0 /* ActionsViewController.swift in Sources */,
+				B6DF271D2ACC63A500FC45D0 /* MainTabBarController.swift in Sources */,
 				B645C35F2AC349D80079C8F2 /* DataStore.swift in Sources */,
+				B6DF27212ACC643600FC45D0 /* ContactsViewController.swift in Sources */,
 				B6306BCE2AC0A41000B0BF80 /* Product.swift in Sources */,
 				B645C3652AC365FC0079C8F2 /* DetailsProductViewController.swift in Sources */,
 				B645C3632AC353060079C8F2 /* UIView + extension.swift in Sources */,
+				B6DF27232ACC649E00FC45D0 /* ShoppingCartViewController.swift in Sources */,
+				B667A04A2AE58C1E003D8069 /* AdditiveCell.swift in Sources */,
 				B6306BB92AC088D800B0BF80 /* AppDelegate.swift in Sources */,
+				B6F3EA5A2AD9604000270662 /* DeliveryFormViewController.swift in Sources */,
 				B645C3612AC34F960079C8F2 /* ProductCell.swift in Sources */,
 				B6306BBB2AC088D800B0BF80 /* SceneDelegate.swift in Sources */,
 			);

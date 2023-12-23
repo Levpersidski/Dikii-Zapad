@@ -99,10 +99,10 @@ class DetailsProductViewController: UIViewController {
         return priceLabel
     }()
     
-    let quantityStepper: UIStepper = {
+    private lazy var quantityStepper: UIStepper = {
         let stepper = UIStepper()
-        stepper.minimumValue = 0
-        stepper.maximumValue = 10
+        stepper.minimumValue = 1
+        stepper.maximumValue = 99
         stepper.tintColor = UIColor.customOrange
         stepper.value = 1 // начальное значение
         stepper.frame = CGRect(x: stepper.frame.origin.x, y: stepper.frame.origin.y, width: stepper.frame.size.width, height: 10)
@@ -184,15 +184,7 @@ private extension DetailsProductViewController {
         
         //Все выбранные добавки
         let selectedAdditives = additives.filter({ $0.selected }).map { $0.name }
-        
-        if let model = modelProduct {
-        }
-        
-
         guard let product = modelProduct else { return }
-        
-//       Посчитать общ. сумму
-        //вывести номер сстепера
         
         let cell = CartCellViewModel(title: product.name,
                                      price: ("\(product.price)"),
@@ -204,20 +196,11 @@ private extension DetailsProductViewController {
     }
     
     @objc func stepperValueChanged(_ sender: UIStepper) {
-        // Обновляем значение UILabel при изменении UIStepper
-        let intValue = Int(sender.value)
-        quantityLabel.text = "\(intValue)"
-
-        // Расчет новой цены на основе количества
-        if let price = modelProduct?.price {
-            let totalPrice = intValue * price
-            priceLabel.text = "\(totalPrice) ₽"
-        }
+        priceLabel.text = "\(calculateSum()) ₽"
     }
 
 
     func setupConstraints() {
-        
         contentView.easy.layout(
             Height(+200).like(scrollView),
             Width().like(scrollView)
@@ -279,6 +262,16 @@ private extension DetailsProductViewController {
             Height(30)
         )
     }
+    
+    func calculateSum() -> Int {
+        let selectedAdditive = additives.filter { $0.selected }.map { $0.price }
+        let priceProduct = modelProduct?.price ?? 0
+        let counter = Int(quantityStepper.value)
+    
+        let totalSumAdditive = selectedAdditive.reduce(0, { $0 + $1 }) * counter
+        let totalSumProducts = priceProduct * counter
+        return totalSumAdditive + totalSumProducts
+    }
 }
 
 
@@ -310,7 +303,6 @@ extension DetailsProductViewController: UITableViewDataSource, UITableViewDelega
 extension DetailsProductViewController: AdditiveCellDelegate {
     func checkBoxDidTap(index: Int) {
         additives[index].selected = !additives[index].selected
-        
-        print("нажал \(index)")
+        priceLabel.text = "\(calculateSum()) ₽"
     }
 }

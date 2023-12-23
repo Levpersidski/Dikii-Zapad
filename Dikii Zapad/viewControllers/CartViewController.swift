@@ -100,7 +100,7 @@ class CartViewController: UIViewController {
        }()
     
     private lazy var menuButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.backgroundColor = UIColor.customOrange
         button.layer.cornerRadius = 15
         button.setTitle("Перейти в меню", for: .normal)

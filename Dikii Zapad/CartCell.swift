@@ -76,12 +76,20 @@ class CartCell: UITableViewCell {
     
     var model: CartCellViewModel? = nil
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .clear
+        selectionStyle = .none
+        
         setupView()
         setupConstrains()
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+   
     
     func update(_ model: CartCellViewModel) {
         self.model = model

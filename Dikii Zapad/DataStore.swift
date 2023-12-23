@@ -541,10 +541,7 @@ class DataStore {
         AdditiveProduct(name: "Ананас", price: 30)
     ]
     
-    var cartViewModel: [CartViewModel] = []
-    
-    
-    
+    var cartViewModel: CartViewModel = CartViewModel()
     
     static let shared = DataStore()
     private init() {}

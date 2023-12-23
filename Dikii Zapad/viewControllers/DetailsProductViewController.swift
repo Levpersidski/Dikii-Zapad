@@ -183,7 +183,7 @@ private extension DetailsProductViewController {
         }
         
         //Все выбранные добавки
-        let selectedAdditives = additives.filter({ $0.selected })
+        let selectedAdditives = additives.filter({ $0.selected }).map { $0.name }
         
         if let model = modelProduct {
         }
@@ -191,8 +191,16 @@ private extension DetailsProductViewController {
 
         guard let product = modelProduct else { return }
         
-        let cartModel = CartViewModel(product: product, additives: selectedAdditives, count: 0)
-        DataStore.shared.cartViewModel.append(cartModel)
+//       Посчитать общ. сумму
+        //вывести номер сстепера
+        
+        let cell = CartCellViewModel(title: product.name,
+                                     price: ("\(product.price)"),
+                                     additives: selectedAdditives,
+                                     image: product.image,
+                                     count: 0)
+        
+        DataStore.shared.cartViewModel.cells.append(cell)
     }
     
     @objc func stepperValueChanged(_ sender: UIStepper) {

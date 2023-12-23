@@ -9,10 +9,7 @@ import UIKit
 import EasyPeasy
 
 struct CartViewModel {
-    let product: Product
-    let additives: [AdditiveProduct]
-    
-    var count: Int
+    var cells: [CartCellViewModel] = []
 }
 
 class CartViewController: UIViewController {
@@ -94,7 +91,7 @@ class CartViewController: UIViewController {
         return tableView
     }()
     
-    private var model: [CartViewModel] {
+    private var model: CartViewModel {
         DataStore.shared.cartViewModel
     }
     
@@ -107,8 +104,10 @@ class CartViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        containerEmpty.isHidden = !model.isEmpty
-        containerFull.isHidden = model.isEmpty
+        containerEmpty.isHidden = !(model.cells.isEmpty)
+        containerFull.isHidden = (model.cells.isEmpty)
+        
+        tableView.reloadData()
     }
 }
 
@@ -197,22 +196,15 @@ private extension CartViewController {
 
 extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        model.count
+        model.cells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CartCell", for: indexPath) as? CartCell else {
             return UITableViewCell()
         }
-        
-        let cartModel = model[indexPath.row]
-        let stringAdditives = cartModel.additives.map { $0.name }
-        
-        cell.model = CartCellViewModel(title: cartModel.product.name,
-                                       price: "99",
-                                       additives: stringAdditives,
-                                       image: cartModel.product.image,
-                                       count: 1)
+        let cartModel = model.cells[indexPath.row]
+        cell.model = cartModel
         return cell
     }
 }

@@ -56,7 +56,7 @@ class ProductCell: UICollectionViewCell {
     
     private lazy var labelName: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Capture it", size: 12)
+        label.font = UIFont(name: "Capture it", size: 13)
         label.textColor = .white
         label.textAlignment = .center
         label.numberOfLines = 0

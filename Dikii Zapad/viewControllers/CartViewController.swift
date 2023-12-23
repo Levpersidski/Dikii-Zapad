@@ -18,6 +18,7 @@ class CartViewController: UIViewController {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.image = UIImage(named: "mainImage")
+        image.clipsToBounds = true
         return image
     }()
     
@@ -44,7 +45,7 @@ class CartViewController: UIViewController {
         let burgerImage = UIImageView()
         burgerImage.contentMode = .scaleAspectFill
         burgerImage.image = UIImage(named: "emptyBurger")
-        burgerImage.layer.opacity = 0.9
+        burgerImage.alpha = 0.9
         return burgerImage
     }()
     
@@ -114,6 +115,8 @@ class CartViewController: UIViewController {
         tableView.register(CartCell.self, forCellReuseIdentifier: "CartCell")
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 50
         tableView.backgroundColor = .clear
         return tableView
     }()
@@ -259,7 +262,9 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         let cartModel = model.cells[indexPath.row]
+        
         cell.model = cartModel
+        cell.isLast = indexPath.row == model.cells.count - 1
         return cell
     }
 }

@@ -258,7 +258,6 @@ private extension DetailsProductViewController {
             Top(50).to(tableView, .bottom),
             Left(30), Right(30),
             Height(60)
-            
         )
         
         quantityStepper.easy.layout(

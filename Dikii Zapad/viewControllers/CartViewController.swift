@@ -129,6 +129,7 @@ class CartViewController: UIViewController {
         super.viewDidLoad()
         addSubViews()
         setupConstraints()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -138,6 +139,9 @@ class CartViewController: UIViewController {
         containerFull.isHidden = (model.cells.isEmpty)
         
         tableView.reloadData()
+        
+        let testSub = model.cells.map { Int($0.price) ?? 0 }.reduce(0, { $0 + $1 })
+        pricelabel.text = "\(testSub)"
     }
 }
 

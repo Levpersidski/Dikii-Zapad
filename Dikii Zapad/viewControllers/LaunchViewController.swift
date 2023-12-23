@@ -74,8 +74,8 @@ final class LaunchViewController: UIViewController {
         Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { [weak self] _ in
             guard let self = self else { return }
             let mainViewController = MainTabBarController()
-            navigationController?.setNavigationBarHidden(true, animated: false)
-            navigationController?.pushViewController(mainViewController, animated: true)
+            self.navigationController?.setNavigationBarHidden(true, animated: false)
+            self.navigationController?.pushViewController(mainViewController, animated: true)
         }
     }
 

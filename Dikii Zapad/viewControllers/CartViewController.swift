@@ -226,7 +226,7 @@ private extension CartViewController {
         )
         
         tableView.easy.layout(
-            Top(),
+            Top().to(view.safeAreaLayoutGuide, .top),
             Left(), Right(),
             Bottom().to(sumLabel, .top)
         )

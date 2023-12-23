@@ -187,15 +187,20 @@ private extension DetailsProductViewController {
         guard let product = modelProduct else { return }
         
         let cell = CartCellViewModel(title: product.name,
-                                     price: ("\(product.price)"),
+                                     price: ("\(calculateSum())"),
                                      additives: selectedAdditives,
                                      image: product.image,
-                                     count: 0)
+                                     count: Int(quantityStepper.value))
         
         DataStore.shared.cartViewModel.cells.append(cell)
+        
+        UIApplication.tabBar?.setBageValue(.cart,
+                                           value: DataStore.shared.cartViewModel.cells.count)
     }
     
     @objc func stepperValueChanged(_ sender: UIStepper) {
+        let intValue = Int(sender.value)
+        quantityLabel.text = "\(intValue)"
         priceLabel.text = "\(calculateSum()) ₽"
     }
 

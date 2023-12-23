@@ -54,7 +54,13 @@ class CartCell: UITableViewCell {
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.white.withAlphaComponent(0.8)
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 25)
+        return label
+    }()
+    
+    private lazy var countLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.white.withAlphaComponent(0.8)
         label.font = UIFont.systemFont(ofSize: 25)
         return label
     }()
@@ -72,6 +78,7 @@ class CartCell: UITableViewCell {
             productNameLabel.text = model.title
             image.image = model.image
             priceLabel.text = "\(model.price) РУБ."
+            countLabel.text = "\(model.count) шт."
             
             stack.removeAllArrangedSubviews()
             
@@ -114,6 +121,7 @@ class CartCell: UITableViewCell {
             productNameLabel,
             stack,
             priceLabel,
+            countLabel,
             separatorView
         )
     }
@@ -140,6 +148,11 @@ class CartCell: UITableViewCell {
         priceLabel.easy.layout(
             Top(26).to(stack, .bottom),
             Right(30)
+        )
+        
+        countLabel.easy.layout(
+            Top().to(priceLabel, .top),
+            Left().to(productNameLabel, .left)
         )
 
         separatorView.easy.layout(

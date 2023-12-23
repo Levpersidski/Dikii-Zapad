@@ -9,8 +9,12 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    
+    static var shared: AppDelegate {
+        return (UIApplication.shared.delegate as! AppDelegate)
+    }
+    
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -34,3 +38,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension AppDelegate {
+    class var appDelegate: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    
+}
+
+extension UIApplication {
+    class var appDelegate: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    
+    class var tabBar: UITabBar? {
+        guard let rootNavigation = appDelegate.window?.rootViewController as? UINavigationController else {
+            return nil
+        }
+        let tabBar = (rootNavigation.viewControllers.last as? UITabBarController)?.tabBar
+        return tabBar
+    }
+}
+
+extension UITabBar {
+    enum TabItem: Int {
+        case main = 0
+        case sales = 1
+        case contacts = 2
+        case cart = 3
+    }
+    
+    func setBageValue(_ item: TabItem, value: Int) {
+        let indexTab = item.rawValue
+        items?[indexTab].badgeValue = "\(value)"
+    }
+}

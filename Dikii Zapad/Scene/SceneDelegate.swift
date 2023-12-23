@@ -20,6 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
+        
+        (UIApplication.shared.delegate as? AppDelegate)?.window = window
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -52,4 +54,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
-

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainTabBarController: UITabBarController,UITabBarControllerDelegate {
+class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,32 +35,6 @@ class MainTabBarController: UITabBarController,UITabBarControllerDelegate {
         return viewController
     }
     private  func setTabBarAppearance() {
-        // настройка скругленного таба
-//        let positionX: CGFloat = 0.8
-//        let positionY: CGFloat = 1
-//        let width = tabBar.bounds.width - positionX * 2
-//        let height = tabBar.bounds.height - positionY * 2
-//
-//        let roundLayer = CAShapeLayer()
-//
-//        let bezierPath = UIBezierPath(roundedRect: CGRect(
-//            x: positionX,
-//            y: positionY,
-//            width: width,
-//            height: height),
-//            cornerRadius: 10
-//        )
-//
-//        roundLayer.path = bezierPath.cgPath
-//        tabBar.layer.insertSublayer(roundLayer, at: 0)
-//        tabBar.itemWidth = width / 6
-//        tabBar.itemPositioning = .centered
-//
-//
-//        roundLayer.fillColor = UIColor.mainMilk.cgColor
-//        tabBar.tintColor = .tabBarItemAccent
-//        tabBar.unselectedItemTintColor = .tabBarItemlight
-        
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.customOrange], for: .normal)
         UITabBarItem.appearance().largeContentSizeImage?.scale
         
@@ -71,9 +45,6 @@ class MainTabBarController: UITabBarController,UITabBarControllerDelegate {
         tabBar.layer.cornerRadius = 10
 
     }
-    
-    
-    
 }
 
 

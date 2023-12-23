@@ -141,11 +141,6 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     private func openDetailProductVC(_ modelProduct: Product, _ modelAdditive: [AdditiveProduct]) {
         let vc = DetailsProductViewController()
-        
-        let tabBAr = self.tabBarController?.tabBar
-        let downloadItem = tabBAr!.items![3]
-        downloadItem.badgeValue = "1"
-        
         vc.modelProduct = modelProduct
         vc.additives = modelAdditive
         present(vc, animated: true)
@@ -179,15 +174,16 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
 //MARK: - Setting
     private extension MainViewController {
         func addSubViews() {
-            view.addSubViews(backgroundView,
-                             blackOverlayView,
-                             greyOverlayView,
-                             stripsView,
-                             buttonToDelivery,
-                             segmentedControl,
-                             scrollForButtons,
-                             verticalСollectionView)
-            
+            view.addSubViews(
+                backgroundView,
+                blackOverlayView,
+                greyOverlayView,
+                stripsView,
+                buttonToDelivery,
+                segmentedControl,
+                scrollForButtons,
+                verticalСollectionView
+            )
             
             scrollForButtons.addToScrollView(stackButtons)
         }
@@ -333,10 +329,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
                                                  image: model.image,
                                                  type: .burger)
             
-        
-//            let modelCell = ProductCellViewModel(title: model.name,
-//                                                 price: String(model.price),
-//                                                 image: UIImage(named: "bill"))
             cell.update(modelCell)
         
         }
@@ -348,9 +340,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
                                                  price: String(model.price),
                                                  image: model.image,
                                                  type: .pizza)
-//            let modelCell = ProductCellViewModel(title: model.name,
-//                                                 price: String(model.price),
-//                                                 image: UIImage(named: "bill"))
 
             cell.update(modelCell)
         }

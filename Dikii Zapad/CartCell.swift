@@ -74,14 +74,22 @@ class CartCell: UITableViewCell {
             priceLabel.text = "\(model.price) РУБ."
             
             stack.removeAllArrangedSubviews()
-            model.additives.forEach { additiveName in
-                let label = UILabel()
-                label.font = .systemFont(ofSize: 16)
-                label.text = "+ \(additiveName)"
-                label.textColor = .white
-                
-                stack.addArrangedSubview(label)
+            
+            if model.additives.isEmpty {
+                let emptyView = UIView()
+                emptyView.easy.layout(Height(7))
+                stack.addArrangedSubview(emptyView)
+            } else {
+                model.additives.forEach { additiveName in
+                    let label = UILabel()
+                    label.font = .systemFont(ofSize: 16)
+                    label.text = "+ \(additiveName)"
+                    label.textColor = .white
+                    
+                    stack.addArrangedSubview(label)
+                }
             }
+            
         }
     }
     
@@ -146,6 +154,9 @@ class CartCell: UITableViewCell {
 
 extension UIStackView {
     func removeAllArrangedSubviews() {
-        self.arrangedSubviews.forEach {self.removeArrangedSubview($0)}
+        for subView in arrangedSubviews {
+            removeArrangedSubview(subView)
+            subView.removeFromSuperview()
+        }
     }
 }

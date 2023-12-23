@@ -147,7 +147,6 @@ private extension CartViewController {
             backgroundImage,
             containerEmpty,
             containerFull
-           
         )
         
         containerEmpty.addSubViews(
@@ -227,7 +226,9 @@ private extension CartViewController {
         )
         
         tableView.easy.layout(
-            Edges()
+            Top(),
+            Left(), Right(),
+            Bottom().to(sumLabel, .top)
         )
         
         makeOrderButton.easy.layout(
@@ -261,9 +262,8 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CartCell", for: indexPath) as? CartCell else {
             return UITableViewCell()
         }
-        let cartModel = model.cells[indexPath.row]
-        
-        cell.model = cartModel
+                
+        cell.model = model.cells[indexPath.row]
         cell.isLast = indexPath.row == model.cells.count - 1
         return cell
     }

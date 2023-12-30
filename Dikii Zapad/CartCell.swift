@@ -26,6 +26,11 @@ class CartCell: UITableViewCell {
         }
     }
     
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
     private lazy var image: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
@@ -82,11 +87,7 @@ class CartCell: UITableViewCell {
             
             stack.removeAllArrangedSubviews()
             
-            if model.additives.isEmpty {
-                let emptyView = UIView()
-                emptyView.easy.layout(Height(7))
-                stack.addArrangedSubview(emptyView)
-            } else {
+            if !model.additives.isEmpty {
                 model.additives.forEach { additiveName in
                     let label = UILabel()
                     label.font = .systemFont(ofSize: 16)
@@ -116,7 +117,9 @@ class CartCell: UITableViewCell {
     
     private func setupView() {
         
-        contentView.addSubViews(
+        contentView.addSubview(containerView)
+        
+        containerView.addSubViews(
             image,
             productNameLabel,
             stack,
@@ -127,6 +130,11 @@ class CartCell: UITableViewCell {
     }
     
     private func setupConstrains() {
+        containerView.easy.layout(
+            Edges(),
+            Height(>=148)
+        )
+      
         image.easy.layout(
             Top(16),
             Left(16),
@@ -163,7 +171,6 @@ class CartCell: UITableViewCell {
         )
     }
 }
-
 
 extension UIStackView {
     func removeAllArrangedSubviews() {

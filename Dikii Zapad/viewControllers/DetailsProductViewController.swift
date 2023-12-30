@@ -34,8 +34,6 @@ class DetailsProductViewController: UIViewController {
         let scrolview = UIScrollView(frame: .zero)
         scrolview.showsVerticalScrollIndicator = false
         scrolview.backgroundColor = .clear
-        scrolview.contentSize = contentCize
-        scrolview.frame  = view.bounds
         return scrolview
     }()
     
@@ -144,9 +142,8 @@ class DetailsProductViewController: UIViewController {
         quantityLabel.text = "\(Int(quantityStepper.value))"
         
         if let price = modelProduct?.price {
-            priceLabel.text = "\(modelProduct?.price ?? 0 ) ₽"
+            priceLabel.text = "\(price) ₽"
         }
-
     }
 }
 
@@ -206,14 +203,17 @@ private extension DetailsProductViewController {
 
 
     func setupConstraints() {
-        contentView.easy.layout(
-            Height(+200).like(scrollView),
-            Width().like(scrollView)
-        )
-    
-        
         backgroundImage.easy.layout(
             Edges()
+        )
+        
+        scrollView.easy.layout(
+            Edges()
+        )
+        
+        contentView.easy.layout(
+            Edges(),
+            Width(UIScreen.main.bounds.width)
         )
         
         nameLabel.easy.layout(
@@ -245,7 +245,8 @@ private extension DetailsProductViewController {
         orderButton.easy.layout(
             Top(50).to(tableView, .bottom),
             Left(30), Right(30),
-            Height(60)
+            Height(60),
+            Bottom(10)
         )
         
         quantityStepper.easy.layout(

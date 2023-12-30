@@ -73,31 +73,31 @@ class CartViewController: UIViewController {
     }()
     
     private lazy var sumLabel: UILabel = {
-           let label  = UILabel()
-           label.text = "Сумма заказа:"
+        let label  = UILabel()
+        label.text = "Сумма заказа:"
         label.font = UIFont.systemFont(ofSize: 25, weight: .regular)
-           label.textColor = .white
-           return label
-       }()
-       
-       private lazy var pricelabel: UILabel = {
-           let label  = UILabel()
-           label.text = "000"
-           label.font = UIFont(name: "Capture it", size: 30)
-           label.textColor = .white
-           return label
-       }()
-       
-       private  lazy var makeOrderButton: UIButton = {
-           let button  = UIButton()
-           button.backgroundColor = UIColor.customOrange
-           button.layer.cornerRadius = 15
-           button.setTitle("ОФОРМИТЬ ЗАКАЗ", for: .normal)
-           button.setTitleColor(UIColor.white, for: .normal)
-           button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
-           button.addTarget(self, action: #selector(makeOrder), for: .touchUpInside)
-           return button
-       }()
+        label.textColor = .white
+        return label
+    }()
+    
+    private lazy var pricelabel: UILabel = {
+        let label  = UILabel()
+        label.text = "000"
+        label.font = UIFont(name: "Capture it", size: 30)
+        label.textColor = .white
+        return label
+    }()
+    
+    private  lazy var makeOrderButton: UIButton = {
+        let button  = UIButton()
+        button.backgroundColor = UIColor.customOrange
+        button.layer.cornerRadius = 15
+        button.setTitle("ОФОРМИТЬ ЗАКАЗ", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        button.addTarget(self, action: #selector(makeOrder), for: .touchUpInside)
+        return button
+    }()
     
     private lazy var menuButton: UIButton = {
         let button = UIButton(type: .system)

@@ -11,10 +11,15 @@ import EasyPeasy
 final class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     //MARK: - Private Property
 
-    private var sectionLabels: [String] = ["Бургеры", "Пиццы", "Хот-Доги",
-                                           "Снеки", "Милкшейки", "Лимонады",
-                                           "Кофе", "Десерты", "Напитки"]
+//    private var sectionLabels: [String] = ["Бургеры", "Пиццы", "Хот-Доги",
+//                                           "Снеки", "Милкшейки", "Лимонады",
+//                                           "Кофе", "Десерты", "Напитки"]
+//
+//    categories
     
+    private var categoriesSection: [String] {
+        DataStore.shared.allCategories.compactMap { $0.name }
+    }
     
     private var backgroundView: UIImageView = {
         let imageView = UIImageView()
@@ -234,7 +239,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
         
         func setupModels() {
-            burgers = DataStore.shared.burgers
+            burgers = DataStore.shared.allProducts
             pizzas = DataStore.shared.pizzas
             hotdogs = DataStore.shared.hotdogs
             snacks = DataStore.shared.snacks
@@ -248,7 +253,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
         
         func setupScrollButtons() {
-            let titleButtons: [String] = ["Бургеры", "Пицца", "Хот-Доги", "Снеки", "Милкшейки", "Лимонады", "Кофе", "Десерты", "Напитки" ]
+            let titleButtons: [String] = categoriesSection
             
             titleButtons.enumerated().forEach { (index, title) in
                 let btn = CustomButton(title: title,
@@ -268,157 +273,36 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        9
+        categoriesSection.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
-            return (burgers?.count ?? 0)
-        }
-        
-        if section == 1 {
-            return (pizzas?.count ?? 0)
-        }
-        
-        if section == 2 {
-            return (hotdogs?.count ?? 0)
-        }
-        
-        if section == 3 {
-            return (snacks?.count ?? 0)
-        }
-        
-        if section == 4 {
-            return (milkshakes?.count ?? 0)
-        }
-        if section == 5 {
-            return (lemonades?.count ?? 0)
-        }
-        
-        if section == 6 {
-            return (coffeeDrinks?.count ?? 0)
-        }
-        
-        if section == 7 {
-            return (desserts?.count ?? 0)
-        }
-        
-        if section == 8 {
-            return (drinks?.count ?? 0)
-        }
-        return 0
+        let allProducts = DataStore.shared.allProducts
+        let isCategory = DataStore.shared.allCategories[section].id
+        let productCategory = allProducts.filter { $0.categories.first?.id == isCategory }
+        return productCategory.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
         
-        //Секция 0 - Бургеры
-        if indexPath.section == 0 {
-      
-
-
-            guard let model = burgers?[indexPath.item] else { return cell }
-            let modelCell = ProductCellViewModel(title: model.name,
-                                                 price: String(model.price),
-                                                 image: model.image,
-                                                 imageURL: model.imageURL,
-                                                 type: .burger)
-            
-            cell.update(modelCell)
+        let idCategory = DataStore.shared.allCategories[indexPath.section].id
+        let productsCategory = DataStore.shared.allProducts.filter { $0.categories.first?.id == idCategory }
         
-        }
+        let product = productsCategory[indexPath.row]
+        let modelCell = ProductCellViewModel(title: product.name,
+                                             price: String(product.price),
+                                             image: nil,
+                                             imageURL: product.imageURL)
         
-        //Секция 1 - Пицца
-        if indexPath.section == 1 {
-            guard let model = pizzas?[indexPath.item] else { return cell }
-            let modelCell = ProductCellViewModel(title: model.name,
-                                                 price: String(model.price),
-                                                 image: model.image,
-                                                 imageURL: nil,
-                                                 type: .pizza)
-
-            cell.update(modelCell)
-        }
-        
-        if indexPath.section == 2 {
-            guard let model = hotdogs?[indexPath.item] else { return cell }
-            let modelCell = ProductCellViewModel(title: model.name,
-                                                 price: String(model.price),
-                                                 image: model.image,
-                                                 imageURL: nil,
-                                                 type: .hotDog)
-            cell.update(modelCell)
-        }
-       
-        
-        if indexPath.section == 3 {
-            guard let model = snacks?[indexPath.item] else { return cell }
-            let modelCell = ProductCellViewModel(title: model.name,
-                                                 price: String(model.price),
-                                                 image: model.image,
-                                                 imageURL: nil,
-                                                 type: .snack)
-            cell.update(modelCell)
-        }
-        
-        if indexPath.section == 4 {
-            guard let model = milkshakes?[indexPath.item] else { return cell }
-            let modelCell = ProductCellViewModel(title: model.name,
-                                                 price: String(model.price),
-                                                 image: model.image,
-                                                 imageURL: nil,
-                                                 type: .milkshake)
-            cell.update(modelCell)
-        }
-        
-        if indexPath.section == 5 {
-            guard let model = lemonades?[indexPath.item] else { return cell }
-            let modelCell = ProductCellViewModel(title: model.name,
-                                                 price: String(model.price),
-                                                 image: model.image,
-                                                 imageURL: nil,
-                                                 type: .milkshake)
-            cell.update(modelCell)
-        }
-        
-        if indexPath.section == 6 {
-            guard let model = coffeeDrinks?[indexPath.item] else { return cell }
-            let modelCell = ProductCellViewModel(title: model.name,
-                                                 price: String(model.price),
-                                                 image: model.image,
-                                                 imageURL: nil,
-                                                 type: .milkshake)
-            cell.update(modelCell)
-        }
-        
-        if indexPath.section == 7 {
-            guard let model = desserts?[indexPath.item] else { return cell }
-            let modelCell = ProductCellViewModel(title: model.name,
-                                                 price: String(model.price),
-                                                 image: model.image,
-                                                 imageURL: nil,
-                                                 type: .milkshake)
-            cell.update(modelCell)
-        }
-        
-        if indexPath.section == 8 {
-            guard let model = drinks?[indexPath.item] else { return cell }
-            let modelCell = ProductCellViewModel(title: model.name,
-                                                 price: String(model.price),
-                                                 image: model.image,
-                                                 imageURL: nil,
-                                                 type: .milkshake)
-            cell.update(modelCell)
-        }
-        
-        
+        cell.update(modelCell)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeader", for: indexPath) as! SectionHeaderReusableView
-            headerView.titleLabel.text = sectionLabels[indexPath.section]
+            headerView.titleLabel.text = categoriesSection[indexPath.section]
             return headerView
         }
         print("sect \(indexPath.section)")
@@ -432,56 +316,20 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let idCategory = DataStore.shared.allCategories[indexPath.section].id
+        let productsCategory = DataStore.shared.allProducts.filter { $0.categories.first?.id == idCategory }
+        let product = productsCategory[indexPath.row]
+        
+        
+        //MOCK
+        var additives: [AdditiveProduct] = []
         if indexPath.section == 0 {
-            guard let model = burgers?[indexPath.item] else { return }
-            openDetailProductVC(model, DataStore.shared.additiveBurger)
+            additives = DataStore.shared.additiveBurger
         }
         if indexPath.section == 1 {
-            guard let model = pizzas?[indexPath.item] else { return }
-            openDetailProductVC(model, DataStore.shared.additivePizza)
-        }
-        if indexPath.section == 2 {
-            guard let model = hotdogs?[indexPath.item] else { return }
-            openDetailProductVC(model, [])
+            additives = DataStore.shared.additivePizza
         }
         
-        if indexPath.section == 3 {
-            guard let model = snacks?[indexPath.item] else { return }
-            openDetailProductVC(model, [])
-        }
-        
-        if indexPath.section == 4 {
-            guard let model = milkshakes?[indexPath.item] else { return }
-            openDetailProductVC(model, [])
-        }
-        
-        if indexPath.section == 5 {
-            guard let model = lemonades?[indexPath.item] else { return }
-            openDetailProductVC(model, [])
-        }
-        
-        if indexPath.section == 6 {
-            guard let model = coffeeDrinks?[indexPath.item] else { return }
-            openDetailProductVC(model, [])
-        }
-        
-        if indexPath.section == 7 {
-            guard let model = desserts?[indexPath.item] else { return }
-            openDetailProductVC(model, [])
-        }
-        
-        if indexPath.section == 8 {
-            guard let model = drinks?[indexPath.item] else { return }
-            openDetailProductVC(model, [])
-        }
+        openDetailProductVC(product, additives)
     }
-    
-    
-    #warning("Это тест для скрола таблицы")
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let cells = verticalСollectionView.visibleCells as? [ProductCell]
-        let type = cells?.sorted(by: { $0.frame.origin.y < $1.frame.origin.y }).last?.model?.type
-    }
-    
-    
 }

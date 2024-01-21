@@ -23,8 +23,10 @@ class ProductsDataService {
     
     ///Ссылка для продуктов
     private let urlProduct = "http://dikiyzapad-161.ru/wp-json/wc/v3/products"
+    private let urlCategories = "http://dikiyzapad-161.ru/wp-json/wc/v3/products/categories"
     
-    var products: [ProductTest]? = []
+    var products: [Product]? = []
+    var categories: [Category]? = []
     
     func downloadProduct(completion: @escaping () -> Void) {
         //Load products
@@ -32,6 +34,14 @@ class ProductsDataService {
             DispatchQueue.main.async { [weak self] in
                 self?.products = result
                 print("=--= загрузил products = \(self?.products?.count ?? 0)")
+                self?.groupLoading.leave()
+            }
+        }
+        
+        download(urlCategories, groupLoading) { [weak self] result, error in
+            DispatchQueue.main.async { [weak self] in
+                self?.categories = result
+                print("=--= загрузил categories = \(self?.categories?.count ?? 0)")
                 self?.groupLoading.leave()
             }
         }
@@ -45,16 +55,11 @@ class ProductsDataService {
     
     func updateDataStore() {
         let products = products ?? []
+        let categories = categories ?? []
+
+        DataStore.shared.allProducts = products //.filter({ $0.categories.first?.id == 18 })
         
-        let burgers = products.filter({ $0.categories.first?.id == 18 }).compactMap({ product in
-            Product(name: product.name,
-                    price: Int(product.price) ?? 0,
-                    description: product.description,
-                    image: nil,
-                    imageURL: URL(string: product.images.first?.src ?? ""))
-        })
-        
-        DataStore.shared.burgers = burgers
+        DataStore.shared.allCategories = categories
     }
 }
 

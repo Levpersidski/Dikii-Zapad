@@ -135,7 +135,10 @@ class DetailsProductViewController: UIViewController {
         addSubViews()
         setupConstraints()
         
-        pictureImage.image = modelProduct?.image
+        if let url = modelProduct?.imageURL {
+            pictureImage.kf.setImage(with: url)
+        }
+        
         descriptionLabel.text = modelProduct?.description
         nameLabel.text = modelProduct?.name
         
@@ -186,7 +189,7 @@ private extension DetailsProductViewController {
         let cell = CartCellViewModel(title: product.name,
                                      price: ("\(calculateSum())"),
                                      additives: selectedAdditives,
-                                     image: product.image,
+                                     imageURL: product.imageURL,
                                      count: Int(quantityStepper.value))
         
         DataStore.shared.cartViewModel.cells.append(cell)
@@ -269,10 +272,10 @@ private extension DetailsProductViewController {
         )
     }
     
-    func calculateSum() -> Int {
-        let selectedAdditive = additives.filter { $0.selected }.map { $0.price }
-        let priceProduct = modelProduct?.price ?? 0
-        let counter = Int(quantityStepper.value)
+    func calculateSum() -> Double {
+        let selectedAdditive = additives.filter { $0.selected }.compactMap { Double($0.price) }
+        let priceProduct = Double(modelProduct?.price ?? "") ?? 0
+        let counter = Double(quantityStepper.value)
     
         let totalSumAdditive = selectedAdditive.reduce(0, { $0 + $1 }) * counter
         let totalSumProducts = priceProduct * counter

@@ -25,8 +25,6 @@ struct ProductCellViewModel {
     let price: String
     let image: UIImage?
     let imageURL: URL?
-    
-    let type: TypeProduct
 }
 
 class ProductCell: UICollectionViewCell {

@@ -7,7 +7,14 @@
 
 import Foundation
 
-struct ProductTest: Codable {
+
+struct Category: Codable {
+    let id: Int
+    let name: String
+    let slug: String
+}
+
+struct Product: Codable {
     let id: Int
     let name: String
     
@@ -22,13 +29,15 @@ struct ProductTest: Codable {
     
     ///Если не удалось распарсить статус - состояние = .inStock
     var stockStatusType: StockStatusType {
-        return StockStatusType(rawValue: stock_status) ?? .inStock
+        StockStatusType(rawValue: stock_status) ?? .inStock
     }
     
-    struct Category: Codable {
-        let id: Int
-        let name: String
-        let slug: String
+    var imageURL: URL? {
+        if let urlString = images.first?.src {
+            return URL(string: urlString)
+        } else {
+            return nil
+        }
     }
     
     struct MediaData: Codable {

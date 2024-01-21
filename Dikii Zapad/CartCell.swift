@@ -13,7 +13,7 @@ struct CartCellViewModel {
     let title: String
     let price: String
     let additives: [String]
-    let image: UIImage?
+    let imageURL: URL?
     
     let count: Int
 }
@@ -81,7 +81,10 @@ class CartCell: UITableViewCell {
             guard let model = model else { return }
             
             productNameLabel.text = model.title
-            image.image = model.image
+            if let url = model.imageURL {
+                image.kf.setImage(with: url)
+            }
+            
             priceLabel.text = "\(model.price) РУБ."
             countLabel.text = "\(model.count) шт."
             

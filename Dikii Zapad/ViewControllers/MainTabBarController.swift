@@ -8,13 +8,10 @@
 import UIKit
 
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         generatetabBar()
         setTabBarAppearance()
-        
-        
     }
     
    private func generatetabBar() {
@@ -36,14 +33,12 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     private  func setTabBarAppearance() {
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.customOrange], for: .normal)
-        UITabBarItem.appearance().largeContentSizeImage?.scale
         
         tabBar.selectedItem?.badgeTextAttributes(for: .normal)
         tabBar.backgroundColor = .black
         tabBar.tintColor = .tabBarItemAccent
         tabBar.unselectedItemTintColor = .tabBarItemlight
         tabBar.layer.cornerRadius = 10
-
     }
 }
 

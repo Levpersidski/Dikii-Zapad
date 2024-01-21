@@ -1,13 +1,11 @@
 //
-//  Product.swift
+//  ProductCategory.swift
 //  Dikii Zapad
 //
 //  Created by Роман Бакаев on 24.09.2023.
 //
 
 import UIKit
-
-
 
 // Примеры продуктов
 struct ProductCategory {

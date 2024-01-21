@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */; };
+		04A9AB462B5C837D002A8A79 /* ProductTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB452B5C837D002A8A79 /* ProductTest.swift */; };
 		B6306BB92AC088D800B0BF80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BB82AC088D800B0BF80 /* AppDelegate.swift */; };
 		B6306BBB2AC088D800B0BF80 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BBA2AC088D800B0BF80 /* SceneDelegate.swift */; };
 		B6306BBD2AC088D800B0BF80 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BBC2AC088D800B0BF80 /* MainViewController.swift */; };
 		B6306BC22AC088D900B0BF80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6306BC12AC088D900B0BF80 /* Assets.xcassets */; };
-		B6306BCE2AC0A41000B0BF80 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BCD2AC0A41000B0BF80 /* Product.swift */; };
+		B6306BCE2AC0A41000B0BF80 /* ProductCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BCD2AC0A41000B0BF80 /* ProductCategory.swift */; };
 		B6306BD32AC1D69200B0BF80 /* EasyPeasy in Frameworks */ = {isa = PBXBuildFile; productRef = B6306BD22AC1D69200B0BF80 /* EasyPeasy */; };
 		B645C35F2AC349D80079C8F2 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645C35E2AC349D80079C8F2 /* DataStore.swift */; };
 		B645C3612AC34F960079C8F2 /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645C3602AC34F960079C8F2 /* ProductCell.swift */; };
@@ -34,13 +36,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsDataService.swift; sourceTree = "<group>"; };
+		04A9AB452B5C837D002A8A79 /* ProductTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTest.swift; sourceTree = "<group>"; };
 		B6306BB52AC088D800B0BF80 /* Dikii Zapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dikii Zapad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6306BB82AC088D800B0BF80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B6306BBA2AC088D800B0BF80 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B6306BBC2AC088D800B0BF80 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B6306BC12AC088D900B0BF80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B6306BC62AC088D900B0BF80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B6306BCD2AC0A41000B0BF80 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		B6306BCD2AC0A41000B0BF80 /* ProductCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCategory.swift; sourceTree = "<group>"; };
 		B645C35E2AC349D80079C8F2 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		B645C3602AC34F960079C8F2 /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		B645C3622AC353060079C8F2 /* UIView + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + extension.swift"; sourceTree = "<group>"; };
@@ -73,6 +77,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04A9AB422B5C7992002A8A79 /* Healpers */ = {
+			isa = PBXGroup;
+			children = (
+				04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */,
+			);
+			path = Healpers;
+			sourceTree = "<group>";
+		};
 		B6306BAC2AC088D800B0BF80 = {
 			isa = PBXGroup;
 			children = (
@@ -92,24 +104,23 @@
 		B6306BB72AC088D800B0BF80 /* Dikii Zapad */ = {
 			isa = PBXGroup;
 			children = (
+				04A9AB422B5C7992002A8A79 /* Healpers */,
 				B645C3662AC9CF080079C8F2 /* FONT */,
 				B6DF27272ACD5F0000FC45D0 /* Scene */,
 				B6DF27262ACD5EB800FC45D0 /* Extension */,
-				B6306BCD2AC0A41000B0BF80 /* Product.swift */,
-				B66D7BAA2B054610009C34CB /* viewControllers */,
+				B66D7BAA2B054610009C34CB /* ViewControllers */,
 				B645C3602AC34F960079C8F2 /* ProductCell.swift */,
 				B66D7BAB2B0A9307009C34CB /* CartCell.swift */,
 				B645C35E2AC349D80079C8F2 /* DataStore.swift */,
+				B6306BCD2AC0A41000B0BF80 /* ProductCategory.swift */,
 				B6306BC12AC088D900B0BF80 /* Assets.xcassets */,
 				B6306BC62AC088D900B0BF80 /* Info.plist */,
 				B6DB40FD2AEFF2E6005963ED /* CustomButton.swift */,
-				B6DF271C2ACC63A500FC45D0 /* MainTabBarController.swift */,
-				B6DF271E2ACC640700FC45D0 /* ActionsViewController.swift */,
-				B6DF27202ACC643500FC45D0 /* ContactsViewController.swift */,
 				B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */,
 				B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */,
 				B667A0492AE58C1E003D8069 /* AdditiveCell.swift */,
 				B66D7BA82AFD271F009C34CB /* CheckBoxButton.swift */,
+				04A9AB452B5C837D002A8A79 /* ProductTest.swift */,
 			);
 			path = "Dikii Zapad";
 			sourceTree = "<group>";
@@ -122,16 +133,19 @@
 			path = FONT;
 			sourceTree = "<group>";
 		};
-		B66D7BAA2B054610009C34CB /* viewControllers */ = {
+		B66D7BAA2B054610009C34CB /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				B6DF271C2ACC63A500FC45D0 /* MainTabBarController.swift */,
+				B6DF27202ACC643500FC45D0 /* ContactsViewController.swift */,
+				B6DF271E2ACC640700FC45D0 /* ActionsViewController.swift */,
 				B6306BBC2AC088D800B0BF80 /* MainViewController.swift */,
 				B645C3642AC365FC0079C8F2 /* DetailsProductViewController.swift */,
 				B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */,
 				B6DF27222ACC649E00FC45D0 /* CartViewController.swift */,
 				B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */,
 			);
-			path = viewControllers;
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		B6DF27262ACD5EB800FC45D0 /* Extension */ = {
@@ -234,15 +248,17 @@
 				B66D7BA92AFD271F009C34CB /* CheckBoxButton.swift in Sources */,
 				B6F3EA562AD5DD1400270662 /* CustomRegisterTextfield.swift in Sources */,
 				B6F3EA542AD57B4000270662 /* SectionHeaderReusableView.swift in Sources */,
+				04A9AB462B5C837D002A8A79 /* ProductTest.swift in Sources */,
 				B6DF27252ACC7E2A00FC45D0 /* UIColorExtension.swift in Sources */,
 				B6DF27182ACC387F00FC45D0 /* LaunchViewController.swift in Sources */,
 				B6DF271F2ACC640700FC45D0 /* ActionsViewController.swift in Sources */,
 				B6DF271D2ACC63A500FC45D0 /* MainTabBarController.swift in Sources */,
 				B645C35F2AC349D80079C8F2 /* DataStore.swift in Sources */,
 				B6DF27212ACC643600FC45D0 /* ContactsViewController.swift in Sources */,
-				B6306BCE2AC0A41000B0BF80 /* Product.swift in Sources */,
+				B6306BCE2AC0A41000B0BF80 /* ProductCategory.swift in Sources */,
 				B645C3652AC365FC0079C8F2 /* DetailsProductViewController.swift in Sources */,
 				B645C3632AC353060079C8F2 /* UIView + extension.swift in Sources */,
+				04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */,
 				B6DF27232ACC649E00FC45D0 /* CartViewController.swift in Sources */,
 				B667A04A2AE58C1E003D8069 /* AdditiveCell.swift in Sources */,
 				B6306BB92AC088D800B0BF80 /* AppDelegate.swift in Sources */,
@@ -384,7 +400,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -413,7 +429,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

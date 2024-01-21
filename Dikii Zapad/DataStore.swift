@@ -12,6 +12,7 @@ struct Product {
     let price: Int
     let description: String
     let image: UIImage?
+    var imageURL: URL? = nil
 }
 
 struct AdditiveProduct {

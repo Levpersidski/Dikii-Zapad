@@ -8,7 +8,6 @@
 import UIKit
 import EasyPeasy
 
-
 class CheckBoxButton: UIView {
 
     var isChecked = true

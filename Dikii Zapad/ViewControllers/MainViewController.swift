@@ -122,8 +122,6 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     var desserts:[Product]?
     var drinks: [Product]?
     
-    
-    
     //MARK: - ViewDidLOad()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,8 +134,14 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         //регистрация вью  для заголовков секций
         verticalСollectionView.register(SectionHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader")
+        
+//        testDisplayedData()
 
     }
+//    
+//    private func testDisplayedData() {
+//        ProductsDataService.shared.downloadProduct()
+//    }
     
     private func openDetailProductVC(_ modelProduct: Product, _ modelAdditive: [AdditiveProduct]) {
         let vc = DetailsProductViewController()

@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 //MARK: - RegisterTextField
 final class CustomRegisterTextField: UITextField {
     

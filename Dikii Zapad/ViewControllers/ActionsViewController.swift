@@ -16,25 +16,19 @@ class ActionsViewController: UIViewController {
         image.image = UIImage(named: "mainImage")
         return image
     }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
         // Do any additional setup after loading the view.
     }
-    
-
-   
-
 }
 
 private extension ActionsViewController {
-    
     func setupViews() {
         view.addSubViews(backgroundImage)
-        
     }
-    
     
     func setupConstraints() {
         backgroundImage.easy.layout(

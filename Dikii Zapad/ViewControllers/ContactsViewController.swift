@@ -10,7 +10,6 @@ import EasyPeasy
 
 class ContactsViewController: UIViewController {
     
-    
     private lazy var backgroundImage: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
@@ -24,16 +23,12 @@ class ContactsViewController: UIViewController {
         setupConstraints()
        
     }
-
 }
 
 private extension ContactsViewController {
-    
     func setupViews() {
         view.addSubViews(backgroundImage)
-        
     }
-    
     
     func setupConstraints() {
         backgroundImage.easy.layout(

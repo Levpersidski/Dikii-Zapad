@@ -8,7 +8,7 @@
 import UIKit
 import EasyPeasy
 
-enum TypeCell {
+enum TypeProduct: Int {
     case burger
     case pizza
     case hotDog
@@ -17,15 +17,15 @@ enum TypeCell {
     case coffeeDrinks
     case desserts
     case drink
-    
 }
 
 struct ProductCellViewModel {
     let title: String
     let price: String
     let image: UIImage?
+    let imageURL: URL? = nil
     
-    let type: TypeCell
+    let type: TypeProduct
 }
 
 class ProductCell: UICollectionViewCell {
@@ -127,6 +127,8 @@ class ProductCell: UICollectionViewCell {
         labelName.text = model.title
         image.image = model.image
         priceLabel.text = "\(model.price) РУБ."
+        
+//        image.image = Ui
     }
     
     private func setupView() {
@@ -135,9 +137,6 @@ class ProductCell: UICollectionViewCell {
         addSubview(labelName)
         addSubview(priceLabel)
         addSubview(whiteOverlayView)
-        
-   
-        
 //        backgroundColor = .white.withAlphaComponent(0.2)
         image.clipsToBounds = true
     }
@@ -159,17 +158,14 @@ class ProductCell: UICollectionViewCell {
         let heightImage = (widthCell * 1.25) * 0.7
         
         containerView.easy.layout(
-        Edges()
+            Edges()
         )
-        
         image.easy.layout(
             Top(8), Left(8), Right(8), Height(heightImage)
         )
-        
         labelName.easy.layout(
             Top(10).to(image, .bottom), Left(), Right()
         )
-        
         priceLabel.easy.layout(
             Top(8).to(labelName, .bottom),
             CenterX().to(labelName)
@@ -177,8 +173,5 @@ class ProductCell: UICollectionViewCell {
         whiteOverlayView.easy.layout(
             Top(), Left(), Right(), Height(heightImage)
         )
-    
     }
-    
-    
 }

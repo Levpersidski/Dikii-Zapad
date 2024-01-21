@@ -52,8 +52,6 @@ final class LaunchViewController: UIViewController {
         label.alpha = 0.0
         return label
     }()
-    
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,8 +68,8 @@ final class LaunchViewController: UIViewController {
             self.logoImage.alpha = 1// Устанавливаем конечное значение прозрачности в 1
             self.logoLabel.alpha  = 1
         }
-
-        Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { [weak self] _ in
+        
+        ProductsDataService.shared.downloadProduct() { [weak self] in
             guard let self = self else { return }
             let mainViewController = MainTabBarController()
             self.navigationController?.setNavigationBarHidden(true, animated: false)

@@ -18,10 +18,8 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     private var backgroundView: UIImageView = {
         let imageView = UIImageView()
-        // Настройка режима отображения изображения (чтобы оно занимало всю область экрана)
         imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(named: "mainImage")
-        // чтобы изображение было в фоне и на него можно было размещать другие элементы, то используйте view.insertSubview(imageView, at: 0)
         return imageView
     }()
     
@@ -134,14 +132,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         //регистрация вью  для заголовков секций
         verticalСollectionView.register(SectionHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader")
-        
-//        testDisplayedData()
-
     }
-//    
-//    private func testDisplayedData() {
-//        ProductsDataService.shared.downloadProduct()
-//    }
     
     private func openDetailProductVC(_ modelProduct: Product, _ modelAdditive: [AdditiveProduct]) {
         let vc = DetailsProductViewController()
@@ -331,6 +322,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let modelCell = ProductCellViewModel(title: model.name,
                                                  price: String(model.price),
                                                  image: model.image,
+                                                 imageURL: model.imageURL,
                                                  type: .burger)
             
             cell.update(modelCell)
@@ -343,6 +335,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let modelCell = ProductCellViewModel(title: model.name,
                                                  price: String(model.price),
                                                  image: model.image,
+                                                 imageURL: nil,
                                                  type: .pizza)
 
             cell.update(modelCell)
@@ -353,6 +346,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let modelCell = ProductCellViewModel(title: model.name,
                                                  price: String(model.price),
                                                  image: model.image,
+                                                 imageURL: nil,
                                                  type: .hotDog)
             cell.update(modelCell)
         }
@@ -363,6 +357,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let modelCell = ProductCellViewModel(title: model.name,
                                                  price: String(model.price),
                                                  image: model.image,
+                                                 imageURL: nil,
                                                  type: .snack)
             cell.update(modelCell)
         }
@@ -372,7 +367,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let modelCell = ProductCellViewModel(title: model.name,
                                                  price: String(model.price),
                                                  image: model.image,
-                                                 type: .snack)
+                                                 imageURL: nil,
+                                                 type: .milkshake)
             cell.update(modelCell)
         }
         
@@ -381,7 +377,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let modelCell = ProductCellViewModel(title: model.name,
                                                  price: String(model.price),
                                                  image: model.image,
-                                                 type: .snack)
+                                                 imageURL: nil,
+                                                 type: .milkshake)
             cell.update(modelCell)
         }
         
@@ -390,7 +387,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let modelCell = ProductCellViewModel(title: model.name,
                                                  price: String(model.price),
                                                  image: model.image,
-                                                 type: .snack)
+                                                 imageURL: nil,
+                                                 type: .milkshake)
             cell.update(modelCell)
         }
         
@@ -399,7 +397,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let modelCell = ProductCellViewModel(title: model.name,
                                                  price: String(model.price),
                                                  image: model.image,
-                                                 type: .snack)
+                                                 imageURL: nil,
+                                                 type: .milkshake)
             cell.update(modelCell)
         }
         
@@ -408,7 +407,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let modelCell = ProductCellViewModel(title: model.name,
                                                  price: String(model.price),
                                                  image: model.image,
-                                                 type: .snack)
+                                                 imageURL: nil,
+                                                 type: .milkshake)
             cell.update(modelCell)
         }
         

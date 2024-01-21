@@ -7,6 +7,7 @@
 
 import UIKit
 import EasyPeasy
+import Kingfisher
 
 enum TypeProduct: Int {
     case burger
@@ -23,7 +24,7 @@ struct ProductCellViewModel {
     let title: String
     let price: String
     let image: UIImage?
-    let imageURL: URL? = nil
+    let imageURL: URL?
     
     let type: TypeProduct
 }
@@ -127,8 +128,10 @@ class ProductCell: UICollectionViewCell {
         labelName.text = model.title
         image.image = model.image
         priceLabel.text = "\(model.price) РУБ."
-        
-//        image.image = Ui
+                
+        if let url = model.imageURL {
+            image.kf.setImage(with: url)
+        }
     }
     
     private func setupView() {
@@ -137,22 +140,8 @@ class ProductCell: UICollectionViewCell {
         addSubview(labelName)
         addSubview(priceLabel)
         addSubview(whiteOverlayView)
-//        backgroundColor = .white.withAlphaComponent(0.2)
         image.clipsToBounds = true
     }
-    
-//    private func shadowSettingCell() {
-//        let path = UIBezierPath(roundedRect: bounds, cornerRadius: 20).cgPath
-//        self.backgroundColor = .clear
-//        self.layer.cornerRadius = 20
-//        self.layer.shadowColor = UIColor.customOrange.cgColor
-//        self.layer.shadowOffset = CGSize(width: 4, height: 4)
-//        self.layer.shadowOpacity = 0.2
-//        self.layer.shadowRadius = 5
-//        self.layer.shadowOffset = CGSize(width: 0, height: 3)
-//        self.layer.shadowPath = path
-//        
-//    }
     
     private func setupConstrains() {
         let heightImage = (widthCell * 1.25) * 0.7

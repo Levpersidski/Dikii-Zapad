@@ -9,19 +9,26 @@ import Foundation
 
 struct ProductTest: Codable {
     let id: Int
-    let date: String
-    let modified: String
-    let title: TextRender
-    let content: TextRender
-    let featured_media: Int
-    let product_cat: [Int]
+    let name: String
     
-    var titleText: String {
-        title.rendered
+    let date_created: String
+    let description: String
+    let price: String
+    let regular_price: String
+    let sale_price: String
+    let categories: [Category]
+    let images: [MediaData]
+    let stock_status: String
+    
+    struct Category: Codable {
+        let id: Int
+        let name: String
+        let slug: String
     }
     
-    var descriptionText: String {
-        content.rendered
+    struct MediaData: Codable {
+        let id: Int
+        let src: String
     }
 }
 

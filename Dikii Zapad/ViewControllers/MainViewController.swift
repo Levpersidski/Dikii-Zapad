@@ -244,7 +244,6 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
             desserts = DataStore.shared.desserts
             drinks = DataStore.shared.drinks
             
-            
             verticalСollectionView.reloadData()
         }
         

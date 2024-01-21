@@ -9,13 +9,6 @@ import UIKit
 import EasyPeasy
 
 final class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout {
-    //MARK: - Private Property
-
-//    private var sectionLabels: [String] = ["Бургеры", "Пиццы", "Хот-Доги",
-//                                           "Снеки", "Милкшейки", "Лимонады",
-//                                           "Кофе", "Десерты", "Напитки"]
-//
-//    categories
     
     private var categoriesSection: [String] {
         DataStore.shared.allCategories.compactMap { $0.name }
@@ -149,8 +142,10 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     @objc func didTouchToToDrinks(sender: UIButton) {
         let section = sender.tag
         guard verticalСollectionView.numberOfSections > section else { return }
+        guard verticalСollectionView.numberOfItems(inSection: section) > 0 else { return }
         
         verticalСollectionView.scrollToItem(at: IndexPath(item: 0, section: section), at: .top, animated: true)
+        
     }
     
     @objc func segmentedValueChanged(sender: UISegmentedControl) {

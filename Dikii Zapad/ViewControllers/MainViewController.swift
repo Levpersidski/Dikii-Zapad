@@ -317,7 +317,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let product = productsCategory[indexPath.row]
         
         guard product.stockStatusType != .outOfStock else { return }
-        print("=--= \(product.stockStatusType)")
 
         //MOCK
         var additives: [AdditiveProduct] = []

@@ -140,7 +140,7 @@ class CartViewController: UIViewController {
         
         tableView.reloadData()
         
-        let testSub = model.cells.map { Int($0.price) ?? 0 }.reduce(0, { $0 + $1 })
+        let testSub = model.cells.map { Double($0.price) ?? 0 }.reduce(0, { $0 + $1 })
         pricelabel.text = "\(testSub)"
     }
 }

@@ -288,7 +288,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let modelCell = ProductCellViewModel(title: product.name,
                                              price: String(product.price),
                                              image: nil,
-                                             imageURL: product.imageURL)
+                                             imageURL: product.imageURL,
+                                             stockStatusType: product.stockStatusType)
         
         cell.update(modelCell)
         return cell
@@ -315,7 +316,9 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let productsCategory = DataStore.shared.allProducts.filter { $0.categories.first?.id == idCategory }
         let product = productsCategory[indexPath.row]
         
-        
+        guard product.stockStatusType != .outOfStock else { return }
+        print("=--= \(product.stockStatusType)")
+
         //MOCK
         var additives: [AdditiveProduct] = []
         if indexPath.section == 0 {

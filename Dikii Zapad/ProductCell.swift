@@ -25,6 +25,8 @@ struct ProductCellViewModel {
     let price: String
     let image: UIImage?
     let imageURL: URL?
+    
+    let stockStatusType: Product.StockStatusType?
 }
 
 class ProductCell: UICollectionViewCell {
@@ -48,7 +50,6 @@ class ProductCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = .black
         view.alpha = 0.0 // Задайте нужную прозрачность (от 0.0 до 1.0)
-        view.layer.cornerRadius = 20
         return view
     }()
 
@@ -72,6 +73,11 @@ class ProductCell: UICollectionViewCell {
         return label
     }()
     
+    private lazy var topBlockedOverlay: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black.withAlphaComponent(0.6)
+        return view
+    }()
     
     var model: ProductCellViewModel?
     private lazy var widthCell: CGFloat = (UIScreen.main.bounds.size.width / 2) - 20
@@ -80,22 +86,19 @@ class ProductCell: UICollectionViewCell {
         super.init(frame: frame)
         setupView()
         setupConstrains()
-      //  shadowSettingCell()
-       
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
     //методы по нажатию и отпусканию на экран
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
 
+        guard model?.stockStatusType != .outOfStock else { return }
+
         UIView.animate(withDuration: 0.1) {
-           // self.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             self.whiteOverlayView.alpha = 0.5
             self.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
         }
@@ -130,14 +133,17 @@ class ProductCell: UICollectionViewCell {
         if let url = model.imageURL {
             image.kf.setImage(with: url)
         }
+        
+        topBlockedOverlay.isHidden = model.stockStatusType != .outOfStock
     }
     
     private func setupView() {
         addSubview(containerView)
-        addSubview(image)
-        addSubview(labelName)
-        addSubview(priceLabel)
-        addSubview(whiteOverlayView)
+        containerView.addSubview(image)
+        containerView.addSubview(labelName)
+        containerView.addSubview(priceLabel)
+        image.addSubview(whiteOverlayView)
+        containerView.addSubview(topBlockedOverlay)
         image.clipsToBounds = true
     }
     
@@ -158,7 +164,11 @@ class ProductCell: UICollectionViewCell {
             CenterX().to(labelName)
         )
         whiteOverlayView.easy.layout(
-            Top(), Left(), Right(), Height(heightImage)
+            Edges()
+        )
+        
+        topBlockedOverlay.easy.layout(
+            Edges()
         )
     }
 }

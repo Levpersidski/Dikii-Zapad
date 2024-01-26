@@ -27,17 +27,6 @@ class DataStore {
     ///All products
     var allProducts: [Product] = []
     
-    
-    var pizzas: [Product]? = []
-    var hotdogs: [Product]? = []
-    var drinks: [Product]? = []
-    
-    var snacks: [Product]? = []
-    var milkshakes: [Product]? = []
-    var lemonades: [Product]? = []
-    var coffeeDrinks: [Product]? = []
-    var desserts: [Product]? = []
-    
 //    var burgers: [Product]? = [
 //        Product(name: "Малыш Билли",
 //                price: 99,

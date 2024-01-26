@@ -108,16 +108,6 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     private lazy var sizeCell: CGFloat = (UIScreen.main.bounds.size.width / 2) - 20
     private lazy var minimumLineSpacing: CGFloat = 2
     
-    var burgers: [Product]?
-    var pizzas: [Product]?
-    var hotdogs:[Product]?
-    var snacks:[Product]?
-    var milkshakes:[Product]?
-    var lemonades:[Product]?
-    var coffeeDrinks:[Product]?
-    var desserts:[Product]?
-    var drinks: [Product]?
-    
     //MARK: - ViewDidLOad()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -234,16 +224,6 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
         
         func setupModels() {
-            burgers = DataStore.shared.allProducts
-            pizzas = DataStore.shared.pizzas
-            hotdogs = DataStore.shared.hotdogs
-            snacks = DataStore.shared.snacks
-            milkshakes = DataStore.shared.milkshakes
-            lemonades = DataStore.shared.lemonades
-            coffeeDrinks = DataStore.shared.coffeeDrinks
-            desserts = DataStore.shared.desserts
-            drinks = DataStore.shared.drinks
-            
             verticalСollectionView.reloadData()
         }
         

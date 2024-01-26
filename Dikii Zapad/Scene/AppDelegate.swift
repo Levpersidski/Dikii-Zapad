@@ -69,6 +69,12 @@ extension UITabBar {
     
     func setBageValue(_ item: TabItem, value: Int) {
         let indexTab = item.rawValue
-        items?[indexTab].badgeValue = "\(value)"
+        items?[indexTab].badgeValue = value == 0 ? "" : "\(value)"
+        
+        if value == 0 {
+            items?[indexTab].badgeColor = .clear
+        } else {
+            items?[indexTab].badgeColor = .systemRed
+        }
     }
 }

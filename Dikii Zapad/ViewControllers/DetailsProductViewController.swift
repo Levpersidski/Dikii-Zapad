@@ -193,9 +193,6 @@ private extension DetailsProductViewController {
                                      count: Int(quantityStepper.value))
         
         DataStore.shared.cartViewModel.cells.append(cell)
-        
-        UIApplication.tabBar?.setBageValue(.cart,
-                                           value: DataStore.shared.cartViewModel.cells.count)
     }
     
     @objc func stepperValueChanged(_ sender: UIStepper) {

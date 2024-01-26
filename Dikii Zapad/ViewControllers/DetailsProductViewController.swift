@@ -139,7 +139,12 @@ class DetailsProductViewController: UIViewController {
             pictureImage.kf.setImage(with: url)
         }
         
-        descriptionLabel.text = modelProduct?.description
+        //TO DO: move replacingOccurrences in maping
+        var descriptionText = modelProduct?.description
+        descriptionText = descriptionText?.replacingOccurrences(of: "<p>", with: "")
+        descriptionText = descriptionText?.replacingOccurrences(of: "</p>", with: "")
+
+        descriptionLabel.text = descriptionText
         nameLabel.text = modelProduct?.name
         
         quantityLabel.text = "\(Int(quantityStepper.value))"

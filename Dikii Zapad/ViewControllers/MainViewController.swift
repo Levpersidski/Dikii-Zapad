@@ -290,7 +290,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return CGSize(width: collectionView.frame.width, height: 99) // Здесь вы можете настроить высоту заголовка секции
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let idCategory = DataStore.shared.allCategories[indexPath.section].id
         let productsCategory = DataStore.shared.allProducts.filter { $0.categories.first?.id == idCategory }
@@ -298,15 +297,20 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         guard product.stockStatusType != .outOfStock else { return }
 
-        //MOCK
-        var additives: [AdditiveProduct] = []
-        if indexPath.section == 0 {
-            additives = DataStore.shared.additiveBurger
-        }
-        if indexPath.section == 1 {
-            additives = DataStore.shared.additivePizza
-        }
+        let additivesFromServer = product.attributes.compactMap { $0.options }.reduce([], { $0 + $1 })
+        let additivesTest: [AdditiveProduct] = additivesFromServer.compactMap { createAdditivesModel($0) }
         
-        openDetailProductVC(product, additives)
+        openDetailProductVC(product, additivesTest)
+    }
+    
+    func createAdditivesModel(_ from: String ) -> AdditiveProduct? {
+        let separatedString = from.components(separatedBy: "+")
+        
+        guard separatedString.count == 2 else { return nil }
+        guard let title = separatedString.first else { return nil }
+        guard let valueStr = separatedString.last?.replacingOccurrences(of: " ", with: "") else { return nil }
+        guard let value = Int(valueStr) else { return nil }
+
+        return AdditiveProduct(name: title, price: value)
     }
 }

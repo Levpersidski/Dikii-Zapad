@@ -525,24 +525,6 @@ class DataStore {
 //
 //    ]
     
-    
-    var additiveBurger: [AdditiveProduct] = [
-        AdditiveProduct(name: "Ломтик сыра чеддер", price: 25),
-        AdditiveProduct(name: "Острый перчик халапеньо", price: 20),
-        AdditiveProduct(name: "Котлета 150 грамм", price: 110),
-        AdditiveProduct(name: "Картофельный дранник", price: 30),
-        AdditiveProduct(name: "Ломтик сыра чеддер", price: 25),
-        AdditiveProduct(name: "Острый перчик халапеньо", price: 20),
-        AdditiveProduct(name: "Котлета 150 грамм", price: 110),
-        AdditiveProduct(name: "Картофельный дранник", price: 30)
-    ]
-    
-    var additivePizza: [AdditiveProduct] = [
-        AdditiveProduct(name: "Еще больше сыра", price: 500),
-        AdditiveProduct(name: "Острый перчик халапеньо", price: 20),
-        AdditiveProduct(name: "Ананас", price: 30)
-    ]
-    
     var cartViewModel: CartViewModel = CartViewModel()
     
     static let shared = DataStore()

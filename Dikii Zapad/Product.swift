@@ -14,6 +14,10 @@ struct Category: Codable {
     let slug: String
 }
 
+struct Attribute: Codable {
+    let options: [String]
+}
+
 struct Product: Codable {
     let id: Int
     let name: String
@@ -26,6 +30,8 @@ struct Product: Codable {
     let categories: [Category]
     let images: [MediaData]
     let stock_status: String
+    
+    let attributes: [Attribute]
     
     ///Если не удалось распарсить статус - состояние = .inStock
     var stockStatusType: StockStatusType {

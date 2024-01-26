@@ -12,6 +12,11 @@ struct CartViewModel {
     var cells: [CartCellViewModel] = []
 }
 
+enum ErrorDZ: Error {
+    case badData
+    case badAuthorisations
+}
+
 class CartViewController: UIViewController {
     
     private lazy var backgroundImage: UIImageView = {
@@ -89,14 +94,21 @@ class CartViewController: UIViewController {
     }()
     
     private  lazy var makeOrderButton: UIButton = {
-        let button  = UIButton()
+        let button  = UIButton(type: .system)
         button.backgroundColor = UIColor.customOrange
         button.layer.cornerRadius = 15
         button.setTitle("ОФОРМИТЬ ЗАКАЗ", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
-        button.addTarget(self, action: #selector(makeOrder), for: .touchUpInside)
+        button.addTarget(self, action: #selector(makeOrderButtonDidTap), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let loader = UIActivityIndicatorView()
+        loader.color = .black
+        loader.isHidden = true
+        return loader
     }()
     
     private lazy var menuButton: UIButton = {
@@ -135,13 +147,7 @@ class CartViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        containerEmpty.isHidden = !(model.cells.isEmpty)
-        containerFull.isHidden = (model.cells.isEmpty)
-        
-        tableView.reloadData()
-        
-        let testSub = model.cells.map { Double($0.price) ?? 0 }.reduce(0, { $0 + $1 })
-        pricelabel.text = "\(testSub)"
+        updateViews()
     }
 }
 
@@ -152,6 +158,8 @@ private extension CartViewController {
             containerEmpty,
             containerFull
         )
+        
+        makeOrderButton.addSubview(activityIndicator)
         
         containerEmpty.addSubViews(
             halfBlackView,
@@ -169,18 +177,6 @@ private extension CartViewController {
         )
     }
     
-    @objc private func openMainVC() {
-        let vc = MainTabBarController()
-        vc.modalTransitionStyle = .crossDissolve
-        vc.modalPresentationStyle = .overFullScreen
-        present(vc, animated: true)
-    }
-    
-    @objc private func makeOrder() {
-    
-    }
-    
-    
     func setupConstraints() {
         backgroundImage.easy.layout(
             Edges()
@@ -193,7 +189,6 @@ private extension CartViewController {
             Size(300)
         )
         
-        
         containerEmpty.easy.layout(
             Top(20), CenterX(), Left(), Right()
         )
@@ -201,7 +196,6 @@ private extension CartViewController {
         containerFull.easy.layout(
             Top(20), Left(), Right(), Bottom()
         )
-        
         
         emptyBurgerImage.easy.layout(
             Top(120),
@@ -251,11 +245,97 @@ private extension CartViewController {
         pricelabel.easy.layout(
             Bottom().to(sumLabel, .bottom),
             Right(16)
+        )
         
+        activityIndicator.easy.layout(
+            Center()
         )
     }
+    
+    func updateViews() {
+        containerEmpty.isHidden = !(model.cells.isEmpty)
+        containerFull.isHidden = (model.cells.isEmpty)
+        
+        tableView.reloadData()
+        
+        let testSub = model.cells.map { Double($0.price) ?? 0 }.reduce(0, { $0 + $1 })
+        pricelabel.text = "\(testSub)"
+    }
+    
+    @objc func openMainVC() {
+        let vc = MainTabBarController()
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true)
+    }
+    
+    @objc func makeOrderButtonDidTap() {
+        startLoadingAnimation(true)
+        
+       let message = createTextForMessage()
+        
+        sendTelegramMessage(message) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(_):
+                self.showAlert("Успешно",
+                          message: "Заказ оформлен",
+                          okTitle: "ок", present: true)
+                DataStore.shared.cartViewModel.cells = []
+                self.updateViews()
+            case .failure(_):
+                self.showAlert("Ошибка",
+                          message: "Не удалось оформить заказ\nПопробуйте позже",
+                          okTitle: "ок", present: true)
+            }
+            self.startLoadingAnimation(false)
+        }
+    }
+    
+    func createTextForMessage() -> String {
+        let price = pricelabel.text ?? "-"
+        let order = model.cells.map{ "\($0.title)\($0.count > 1 ? "(x\($0.count))" : "")" + "\($0.additives.isEmpty ? "" : " - (\($0.additives.joined(separator: ", ")))")" }
+        
+        return "\(price) Руб.\n\(order.joined(separator: "\n\n"))"
+    }
+    
+    func startLoadingAnimation(_ value: Bool) {
+        value ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
+        self.activityIndicator.isHidden = !value
+        self.makeOrderButton.setTitle(value ? "" : "ОФОРМИТЬ ЗАКАЗ", for: .normal)
+    }
+    
+    func sendTelegramMessage(_ text: String, completion: @escaping (Result<String, ErrorDZ>) -> Void) {
+        let url = URL(string: "http://dikiyzapad-161.ru/test/index.php")!
+        let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
+        let keyMessage = "text"
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(secretToken)", forHTTPHeaderField: "Authorization")
+        request.httpBody = (keyMessage + "=" + text).data(using: .utf8)
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                guard let data = data, error == nil else {
+                    completion(.failure(ErrorDZ.badData))
+                    print(error?.localizedDescription ?? "No data")
+                    return
+                }
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                    completion(.failure(ErrorDZ.badAuthorisations))
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                    print("response = \(response!)")
+                }
+                let responseString = String(data: data, encoding: .utf8)
+                print("Response data = \(responseString ?? "No response")")
+                completion(.success("Заказ успешно отправлен"))
+            }
+        }
+        task.resume()
+    }
 }
-
 
 extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

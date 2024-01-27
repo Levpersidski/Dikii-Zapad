@@ -15,8 +15,6 @@ class DetailsProductViewController: UIViewController {
     
     private let heightCell: CGFloat = 40
     
-    // MARK: - Private Propery
-    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(AdditiveCell.self, forCellReuseIdentifier: "AdditiveCell")
@@ -26,20 +24,17 @@ class DetailsProductViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var contentView: UIView = {
-        UIView(frame: .zero)
-    }()
-    
     private lazy var scrollView: UIScrollView = {
-        let scrolview = UIScrollView(frame: .zero)
-        scrolview.showsVerticalScrollIndicator = false
-        scrolview.backgroundColor = .clear
-        return scrolview
+        let scrollView = UIScrollView(frame: .zero)
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.backgroundColor = .clear
+        return scrollView
     }()
     
-    private var contentCize: CGSize {
-        CGSize(width: view.bounds.width, height: view.bounds.height + 200)
-    }
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        return view
+    }()
     
     private lazy var backgroundImage: UIImageView = {
         let image = UIImageView()

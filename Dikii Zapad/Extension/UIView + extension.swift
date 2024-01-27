@@ -41,3 +41,14 @@ extension UIView {
             views.forEach { addSubview($0) }
         }
 }
+
+//UIView + TapGestuere
+extension UIView {
+    @discardableResult
+    func addTapGesture(with closure: @escaping (UIGestureRecognizer.State) -> ()) -> UIGestureRecognizer {
+        isUserInteractionEnabled = true
+        let rec = ClosureTapGestureRecognizer(action: closure)
+        self.addGestureRecognizer(rec)
+        return rec
+    }
+}

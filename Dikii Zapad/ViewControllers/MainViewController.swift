@@ -102,6 +102,8 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = true
+        //регистрация вью  для заголовков секций
+        collectionView.register(SectionHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader")
         return collectionView
     }()
     
@@ -115,11 +117,11 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         setupConstraints()
         setupModels()
         setupScrollButtons()
-
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        //регистрация вью  для заголовков секций
-        verticalСollectionView.register(SectionHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     private func openDetailProductVC(_ modelProduct: Product, _ modelAdditive: [AdditiveProduct]) {

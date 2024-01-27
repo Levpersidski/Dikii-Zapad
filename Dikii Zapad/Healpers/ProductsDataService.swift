@@ -28,12 +28,22 @@ class ProductsDataService {
     var products: [Product]? = []
     var categories: [Category]? = []
     
-    func downloadProduct(completion: @escaping () -> Void) {
+    func downloadProduct(completion: @escaping (_ hasData: Bool) -> Void) {
+        guard let products = products, let categories = categories else {
+            completion(false) // Доп защита по сути экземпляры всегда инициализированы
+            return
+        }
+        
+        guard products.isEmpty && categories.isEmpty else {
+            completion(true) //Если данные уже есть не загружаем по новой
+            return
+        }
+        
         //Load products
         download(urlProduct, groupLoading) { [weak self] result, error in
             DispatchQueue.main.async { [weak self] in
                 self?.products = result
-                print("=--= загрузил products = \(self?.products?.count ?? 0)")
+                print("DBG loaded \(self?.products?.count ?? 0) products")
                 self?.groupLoading.leave()
             }
         }
@@ -41,15 +51,19 @@ class ProductsDataService {
         download(urlCategories, groupLoading) { [weak self] result, error in
             DispatchQueue.main.async { [weak self] in
                 self?.categories = result
-                print("=--= загрузил categories = \(self?.categories?.count ?? 0)")
+                print("DBG loaded \(self?.categories?.count ?? 0) categories")
                 self?.groupLoading.leave()
             }
         }
         
         groupLoading.notify(queue: .main) { [weak self] in
-            //Запишем в дата стор
-            self?.updateDataStore()
-            completion()
+            guard let self else { return }
+            //Save in dataStore
+            self.updateDataStore()
+            let isEmptyCategories = self.categories?.isEmpty ?? true
+            let isEmptyProducts = self.products?.isEmpty ?? true
+            
+            completion(!(isEmptyCategories) && !(isEmptyProducts))
         }
     }
     

@@ -9,13 +9,15 @@ import UIKit
 import EasyPeasy
 
 final class LaunchViewController: UIViewController {
+    private var endedWelcomeTime = false
+    private var hasData = false
+    private let dataService = ProductsDataService.shared
     
     private var backgroundImage: UIImageView = {
-        let View = UIImageView()
-        View.contentMode = .scaleAspectFill
-        View.image = UIImage(named: "backgroundImage")
-
-        return View
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        view.image = UIImage(named: "backgroundImage")
+        return view
     }()
     
     private lazy var blackOverlayView: UIView = {
@@ -26,17 +28,16 @@ final class LaunchViewController: UIViewController {
         return view
     }()
     
-    
-    let burgerImage: UIImageView = {
+    private lazy var burgerImage: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "burgerImage"))
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
-    let logoImage: UIImageView = {
+    private lazy var logoImage: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "logoImage"))
         imageView.contentMode = .scaleAspectFit
-      imageView.alpha = 0.0 // Устанавливаем начальное значение прозрачности в 0
+        imageView.alpha = 0.0 // Устанавливаем начальное значение прозрачности в 0
         return imageView
     }()
     
@@ -52,64 +53,105 @@ final class LaunchViewController: UIViewController {
         label.alpha = 0.0
         return label
     }()
+    
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.tintColor = .white
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        setupLayout()
-      
-       view.insertSubview(backgroundImage, at: 0)
-        view.insertSubview(blackOverlayView, at: 1)
-        view.insertSubview(logoImage, at: 2)
-
+        setupConstrains()
         
-         // Анимация появления logoImage с затуханием
-        UIView.animate(withDuration: 2.0) {
-            self.logoImage.alpha = 1// Устанавливаем конечное значение прозрачности в 1
-            self.logoLabel.alpha  = 1
-        }
-        
-        ProductsDataService.shared.downloadProduct() { [weak self] in
-            guard let self = self else { return }
-            let mainViewController = MainTabBarController()
-            self.navigationController?.setNavigationBarHidden(true, animated: false)
-            self.navigationController?.pushViewController(mainViewController, animated: true)
-        }
-    }
-
-    private func setupView() {
-        view.addSubViews( logoImage, backgroundImage, burgerImage,logoLabel, blackOverlayView)
-        
+        loadData()
     }
     
-    private func setupLayout() {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        logoImage.fadeIn(1.5)
+        logoLabel.fadeIn(1.5)
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+            self?.endedWelcomeTime = true
+            self?.tryOpenApp()
+        }
+    }
+    
+    private func setupView() {
+        view.addSubViews(backgroundImage,
+                         logoImage,
+                         burgerImage,
+                         logoLabel,
+                         blackOverlayView,
+                         activityIndicator)
+    }
+    
+    private func setupConstrains() {
         logoImage.easy.layout(
             Top(100).to(view.safeAreaLayoutGuide, .top),
             CenterX(),
             Size(60)
         )
-        
         logoLabel.easy.layout(
             Top(30).to(logoImage, .bottom),
             CenterX(),
             Left(30),
             Right(30)
         )
-        
         burgerImage.easy.layout(
             Bottom(-200),
             CenterX(15),
             Size(930)
         )
-        
         backgroundImage.easy.layout(
             Edges()
         )
         blackOverlayView.easy.layout(
             Edges()
         )
+        activityIndicator.easy.layout(
+            Top(20).to(logoLabel, .bottom),
+            CenterX(),
+            Size(20)
+        )
         
+        activityIndicator.transform = CGAffineTransform.init(scaleX: 2, y: 2)
+    }
+    
+    private func tryOpenApp() {
+        guard endedWelcomeTime && hasData else {
+            return
+        }
+        let mainViewController = MainTabBarController()
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.pushViewController(mainViewController, animated: true)
+    }
+    
+    
+    private func loadData() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+
+        dataService.downloadProduct() { [weak self] hasData in
+            guard let self = self else { return }
+            self.hasData = hasData
+            self.activityIndicator.isHidden = true
+            self.activityIndicator.stopAnimating()
+            
+            if hasData {
+                self.tryOpenApp()
+            } else {
+                self.showAlert("Что то пошло не так",
+                               message: "Не удалось загрузить меню",
+                               okTitle: "Повторить",
+                               present: true,
+                               completion: { [weak self] in
+                    self?.loadData()
+                })
+            }
+        }
     }
 }
 

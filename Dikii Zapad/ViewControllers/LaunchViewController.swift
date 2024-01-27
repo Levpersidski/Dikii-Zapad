@@ -9,6 +9,7 @@ import UIKit
 import EasyPeasy
 
 final class LaunchViewController: UIViewController {
+    private var endedLoadingData = false
     private var endedWelcomeTime = false
     private var hasData = false
     private let dataService = ProductsDataService.shared
@@ -121,9 +122,26 @@ final class LaunchViewController: UIViewController {
     }
     
     private func tryOpenApp() {
-        guard endedWelcomeTime && hasData else {
+        if !hasData && endedLoadingData {
+            self.activityIndicator.isHidden = true
+            self.activityIndicator.stopAnimating()
+            
+            showAlert("Что то пошло не так",
+                      message: "Не удалось загрузить меню",
+                      okTitle: "Повторить",
+                      present: true,
+                      completion: { [weak self] in self?.loadData() }
+            )
             return
         }
+        
+        guard endedWelcomeTime else {
+            return
+        }
+        guard endedLoadingData else {
+            return
+        }
+        
         let mainViewController = MainTabBarController()
         navigationController?.setNavigationBarHidden(true, animated: false)
         navigationController?.pushViewController(mainViewController, animated: true)
@@ -131,26 +149,16 @@ final class LaunchViewController: UIViewController {
     
     
     private func loadData() {
+        endedLoadingData = false
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
 
         dataService.downloadProduct() { [weak self] hasData in
             guard let self = self else { return }
+            self.endedLoadingData = true
+
             self.hasData = hasData
-            self.activityIndicator.isHidden = true
-            self.activityIndicator.stopAnimating()
-            
-            if hasData {
-                self.tryOpenApp()
-            } else {
-                self.showAlert("Что то пошло не так",
-                               message: "Не удалось загрузить меню",
-                               okTitle: "Повторить",
-                               present: true,
-                               completion: { [weak self] in
-                    self?.loadData()
-                })
-            }
+            self.tryOpenApp()
         }
     }
 }

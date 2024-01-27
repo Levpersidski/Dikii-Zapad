@@ -29,12 +29,10 @@ class ProductsDataService {
     var categories: [Category]? = []
     
     func downloadProduct(completion: @escaping (_ hasData: Bool) -> Void) {
-        guard let products = products, let categories = categories else {
-            completion(false) // Доп защита по сути экземпляры всегда инициализированы
-            return
-        }
+        products = []
+        categories = []
         
-        guard products.isEmpty && categories.isEmpty else {
+        guard products?.isEmpty ?? true && categories?.isEmpty ?? true else {
             completion(true) //Если данные уже есть не загружаем по новой
             return
         }

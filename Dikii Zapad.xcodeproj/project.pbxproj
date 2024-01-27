@@ -15,6 +15,7 @@
 		04D5E5482B64350C004F336E /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D5E5472B64350C004F336E /* UIViewController + Extension.swift */; };
 		04E6F8D92B651C2E0014398B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8D82B651C2E0014398B /* CustomTextField.swift */; };
 		04E6F8DB2B652AE00014398B /* ClosureTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8DA2B652AE00014398B /* ClosureTapGestureRecognizer.swift */; };
+		04E6F8DD2B653B5C0014398B /* MapDeliveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8DC2B653B5C0014398B /* MapDeliveryViewController.swift */; };
 		B6306BB92AC088D800B0BF80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BB82AC088D800B0BF80 /* AppDelegate.swift */; };
 		B6306BBB2AC088D800B0BF80 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BBA2AC088D800B0BF80 /* SceneDelegate.swift */; };
 		B6306BBD2AC088D800B0BF80 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BBC2AC088D800B0BF80 /* MainViewController.swift */; };
@@ -47,6 +48,7 @@
 		04D5E5472B64350C004F336E /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
 		04E6F8D82B651C2E0014398B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		04E6F8DA2B652AE00014398B /* ClosureTapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureTapGestureRecognizer.swift; sourceTree = "<group>"; };
+		04E6F8DC2B653B5C0014398B /* MapDeliveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDeliveryViewController.swift; sourceTree = "<group>"; };
 		B6306BB52AC088D800B0BF80 /* Dikii Zapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dikii Zapad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6306BB82AC088D800B0BF80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B6306BBA2AC088D800B0BF80 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +89,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		043842092B657BD2009632DC /* MapDelivery */ = {
+			isa = PBXGroup;
+			children = (
+				04E6F8DC2B653B5C0014398B /* MapDeliveryViewController.swift */,
+			);
+			path = MapDelivery;
+			sourceTree = "<group>";
+		};
 		04A9AB422B5C7992002A8A79 /* Healpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -163,6 +173,7 @@
 				B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */,
 				B6DF27222ACC649E00FC45D0 /* CartViewController.swift */,
 				B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */,
+				043842092B657BD2009632DC /* MapDelivery */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -287,6 +298,7 @@
 				B6DF27212ACC643600FC45D0 /* ContactsViewController.swift in Sources */,
 				B645C3652AC365FC0079C8F2 /* DetailsProductViewController.swift in Sources */,
 				B645C3632AC353060079C8F2 /* UIView + extension.swift in Sources */,
+				04E6F8DD2B653B5C0014398B /* MapDeliveryViewController.swift in Sources */,
 				04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */,
 				B6DF27232ACC649E00FC45D0 /* CartViewController.swift in Sources */,
 				B667A04A2AE58C1E003D8069 /* AdditiveCell.swift in Sources */,

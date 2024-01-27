@@ -35,6 +35,33 @@ extension UIView {
         )
     }
     
+    ///Этот метод закругляет углы не задавая новую максу CAShapeLayer(). А только редактирует. Это позволяет избежать бага отображением subviews
+    func maskCorners(radius: CGFloat, _ corners: UIRectCorner = .allCorners) {
+        var cornerMasks = CACornerMask()
+        if corners.contains(.allCorners) {
+            cornerMasks.insert(.layerMinXMinYCorner)
+            cornerMasks.insert(.layerMaxXMinYCorner)
+            cornerMasks.insert(.layerMinXMaxYCorner)
+            cornerMasks.insert(.layerMaxXMaxYCorner)
+        }
+        if corners.contains(.topLeft) {
+            cornerMasks.insert(.layerMinXMinYCorner)
+        }
+        if corners.contains(.topRight) {
+            cornerMasks.insert(.layerMaxXMinYCorner)
+        }
+        if corners.contains(.bottomLeft) {
+            cornerMasks.insert(.layerMinXMaxYCorner)
+        }
+        if corners.contains(.bottomRight) {
+            cornerMasks.insert(.layerMaxXMaxYCorner)
+        }
+        
+        layer.maskedCorners = cornerMasks
+        layer.cornerRadius = radius
+        clipsToBounds = true
+    }
+    
 }
     extension UIScrollView {
         func addToScrollView(_ views: UIView...) {

@@ -79,7 +79,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         return stack
     }()
     
-    private lazy var verticalСollectionView: UICollectionView = {
+    private lazy var verticalCollectionView: UICollectionView = {
         let collectionViewLayout = UICollectionViewFlowLayout()
         collectionViewLayout.scrollDirection = .vertical
         
@@ -133,10 +133,10 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     @objc func didTouchToToDrinks(sender: UIButton) {
         let section = sender.tag
-        guard verticalСollectionView.numberOfSections > section else { return }
-        guard verticalСollectionView.numberOfItems(inSection: section) > 0 else { return }
+        guard verticalCollectionView.numberOfSections > section else { return }
+        guard verticalCollectionView.numberOfItems(inSection: section) > 0 else { return }
         
-        verticalСollectionView.scrollToItem(at: IndexPath(item: 0, section: section), at: .top, animated: true)
+        verticalCollectionView.scrollToItem(at: IndexPath(item: 0, section: section), at: .top, animated: true)
         
     }
     
@@ -169,7 +169,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
                 buttonToDelivery,
                 segmentedControl,
                 scrollForButtons,
-                verticalСollectionView
+                verticalCollectionView
             )
             
             scrollForButtons.addToScrollView(stackButtons)
@@ -217,7 +217,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
             
             stackButtons.easy.layout( Edges() )
             
-            verticalСollectionView.easy.layout(
+            verticalCollectionView.easy.layout(
                 Top(10).to(stackButtons, .bottom),
                 Left(),
                 Right(),
@@ -226,7 +226,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
         
         func setupModels() {
-            verticalСollectionView.reloadData()
+            verticalCollectionView.reloadData()
         }
         
         func setupScrollButtons() {
@@ -238,7 +238,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
                                        isShadow: true,
                                        titleColor: .white,
                                        tag: index)
-                
+//                btn.backgroundColor = index == 0 ? .orange : .clear
                 btn.addTarget(self, action: #selector(didTouchToToDrinks), for: .touchUpInside)
                 stackButtons.addArrangedSubview(btn)
             }
@@ -315,4 +315,17 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
         return AdditiveProduct(name: title, price: value)
     }
+    
+    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let sections = verticalCollectionView.indexPathsForVisibleItems.map { $0.section }.sorted { $0 < $1 }
+//
+//        if let section = sections.first {
+//            stackButtons.arrangedSubviews.enumerated().forEach { (index, view) in
+//                view.backgroundColor = index == section ? .orange : .clear
+//            }
+//
+//            print("=--= Currently visible section: \(section)")
+//        }
+//    }
 }

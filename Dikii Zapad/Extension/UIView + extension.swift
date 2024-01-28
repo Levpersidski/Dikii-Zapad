@@ -78,4 +78,12 @@ extension UIView {
         self.addGestureRecognizer(rec)
         return rec
     }
+    
+    @discardableResult
+    func addLongPressGesture(with closure: @escaping (UILongPressGestureRecognizer) -> ()) -> UIGestureRecognizer {
+        isUserInteractionEnabled = true
+        let rec = ClosureLongPressGestureRecognizer(action: closure)
+        self.addGestureRecognizer(rec)
+        return rec
+    }
 }

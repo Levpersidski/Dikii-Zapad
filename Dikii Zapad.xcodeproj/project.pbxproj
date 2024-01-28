@@ -10,11 +10,12 @@
 		0416FD162B5D7AE6008A5600 /* OAuthSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD152B5D7AE6008A5600 /* OAuthSwift */; };
 		0416FD192B5D7F68008A5600 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD182B5D7F68008A5600 /* Kingfisher */; };
 		0416FD1B2B5D80F1008A5600 /* UIImage + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0416FD1A2B5D80F1008A5600 /* UIImage + Extension.swift */; };
+		04A906DF2B669F3D0014DE24 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A906DE2B669F3D0014DE24 /* GradientView.swift */; };
 		04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */; };
 		04A9AB462B5C837D002A8A79 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB452B5C837D002A8A79 /* Product.swift */; };
 		04D5E5482B64350C004F336E /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D5E5472B64350C004F336E /* UIViewController + Extension.swift */; };
 		04E6F8D92B651C2E0014398B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8D82B651C2E0014398B /* CustomTextField.swift */; };
-		04E6F8DB2B652AE00014398B /* ClosureTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8DA2B652AE00014398B /* ClosureTapGestureRecognizer.swift */; };
+		04E6F8DB2B652AE00014398B /* GestureRecognizerHealpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8DA2B652AE00014398B /* GestureRecognizerHealpers.swift */; };
 		04E6F8DD2B653B5C0014398B /* MapDeliveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8DC2B653B5C0014398B /* MapDeliveryViewController.swift */; };
 		B6306BB92AC088D800B0BF80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BB82AC088D800B0BF80 /* AppDelegate.swift */; };
 		B6306BBB2AC088D800B0BF80 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BBA2AC088D800B0BF80 /* SceneDelegate.swift */; };
@@ -43,11 +44,12 @@
 
 /* Begin PBXFileReference section */
 		0416FD1A2B5D80F1008A5600 /* UIImage + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Extension.swift"; sourceTree = "<group>"; };
+		04A906DE2B669F3D0014DE24 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsDataService.swift; sourceTree = "<group>"; };
 		04A9AB452B5C837D002A8A79 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		04D5E5472B64350C004F336E /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
 		04E6F8D82B651C2E0014398B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
-		04E6F8DA2B652AE00014398B /* ClosureTapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureTapGestureRecognizer.swift; sourceTree = "<group>"; };
+		04E6F8DA2B652AE00014398B /* GestureRecognizerHealpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureRecognizerHealpers.swift; sourceTree = "<group>"; };
 		04E6F8DC2B653B5C0014398B /* MapDeliveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDeliveryViewController.swift; sourceTree = "<group>"; };
 		B6306BB52AC088D800B0BF80 /* Dikii Zapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dikii Zapad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6306BB82AC088D800B0BF80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -101,7 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */,
-				04E6F8DA2B652AE00014398B /* ClosureTapGestureRecognizer.swift */,
+				04E6F8DA2B652AE00014398B /* GestureRecognizerHealpers.swift */,
 			);
 			path = Healpers;
 			sourceTree = "<group>";
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				04E6F8D82B651C2E0014398B /* CustomTextField.swift */,
+				04A906DE2B669F3D0014DE24 /* GradientView.swift */,
 			);
 			path = CommonElements;
 			sourceTree = "<group>";
@@ -294,9 +297,10 @@
 				B6DF271F2ACC640700FC45D0 /* ActionsViewController.swift in Sources */,
 				B6DF271D2ACC63A500FC45D0 /* MainTabBarController.swift in Sources */,
 				B645C35F2AC349D80079C8F2 /* DataStore.swift in Sources */,
-				04E6F8DB2B652AE00014398B /* ClosureTapGestureRecognizer.swift in Sources */,
+				04E6F8DB2B652AE00014398B /* GestureRecognizerHealpers.swift in Sources */,
 				B6DF27212ACC643600FC45D0 /* ContactsViewController.swift in Sources */,
 				B645C3652AC365FC0079C8F2 /* DetailsProductViewController.swift in Sources */,
+				04A906DF2B669F3D0014DE24 /* GradientView.swift in Sources */,
 				B645C3632AC353060079C8F2 /* UIView + extension.swift in Sources */,
 				04E6F8DD2B653B5C0014398B /* MapDeliveryViewController.swift in Sources */,
 				04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */,

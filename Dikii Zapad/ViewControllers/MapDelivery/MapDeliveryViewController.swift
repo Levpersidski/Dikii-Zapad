@@ -44,13 +44,6 @@ class MapDeliveryViewController: UIViewController {
         return annotation
     }()
     
-    private lazy var addressTextField: CustomTextField = {
-        let textField = CustomTextField()
-        textField.placeholder = "Введите адресс"
-        textField.delegate = self
-        return textField
-    }()
-    
     private lazy var mapView: MKMapView = {
         let view = MKMapView()
         view.overrideUserInterfaceStyle = .dark
@@ -60,33 +53,25 @@ class MapDeliveryViewController: UIViewController {
         view.delegate = self
         return view
     }()
-    
-    private lazy var containerForStack: UIView = {
-        let view = UIView()
-        view.backgroundColor = .black
-        view.maskCorners(radius: 24, [.bottomLeft, .bottomRight])
+
+    private lazy var gradientView: GradientView = {
+        let view = GradientView()
+        view.applyGradient(fromColor: .black,
+                           toColor: .clear,
+                           fromPoint: CGPoint(x: 0.5, y: 0),
+                           toPoint: CGPoint(x: 0.5, y: 1))
+        view.isUserInteractionEnabled = false
         return view
     }()
     
-    private lazy var stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        return stack
+    private lazy var containerForBottomSheet: UIView = {
+        let view = UIView()
+        return view
     }()
     
-    private lazy var confirmButton: UIButton = {
-        let button  = UIButton(type: .system)
-        button.backgroundColor = UIColor.customOrange
-        button.layer.cornerRadius = 15
-        button.setTitle("ПОДТВЕРДИТЬ", for: .normal)
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
-        button.addTarget(self, action: #selector(confirmButtonDidTap), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var gradientView: GradientView = {
-        let view = GradientView()
+    private lazy var bottomSheet: BottomSheetMapView = {
+        let view = BottomSheetMapView(frame: .zero)
+        view.delegate = self
         return view
     }()
     
@@ -100,64 +85,35 @@ class MapDeliveryViewController: UIViewController {
             self?.view.endEditing(true)
         }
         mapView.showAnnotations([shopAnnotation], animated: true)
-        
-        
-        gradientView.applyGradient(fromColor: .black,
-                                   toColor: .clear,
-                                   fromPoint: CGPoint(x: 0.5, y: 0),
-                                   toPoint: CGPoint(x: 0.5, y: 1))
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        bottomSheet.open(inView: view)
     }
     
     private func setupView() {
         view.addSubViews(
             mapView,
             gradientView,
-            addressTextField,
-            testPriceLabel,
-            containerForStack,
-            confirmButton
+            testPriceLabel
         )
-        containerForStack.addSubview(stackView)
     }
     
     private func setupConstrains() {
-        addressTextField.easy.layout(
-            Top().to(view.safeAreaLayoutGuide, .top),
-            Left(16), Right(16)
-        )
-        
-        testPriceLabel.easy.layout(
-            Right(),
-            Top(10).to(addressTextField, .bottom)
-        )
-        
         gradientView.easy.layout(
-            Top().to(addressTextField, .top),
-            Left(), Right(),
-            Bottom(-20).to(addressTextField, .bottom)
-        )
-        
-        mapView.easy.layout(
-            Top().to(addressTextField, .top),
-            Left(), Right(),
-            Bottom()
-        )
-        containerForStack.easy.layout(
-            Top().to(addressTextField, .bottom),
-            Left(16),
-            Right(16),
-            Bottom(<=20)
-        )
-        stackView.easy.layout(
             Top(),
-            Left(16), Right(16),
-            Bottom()
+            Left(), Right(),
+            Bottom(-50).to(view.safeAreaLayoutGuide, .top)
         )
-        confirmButton.easy.layout(
-            Height(60),
-            Left(16),
-            Right(16),
-            Bottom(20)
+        testPriceLabel.easy.layout(
+            Top(10).to(view.safeAreaLayoutGuide, .top),
+            Right()
+        )
+        mapView.easy.layout(
+            Top(),
+            Left(), Right(),
+            Bottom()
         )
     }
     
@@ -175,63 +131,15 @@ class MapDeliveryViewController: UIViewController {
                 guard let self = self else { return }
                 guard let placeMark = placeMark?.first else { return }
                 
-                self.addressTextField.text = self.createNameLocation(from: placeMark)
                 self.annotationSearch.subtitle = self.createNameLocation(from: placeMark)
+                self.bottomSheet.addressTextField.text = self.createNameLocation(from: placeMark)
+                
+                self.bottomSheet.model = BottomSheetMapViewModel(distance: 0, price: "-", hasDiscount: false, state: .notCalculated)
             }
         }
     }
     
-    @objc private func confirmButtonDidTap() {
-        mapView.removeOverlays(mapView.overlays)
-        
-        let startPoint = MKPlacemark(coordinate: shopAnnotation.coordinate)
-        let endPoint = MKPlacemark(coordinate: annotationSearch.coordinate)
-        
-        let request = MKDirections.Request()
-        request.source = MKMapItem(placemark: startPoint)
-        request.destination = MKMapItem(placemark: endPoint)
-        request.transportType = .automobile
-        
-        let direction = MKDirections(request: request)
-        direction.calculate { [weak self] response, error in
-            guard let response = response else {
-                self?.showAlert("Ошибка",
-                                message: "Не удалось построить маршрут",
-                                showCancel: true,
-                                cancelTitle: "Закрыть",
-                                okTitle: "Повторить",
-                                present: true,
-                                completion: { [weak self] in self?.confirmButtonDidTap() })
-                return
-            }
-            
-            if let rout = response.routes.first {
-                let distance = rout.distance
-                print("=-= distance \(distance)")
-                
-                guard let self else { return }
-                
-                let cordage = self.testCalculateSum(distance: distance)
-                let value = cordage.0
-                let hasSale = cordage.1
-                
-                
-                if value == 9999 {
-                    self.testPriceLabel.text = "\(distance)м = НЕ ВЕЗЕМ!)"
-                } else {
-                    self.testPriceLabel.text = "\(distance)м = \(value) \(hasSale ? "Скидка от 700" : "")"
-                }
-                
-                self.mapView.addOverlay(rout.polyline)
-                
-                let region = MKCoordinateRegion(center: rout.polyline.coordinate, latitudinalMeters: rout.distance + 50, longitudinalMeters: rout.distance + 50)
-                
-                
-                self.mapView.setRegion(region, animated: true)
-            }
-        }
-        
-    }
+    
     
     private func testCalculateSum(distance: CLLocationDistance) -> (Double, Bool) {
 //        let value: Double = Double(distance)
@@ -274,50 +182,17 @@ class MapDeliveryViewController: UIViewController {
         return string
     }
     
-    private func setStackView() {
-        stackView.removeAllArrangedSubviews()
-        
-        searchLocation.enumerated().forEach { (index, placeMark) in
-            let label = UILabel()
-            label.font = .systemFont(ofSize: 14, weight: .bold)
-            label.textColor = .orange.withAlphaComponent(0.7)
-            label.addTapGesture { [weak self, placeMark] _ in
-                guard let self = self else { return }
-                self.addressTextField.text = label.text
-                self.stackView.removeAllArrangedSubviews()
-                self.view.endEditing(true)
-                
-                self.showSearchAnnotationWithName(placeMark: placeMark)
-            }
-            
-            label.easy.layout(
-                Height(50)
-            )
-            
-            label.text = createNameLocation(from: placeMark)
-            
-            stackView.addArrangedSubview(label)
-        }
-    }
+   
     
-    private func cleanLocations() {
-        searchLocation = []
-        stackView.removeAllArrangedSubviews()
-    }
+//    private func cleanLocations() {
+//        searchLocation = []
+////        stackView.removeAllArrangedSubviews()
+//    }
 }
 
 //MARK: - display locations
 private extension MapDeliveryViewController {
-    func showSearchAnnotationWithName(placeMark: CLPlacemark) {
-        mapView.removeAnnotation(annotationSearch)
-        annotationSearch.subtitle = createNameLocation(from: placeMark)
-        
-        if let coordinate = placeMark.location?.coordinate {
-            self.annotationSearch.coordinate = coordinate
-            self.mapView.showAnnotations([self.annotationSearch], animated: true)
-            self.mapView.selectAnnotation(self.annotationSearch, animated: true)
-        }
-    }
+
     
     func showSearchAnnotation(coordinate: CLLocationCoordinate2D) {
         mapView.removeAnnotation(annotationSearch)
@@ -368,49 +243,69 @@ private extension MapDeliveryViewController {
             }
             
             DispatchQueue.main.async {
-                completion(Array(oldPlaceMarks.prefix(3)))
+                completion(Array(oldPlaceMarks.prefix(1)))
             }
         }
     }
     
-    func updateLocations(newText: String) {
-        getLocation(from: newText) { [weak self] newPlaceMarks in
-            guard let newPlaceMarks = newPlaceMarks else { return }
+    func buildingWay() {
+        mapView.removeOverlays(mapView.overlays)
+        
+        let startPoint = MKPlacemark(coordinate: shopAnnotation.coordinate)
+        let endPoint = MKPlacemark(coordinate: annotationSearch.coordinate)
+        
+        let request = MKDirections.Request()
+        request.source = MKMapItem(placemark: startPoint)
+        request.destination = MKMapItem(placemark: endPoint)
+        request.transportType = .automobile
+        
+        let direction = MKDirections(request: request)
+        direction.calculate { [weak self] response, error in
+            guard let self else { return }
+
+            guard let response = response else {
+                self.showAlert("Ошибка",
+                                message: "Не удалось построить маршрут",
+                                showCancel: true,
+                                cancelTitle: "Закрыть",
+                                okTitle: "Повторить",
+                                present: true,
+                                completion: { [weak self] in self?.buildingWay() })
+                return
+            }
             
-            self?.addAndFilterLocations(placeMarks: newPlaceMarks) { [weak self] filteredPlaceMarks in
-                guard !filteredPlaceMarks.isEmpty else {
-                    self?.cleanLocations()
-                    return
+            if let rout = response.routes.first {
+                self.mapView.addOverlay(rout.polyline)
+                
+                let region = MKCoordinateRegion(center: rout.polyline.coordinate, latitudinalMeters: rout.distance + 50, longitudinalMeters: rout.distance + 50)
+                
+                self.mapView.setRegion(region, animated: true)
+                
+//                self.bottomSheet.addressTextField.text = createNameLocation(from: )
+                let distance = rout.distance
+                let cordage = self.testCalculateSum(distance: distance)
+                let value = cordage.0
+                let hasSale = cordage.1
+                
+                let price: String
+                if value == 9999 {
+                    price = "НЕ ВЕЗЕМ!"
+                } else {
+                    price = "\(value) ₽ \(hasSale ? "Скидка от 700 ₽" : "")"
                 }
                 
-                self?.searchLocation = filteredPlaceMarks
-                self?.setStackView()
+                let modelBottomSheet = BottomSheetMapViewModel(
+                    distance: distance,
+                    price: price,
+                    hasDiscount: cordage.1,
+                    state: .notCalculated
+                )
+                
+                self.bottomSheet.model = modelBottomSheet
             }
-            
         }
     }
-}
-
-//MARK: - UITextFieldDelegate
-extension MapDeliveryViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let newText = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) else {
-            return true
-        }
-        
-        if newText.isEmpty || newText == "" {
-            cleanLocations()
-        } else {
-            updateLocations(newText: newText)
-        }
-        
-        return true
-    }
+  
 }
 
 //MARK: - MKMapViewDelegate
@@ -420,5 +315,52 @@ extension MapDeliveryViewController: MKMapViewDelegate {
         render.strokeColor = .customOrange
         render.lineWidth = 6
         return render
+    }
+}
+
+//MARK: - BottomSheetMapViewDelegate
+extension MapDeliveryViewController: BottomSheetMapViewDelegate {
+ 
+    func cleanLocations() {
+        searchLocation = []
+    }
+    
+    func buttonDidTouch(state: BottomSheetMapState) {
+        switch state {
+        case .notCalculated:
+            buildingWay()
+        case .calculated:
+            print("=-= ЧТо-то")
+        }
+    }
+    
+    func updateLocations(newText: String) {
+        getLocation(from: newText) { [weak self] newPlaceMarks in
+            guard let newPlaceMarks = newPlaceMarks else { return }
+            
+            self?.addAndFilterLocations(placeMarks: newPlaceMarks) { [weak self] filteredPlaceMarks in
+                guard let self else { return }
+                guard !filteredPlaceMarks.isEmpty else {
+                    self.cleanLocations()
+                    return
+                }
+                
+                self.searchLocation = filteredPlaceMarks
+//                self?.setStackView()
+                self.bottomSheet.setStackView(locations: self.searchLocation)
+            }
+            
+        }
+    }
+    
+    func showSearchAnnotationWithName(placeMark: CLPlacemark) {
+        mapView.removeAnnotation(annotationSearch)
+        annotationSearch.subtitle = createNameLocation(from: placeMark)
+        
+        if let coordinate = placeMark.location?.coordinate {
+            self.annotationSearch.coordinate = coordinate
+            self.mapView.showAnnotations([self.annotationSearch], animated: true)
+            self.mapView.selectAnnotation(self.annotationSearch, animated: true)
+        }
     }
 }

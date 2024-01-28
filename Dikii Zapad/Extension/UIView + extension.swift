@@ -86,4 +86,12 @@ extension UIView {
         self.addGestureRecognizer(rec)
         return rec
     }
+    
+    @discardableResult
+    func addPanGesture(with closure: @escaping (UIPanGestureRecognizer) -> ()) -> UIGestureRecognizer {
+        isUserInteractionEnabled = true
+        let rec = ClosurePanGestureRecognizer(action: closure)
+        self.addGestureRecognizer(rec)
+        return rec
+    }
 }

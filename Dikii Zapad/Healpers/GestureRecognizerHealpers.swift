@@ -34,3 +34,17 @@ final class ClosureLongPressGestureRecognizer: UILongPressGestureRecognizer {
         action(self)
     }
 }
+
+final class ClosurePanGestureRecognizer: UIPanGestureRecognizer {
+    private var action: (UIPanGestureRecognizer) -> ()
+
+    init(action: @escaping (UIPanGestureRecognizer) -> ()) {
+        self.action = action
+        super.init(target: nil, action: nil)
+        self.addTarget(self, action: #selector(execute))
+    }
+
+    @objc private func execute() {
+        action(self)
+    }
+}

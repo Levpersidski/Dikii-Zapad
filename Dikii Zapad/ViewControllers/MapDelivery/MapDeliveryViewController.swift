@@ -21,6 +21,15 @@ class MapDeliveryViewController: UIViewController {
     let longitude: CLLocationDegrees = 39.935179
     lazy var locationShop = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     
+    
+    private lazy var testPriceLabel: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.textColor = .red
+        return label
+    }()
+    
     private lazy var shopAnnotation: MKPointAnnotation = {
         let annotation = MKPointAnnotation()
         annotation.title = "DikiyZapad"
@@ -104,6 +113,7 @@ class MapDeliveryViewController: UIViewController {
             mapView,
             gradientView,
             addressTextField,
+            testPriceLabel,
             containerForStack,
             confirmButton
         )
@@ -114,6 +124,11 @@ class MapDeliveryViewController: UIViewController {
         addressTextField.easy.layout(
             Top().to(view.safeAreaLayoutGuide, .top),
             Left(16), Right(16)
+        )
+        
+        testPriceLabel.easy.layout(
+            Right(),
+            Top(10).to(addressTextField, .bottom)
         )
         
         gradientView.easy.layout(
@@ -193,16 +208,47 @@ class MapDeliveryViewController: UIViewController {
             if let rout = response.routes.first {
                 let distance = rout.distance
                 print("=-= distance \(distance)")
-                self?.mapView.addOverlay(rout.polyline)
+                
+                guard let self else { return }
+                
+                let cordage = self.testCalculateSum(distance: distance)
+                let value = cordage.0
+                let hasSale = cordage.1
+                
+                self.testPriceLabel.text = "\(distance)м = \(value) \(hasSale ? "Скидка от 700" : "")"
+                self.mapView.addOverlay(rout.polyline)
                 
                 let region = MKCoordinateRegion(center: rout.polyline.coordinate, latitudinalMeters: rout.distance + 50, longitudinalMeters: rout.distance + 50)
                 
                 
-                self?.mapView.setRegion(region, animated: true)
+                self.mapView.setRegion(region, animated: true)
             }
         }
         
     }
+    
+    private func testCalculateSum(distance: CLLocationDistance) -> (Double, Bool) {
+//        let value: Double = Double(distance)
+        
+        if distance < 1700 {
+            return (50, true) //Центр
+        } else if distance < 2500 {
+            return (50, false) // Горловка-Горькая - 50р
+        } else if distance < 9000 {
+            return (100, false) //Кировка-Городская-Радио-Микрорайон-Западная-ЖБК - 100р
+        } else if distance < 11000 {
+            return (150, false) // Новая Соколовка-Алексеевка 150р
+        } else if distance < 12000 {
+            return (200, false) // Старая Соколовка-пос.Красный 200р
+        } else if distance < 15000 {
+            return (250, false) // Самбек 250р.
+        } else if distance < 22000 {
+            return (300, false) // Юбилейная-Нефтезавод 300р.
+        }
+        
+        return (9999, false)
+    }
+
     
     private func createNameLocation(from placeMark: CLPlacemark) -> String {
         let string: String

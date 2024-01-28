@@ -86,6 +86,12 @@ final class BottomSheetMapView: BottomSheetAutoHeighView {
         return button
     }()
     
+    
+    private lazy var extraView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
     override var contentInsets: UIEdgeInsets {
         return UIEdgeInsets(top: 32, left: 0, bottom: 58, right: 0)
     }
@@ -95,6 +101,11 @@ final class BottomSheetMapView: BottomSheetAutoHeighView {
         canCloseFull = false
         setupView()
         setupConstrains()
+        addObserverKeyboard()
+    }
+    
+    deinit {
+        removeObserverKeyboard()
     }
     
     required init?(coder: NSCoder) {
@@ -102,13 +113,14 @@ final class BottomSheetMapView: BottomSheetAutoHeighView {
     }
     
     func setupView() {
-        containerView.backgroundColor = .black
+        containerView.backgroundColor = .black.withAlphaComponent(0.8)
         containerView.addSubViews(
             addressTextField,
             hintsStackView,
             distanceLabel,
             priceLabel,
-            confirmButton
+            confirmButton,
+            extraView
         )
         addDragView(.orange)
     }
@@ -137,7 +149,13 @@ final class BottomSheetMapView: BottomSheetAutoHeighView {
             Top(10).to(priceLabel, .bottom),
             Height(60),
             Left(16),
-            Right(16),
+            Right(16)
+        )
+        extraView.easy.layout(
+            Top().to(confirmButton, .bottom),
+            Height(0),
+            Left(),
+            Right(),
             Bottom(20)
         )
     }
@@ -222,5 +240,38 @@ extension BottomSheetMapView: UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+//Observer
+extension BottomSheetMapView {
+    private func addObserverKeyboard() {
+        NotificationCenter.default.addObserver( self, selector: #selector(kbWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver( self, selector: #selector(kbWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func removeObserverKeyboard() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func kbWillShow(_ notification: Notification) {
+        let userInfo = notification.userInfo
+        let kbFrameSize = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        
+        self.extraView.easy.layout(Height(kbFrameSize.height))
+        
+        UIView.animate(withDuration: 0.25) {
+            self.layoutSubviews()
+        }
+    }
+    
+    @objc private func kbWillHide() {
+
+        self.extraView.easy.layout(Height())
+        
+        UIView.animate(withDuration: 0.2) {
+            self.layoutSubviews()
+        }
     }
 }

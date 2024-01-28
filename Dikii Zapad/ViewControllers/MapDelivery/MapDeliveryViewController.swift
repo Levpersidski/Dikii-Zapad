@@ -215,7 +215,13 @@ class MapDeliveryViewController: UIViewController {
                 let value = cordage.0
                 let hasSale = cordage.1
                 
-                self.testPriceLabel.text = "\(distance)м = \(value) \(hasSale ? "Скидка от 700" : "")"
+                
+                if value == 9999 {
+                    self.testPriceLabel.text = "\(distance)м = НЕ ВЕЗЕМ!)"
+                } else {
+                    self.testPriceLabel.text = "\(distance)м = \(value) \(hasSale ? "Скидка от 700" : "")"
+                }
+                
                 self.mapView.addOverlay(rout.polyline)
                 
                 let region = MKCoordinateRegion(center: rout.polyline.coordinate, latitudinalMeters: rout.distance + 50, longitudinalMeters: rout.distance + 50)

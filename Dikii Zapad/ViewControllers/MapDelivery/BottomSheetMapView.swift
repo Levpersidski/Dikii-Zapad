@@ -181,7 +181,7 @@ final class BottomSheetMapView: UIView {
         )
         confirmButton.easy.layout(
             Top(10).to(priceLabel, .bottom),
-            Height(250),
+            Height(60),
             Left(16),
             Right(16),
             Bottom(20)

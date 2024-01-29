@@ -14,21 +14,12 @@ class MapDeliveryViewController: UIViewController {
     var geoCoder: CLGeocoder = CLGeocoder()
     var searchLocation: [CLPlacemark] = []
     
-    //    let locationManager = CLLocationManager()
     
     //TO DO: Mock location shop
     let latitude: CLLocationDegrees = 47.752105
     let longitude: CLLocationDegrees = 39.935179
     lazy var locationShop = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     
-    
-    private lazy var testPriceLabel: UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.font = .systemFont(ofSize: 20, weight: .bold)
-        label.textColor = .red
-        return label
-    }()
     
     private lazy var shopAnnotation: MKPointAnnotation = {
         let annotation = MKPointAnnotation()
@@ -70,7 +61,7 @@ class MapDeliveryViewController: UIViewController {
     }()
     
     private lazy var bottomSheet: BottomSheetMapView = {
-        let view = BottomSheetMapView(frame: .zero)
+        let view = BottomSheetMapView()
         view.delegate = self
         return view
     }()
@@ -87,16 +78,11 @@ class MapDeliveryViewController: UIViewController {
         mapView.showAnnotations([shopAnnotation], animated: true)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        bottomSheet.open(inView: view)
-    }
-    
     private func setupView() {
         view.addSubViews(
             mapView,
             gradientView,
-            testPriceLabel
+            bottomSheet
         )
     }
     
@@ -106,12 +92,14 @@ class MapDeliveryViewController: UIViewController {
             Left(), Right(),
             Bottom(-50).to(view.safeAreaLayoutGuide, .top)
         )
-        testPriceLabel.easy.layout(
-            Top(10).to(view.safeAreaLayoutGuide, .top),
-            Right()
-        )
+
         mapView.easy.layout(
             Top(),
+            Left(), Right(),
+            Bottom()
+        )
+        
+        bottomSheet.easy.layout(
             Left(), Right(),
             Bottom()
         )
@@ -181,13 +169,6 @@ class MapDeliveryViewController: UIViewController {
         }
         return string
     }
-    
-   
-    
-//    private func cleanLocations() {
-//        searchLocation = []
-////        stackView.removeAllArrangedSubviews()
-//    }
 }
 
 //MARK: - display locations

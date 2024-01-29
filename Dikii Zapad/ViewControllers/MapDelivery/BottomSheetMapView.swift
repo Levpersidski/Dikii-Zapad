@@ -29,7 +29,18 @@ protocol BottomSheetMapViewDelegate: AnyObject {
     func showSearchAnnotationWithName(placeMark: CLPlacemark)
 }
 
-final class BottomSheetMapView: BottomSheetAutoHeighView {
+final class BottomSheetMapView: UIView {
+    
+    //variables for gesture
+    private let screenHeight: CGFloat = UIScreen.main.bounds.height
+    private var bottomContainerConstraint: NSLayoutConstraint!
+    
+//    var bottomConstraint: CGFloat = 0
+
+    private let offset: CGFloat = 0
+    private var panOrigin: CGPoint = .zero
+    private let secondOffset: CGFloat = 80
+    
     weak var delegate: BottomSheetMapViewDelegate?
     
     var model: BottomSheetMapViewModel? {
@@ -38,9 +49,25 @@ final class BottomSheetMapView: BottomSheetAutoHeighView {
             
             priceLabel.text = "\(model.price)"
             distanceLabel.text = "\(model.distance) метров"
-            
         }
     }
+    
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black.withAlphaComponent(0.8)
+        view.maskCorners(radius: 24, [.topLeft, .topRight])
+        view.addPanGesture { [weak self] rec in
+            self?.panDetected(rec)
+        }
+        return view
+    }()
+    
+    private lazy var dragView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 2.5
+        view.backgroundColor = .orange
+        return view
+    }()
     
     private(set) lazy var addressTextField: CustomTextField = {
         let textField = CustomTextField()
@@ -92,13 +119,8 @@ final class BottomSheetMapView: BottomSheetAutoHeighView {
         return view
     }()
     
-    override var contentInsets: UIEdgeInsets {
-        return UIEdgeInsets(top: 32, left: 0, bottom: 58, right: 0)
-    }
-    
-    init(frame: CGRect) {
-        super.init()
-        canCloseFull = false
+    init() {
+        super.init(frame: .zero)
         setupView()
         setupConstrains()
         addObserverKeyboard()
@@ -113,19 +135,31 @@ final class BottomSheetMapView: BottomSheetAutoHeighView {
     }
     
     func setupView() {
-        containerView.backgroundColor = .black.withAlphaComponent(0.8)
+        addSubview(containerView)
         containerView.addSubViews(
+            dragView,
             addressTextField,
             hintsStackView,
             distanceLabel,
             priceLabel,
-            confirmButton,
-            extraView
+            confirmButton
         )
-        addDragView(.orange)
     }
     
     func setupConstrains() {
+        containerView.easy.layout(
+            Top(),
+            Left(),
+            Right(),
+            Bottom()
+        )
+        dragView.easy.layout(
+            Top(11),
+            CenterX(),
+            Height(6),
+            Width(42)
+        )
+        
         addressTextField.easy.layout(
             Top(30),
             Left(10),
@@ -147,22 +181,13 @@ final class BottomSheetMapView: BottomSheetAutoHeighView {
         )
         confirmButton.easy.layout(
             Top(10).to(priceLabel, .bottom),
-            Height(60),
+            Height(250),
             Left(16),
-            Right(16)
-        )
-        extraView.easy.layout(
-            Top().to(confirmButton, .bottom),
-            Height(0),
-            Left(),
-            Right(),
+            Right(16),
             Bottom(20)
         )
-    }
-    
-    static func createAndShow(parentView: UIView, bottomInset: CGFloat = 0) {
-        let bottomSheet = BottomSheetMapView(frame: .zero)
-        bottomSheet.open(offset: bottomInset, inView: parentView)
+        
+        bottomContainerConstraint = containerView.easy.layout(Bottom()).first
     }
     
     @objc private func confirmButtonDidTap() {
@@ -259,19 +284,67 @@ extension BottomSheetMapView {
         let userInfo = notification.userInfo
         let kbFrameSize = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        self.extraView.easy.layout(Height(kbFrameSize.height))
-        
-        UIView.animate(withDuration: 0.25) {
+        bottomContainerConstraint.constant = offset - kbFrameSize.height
+        UIView.animate(withDuration: 0.27, animations: {
             self.layoutSubviews()
-        }
+        })
     }
     
     @objc private func kbWillHide() {
-
-        self.extraView.easy.layout(Height())
-        
-        UIView.animate(withDuration: 0.2) {
+        bottomContainerConstraint.constant = offset
+        UIView.animate(withDuration: 0.27, animations: {
             self.layoutSubviews()
+        })
+    }
+}
+
+
+//MARK: - Gesture
+extension BottomSheetMapView {
+    private func returnToPlace() {
+        self.layoutIfNeeded()
+        bottomContainerConstraint.constant = offset
+        UIView.animate(withDuration: 0.27, animations: {
+            self.layoutSubviews()
+        })
+    }
+    
+    private func returnToSecondPlace() {
+        self.layoutIfNeeded()
+        bottomContainerConstraint.constant = 0
+        UIView.animate(withDuration: 0.27, animations: {
+            self.layoutSubviews()
+        })
+    }
+    
+    @objc
+    private func panDetected(_ recognizer: UIPanGestureRecognizer) {
+        let state = recognizer.state
+        switch state {
+        case .possible:
+            break
+        case .began:
+            self.panOrigin = recognizer.translation(in: containerView)
+        case .changed:
+            let point = recognizer.translation(in: containerView)
+            let panProgress = point.y - self.panOrigin.y
+            let constant = max(-offset , bottomContainerConstraint.constant + panProgress)
+            
+            bottomContainerConstraint.constant = constant
+            
+            self.panOrigin = point
+        case .ended, .cancelled:
+            self.panOrigin = .zero
+            
+            let point = recognizer.translation(in: containerView)
+            let panProgress = point.y - self.panOrigin.y
+//            if panProgress > 50 {
+//                returnToSecondPlace()
+//            } else {
+                returnToPlace()
+//            }
+        default:
+            self.panOrigin = .zero
         }
     }
 }

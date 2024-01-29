@@ -284,16 +284,16 @@ extension BottomSheetMapView {
         let userInfo = notification.userInfo
         let kbFrameSize = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        bottomContainerConstraint.constant = offset - kbFrameSize.height
+        bottomContainerConstraint.constant = offset - kbFrameSize.height + secondOffset
         UIView.animate(withDuration: 0.27, animations: {
-            self.layoutSubviews()
+            self.superview?.layoutSubviews()
         })
     }
     
     @objc private func kbWillHide() {
         bottomContainerConstraint.constant = offset
         UIView.animate(withDuration: 0.27, animations: {
-            self.layoutSubviews()
+            self.superview?.layoutSubviews()
         })
     }
 }
@@ -304,16 +304,17 @@ extension BottomSheetMapView {
     private func returnToPlace() {
         self.layoutIfNeeded()
         bottomContainerConstraint.constant = offset
+        
         UIView.animate(withDuration: 0.27, animations: {
-            self.layoutSubviews()
+            self.superview?.layoutSubviews()
         })
     }
     
     private func returnToSecondPlace() {
         self.layoutIfNeeded()
-        bottomContainerConstraint.constant = 0
+        bottomContainerConstraint.constant = offset + secondOffset
         UIView.animate(withDuration: 0.27, animations: {
-            self.layoutSubviews()
+            self.superview?.layoutSubviews()
         })
     }
     
@@ -338,11 +339,11 @@ extension BottomSheetMapView {
             
             let point = recognizer.translation(in: containerView)
             let panProgress = point.y - self.panOrigin.y
-//            if panProgress > 50 {
-//                returnToSecondPlace()
-//            } else {
+            if panProgress > 50 {
+                returnToSecondPlace()
+            } else {
                 returnToPlace()
-//            }
+            }
         default:
             self.panOrigin = .zero
         }

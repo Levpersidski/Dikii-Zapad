@@ -7,14 +7,6 @@
 
 import UIKit
 
-//struct Product {
-//    let name: String
-//    let price: Int
-//    let description: String
-//    let image: UIImage?
-//    var imageURL: URL? = nil
-//}
-
 struct AdditiveProduct {
     let name: String
     let price: Int

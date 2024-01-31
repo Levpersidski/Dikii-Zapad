@@ -27,19 +27,22 @@ protocol BottomSheetMapViewDelegate: AnyObject {
     func cleanLocations()
     func updateLocations(newText: String)
     func showSearchAnnotationWithName(placeMark: CLPlacemark)
+    func buildingWayFromBottomSheet()
 }
 
 final class BottomSheetMapView: UIView {
     
     //variables for gesture
     private let screenHeight: CGFloat = UIScreen.main.bounds.height
-    private var bottomContainerConstraint: NSLayoutConstraint!
     
-//    var bottomConstraint: CGFloat = 0
+    private var bottomContainerConstraint: NSLayoutConstraint!
+    private var topButtonConstraint: NSLayoutConstraint!
 
     private let offset: CGFloat = 0
+    private let splicer: CGFloat = 10
     private var panOrigin: CGPoint = .zero
     private let secondOffset: CGFloat = 80
+    private var isShowKeyboard: Bool = false
     
     weak var delegate: BottomSheetMapViewDelegate?
     
@@ -187,6 +190,7 @@ final class BottomSheetMapView: UIView {
             Bottom(20)
         )
         
+        topButtonConstraint = confirmButton.easy.layout(Top(splicer).to(priceLabel, .bottom)).first
         bottomContainerConstraint = containerView.easy.layout(Bottom()).first
     }
     
@@ -214,6 +218,7 @@ final class BottomSheetMapView: UIView {
                 self.distanceLabel.text = "- км"
                 
                 self.delegate?.showSearchAnnotationWithName(placeMark: placeMark)
+                self.delegate?.buildingWayFromBottomSheet()
             }
             
             label.easy.layout(
@@ -283,7 +288,7 @@ extension BottomSheetMapView {
     @objc private func kbWillShow(_ notification: Notification) {
         let userInfo = notification.userInfo
         let kbFrameSize = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        
+        isShowKeyboard = true
         bottomContainerConstraint.constant = offset - kbFrameSize.height + secondOffset
         UIView.animate(withDuration: 0.27, animations: {
             self.superview?.layoutSubviews()
@@ -291,6 +296,8 @@ extension BottomSheetMapView {
     }
     
     @objc private func kbWillHide() {
+        isShowKeyboard = false
+
         bottomContainerConstraint.constant = offset
         UIView.animate(withDuration: 0.27, animations: {
             self.superview?.layoutSubviews()
@@ -302,17 +309,16 @@ extension BottomSheetMapView {
 //MARK: - Gesture
 extension BottomSheetMapView {
     private func returnToPlace() {
-        self.layoutIfNeeded()
-        bottomContainerConstraint.constant = offset
-        
-        UIView.animate(withDuration: 0.27, animations: {
-            self.superview?.layoutSubviews()
-        })
+        topButtonConstraint.constant = splicer
+        self.layoutSubviews()
+        guard !isShowKeyboard else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.animationReturnPlaceBottomConstraint(originState: true)
+        }
     }
     
-    private func returnToSecondPlace() {
-        self.layoutIfNeeded()
-        bottomContainerConstraint.constant = offset + secondOffset
+    func animationReturnPlaceBottomConstraint(originState: Bool) {
+        bottomContainerConstraint.constant = offset + (originState ? 0 : secondOffset)
         UIView.animate(withDuration: 0.27, animations: {
             self.superview?.layoutSubviews()
         })
@@ -329,21 +335,35 @@ extension BottomSheetMapView {
         case .changed:
             let point = recognizer.translation(in: containerView)
             let panProgress = point.y - self.panOrigin.y
-            let constant = max(-offset , bottomContainerConstraint.constant + panProgress)
+            let constantBottom = max(-offset , bottomContainerConstraint.constant + panProgress)
             
-            bottomContainerConstraint.constant = constant
             
+            let koefSpeed = ((topButtonConstraint.constant) / splicer) * 4
+            let constantsTop = min(splicer * 8, topButtonConstraint.constant - (panProgress/koefSpeed))
+            
+            if constantBottom <= offset {
+                topButtonConstraint.constant = max(constantsTop, splicer)
+                if point.y > 5 {
+                    endEditing(true)
+                }
+                
+                if topButtonConstraint.constant > splicer + 15 {
+                    addressTextField.becomeFirstResponder()
+                }
+            } else {
+                bottomContainerConstraint.constant = constantBottom
+                if topButtonConstraint.constant > splicer {
+                    topButtonConstraint.constant = topButtonConstraint.constant - (panProgress * 2)
+                }
+                
+            }
             self.panOrigin = point
         case .ended, .cancelled:
             self.panOrigin = .zero
-            
+
             let point = recognizer.translation(in: containerView)
             let panProgress = point.y - self.panOrigin.y
-            if panProgress > 50 {
-                returnToSecondPlace()
-            } else {
                 returnToPlace()
-            }
         default:
             self.panOrigin = .zero
         }

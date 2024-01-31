@@ -14,6 +14,10 @@ struct AdditiveProduct {
 }
 
 class DataStore {
+    var street: String = ""
+    var numberHouse: String = ""
+    
+    
     ///All category
     var allCategories: [Category] = []
     ///All products

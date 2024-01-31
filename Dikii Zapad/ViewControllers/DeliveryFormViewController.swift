@@ -57,9 +57,6 @@ class DeliveryFormViewController: UIViewController {
         return textField
     }()
     
-    
-    
-    
     private lazy var contactsLabel: UILabel = {
         let label = UILabel()
         label.text = "Как с вами связаться?"
@@ -106,6 +103,9 @@ class DeliveryFormViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        streetTextField.text = DataStore.shared.street
+        houseTextField.text = DataStore.shared.numberHouse
     }
     
     func setupView() {

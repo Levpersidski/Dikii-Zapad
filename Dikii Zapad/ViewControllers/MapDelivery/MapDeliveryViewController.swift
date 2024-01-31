@@ -119,15 +119,13 @@ class MapDeliveryViewController: UIViewController {
                 guard let self = self else { return }
                 guard let placeMark = placeMark?.first else { return }
                 
+                self.searchLocation.insert(placeMark, at: 0)
                 self.annotationSearch.subtitle = self.createNameLocation(from: placeMark)
                 self.bottomSheet.addressTextField.text = self.createNameLocation(from: placeMark)
-                
-                self.bottomSheet.model = BottomSheetMapViewModel(distance: 0, price: "-", hasDiscount: false, state: .notCalculated)
+                self.buildingWay()
             }
         }
     }
-    
-    
     
     private func testCalculateSum(distance: CLLocationDistance) -> (Double, Bool) {
 //        let value: Double = Double(distance)
@@ -257,12 +255,6 @@ private extension MapDeliveryViewController {
             
             if let rout = response.routes.first {
                 self.mapView.addOverlay(rout.polyline)
-                
-                let region = MKCoordinateRegion(center: rout.polyline.coordinate, latitudinalMeters: rout.distance + 50, longitudinalMeters: rout.distance + 50)
-                
-                self.mapView.setRegion(region, animated: true)
-                
-//                self.bottomSheet.addressTextField.text = createNameLocation(from: )
                 let distance = rout.distance
                 let cordage = self.testCalculateSum(distance: distance)
                 let value = cordage.0
@@ -286,7 +278,6 @@ private extension MapDeliveryViewController {
             }
         }
     }
-  
 }
 
 //MARK: - MKMapViewDelegate
@@ -307,12 +298,10 @@ extension MapDeliveryViewController: BottomSheetMapViewDelegate {
     }
     
     func buttonDidTouch(state: BottomSheetMapState) {
-        switch state {
-        case .notCalculated:
-            buildingWay()
-        case .calculated:
-            print("=-= ЧТо-то")
-        }
+        DataStore.shared.street = (searchLocation.first?.thoroughfare ?? "") + ", " + (searchLocation.first?.locality ?? "")
+        DataStore.shared.numberHouse = searchLocation.first?.subThoroughfare ?? ""
+        
+        navigationController?.popViewController(animated: true)
     }
     
     func updateLocations(newText: String) {
@@ -327,7 +316,6 @@ extension MapDeliveryViewController: BottomSheetMapViewDelegate {
                 }
                 
                 self.searchLocation = filteredPlaceMarks
-//                self?.setStackView()
                 self.bottomSheet.setStackView(locations: self.searchLocation)
             }
             
@@ -343,5 +331,9 @@ extension MapDeliveryViewController: BottomSheetMapViewDelegate {
             self.mapView.showAnnotations([self.annotationSearch], animated: true)
             self.mapView.selectAnnotation(self.annotationSearch, animated: true)
         }
+    }
+    
+    func buildingWayFromBottomSheet() {
+        buildingWay()
     }
 }

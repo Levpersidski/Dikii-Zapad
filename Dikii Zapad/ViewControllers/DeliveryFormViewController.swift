@@ -80,18 +80,6 @@ class DeliveryFormViewController: UIViewController {
         return textField
     }()
     
-    
-    private lazy var testButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.backgroundColor = .orange
-        btn.addTapGesture { _ in
-            let mapVC = MapDeliveryViewController()
-            
-            self.navigationController?.pushViewController(mapVC, animated: true)
-        }
-        return btn
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -120,8 +108,7 @@ class DeliveryFormViewController: UIViewController {
             
             contactsLabel,
             nameTextField,
-            numberPhoneTextField,
-            testButton
+            numberPhoneTextField
         )
     }
     
@@ -158,7 +145,6 @@ class DeliveryFormViewController: UIViewController {
             Right(16)
         )
         
-        
         //MOCK
         contactsLabel.easy.layout(
             Top(79).to(houseTextField, .bottom),
@@ -174,13 +160,6 @@ class DeliveryFormViewController: UIViewController {
         numberPhoneTextField.easy.layout(
             Top(7).to(nameTextField, .bottom),
             Left(16),
-            Right(16)
-//            Bottom(40)
-        )
-        
-        testButton.easy.layout(
-            Top(7).to(numberPhoneTextField, .bottom),
-            Left(16),
             Right(16),
             Bottom(40)
         )
@@ -188,13 +167,35 @@ class DeliveryFormViewController: UIViewController {
     }
 }
 
+//MARK: - Private func
+private extension DeliveryFormViewController {
+    func openMapDeliveryViewController() {
+        let isVisibleKeyboard = nameTextField.isFirstResponder || numberPhoneTextField.isFirstResponder
+        
+        if isVisibleKeyboard {
+            view.endEditing(true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                let mapVC = MapDeliveryViewController()
+                self?.navigationController?.pushViewController(mapVC, animated: true)
+            }
+        } else {
+            let mapVC = MapDeliveryViewController()
+            navigationController?.pushViewController(mapVC, animated: true)
+        }
+    }
+}
+
 //MARK: - UITextFieldDelegate
 extension DeliveryFormViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
     }
     
-//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-//
-//    }
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if textField == streetTextField || textField == houseTextField {
+            openMapDeliveryViewController()
+            return false
+        } else {
+            return true
+        }
+    }
 }

@@ -11,7 +11,7 @@ import EasyPeasy
 struct CartViewModel {
     var cells: [CartCellViewModel] = [] {
         didSet {
-            UIApplication.tabBar?.setBageValue(.cart, value: cells.count)
+            UIApplication.tabBar?.tabBar.setBageValue(.cart, value: cells.count)
         }
     }
 }
@@ -267,10 +267,7 @@ private extension CartViewController {
     }
     
     @objc func openMainVC() {
-        let vc = MainTabBarController()
-        vc.modalTransitionStyle = .crossDissolve
-        vc.modalPresentationStyle = .overFullScreen
-        present(vc, animated: true)
+        UIApplication.tabBar?.selectedIndex = 0
     }
     
     @objc func makeOrderButtonDidTap() {

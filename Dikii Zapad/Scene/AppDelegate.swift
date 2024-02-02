@@ -50,11 +50,11 @@ extension UIApplication {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
-    class var tabBar: UITabBar? {
+    class var tabBar: UITabBarController? {
         guard let rootNavigation = appDelegate.window?.rootViewController as? UINavigationController else {
             return nil
         }
-        let tabBar = (rootNavigation.viewControllers.last as? UITabBarController)?.tabBar
+        let tabBar = (rootNavigation.viewControllers.last as? UITabBarController)
         return tabBar
     }
 }

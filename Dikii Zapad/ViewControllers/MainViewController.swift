@@ -142,11 +142,11 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     @objc func segmentedValueChanged(sender: UISegmentedControl) {
         
-        let selectedIndex = sender.selectedSegmentIndex
-        if selectedIndex == 0 {
+        if sender.selectedSegmentIndex == 0 {
             buttonToDelivery.setTitle("Указать адресс доставки >", for: .normal)
             buttonToDelivery.isEnabled = true
         } else {
+            buttonToDelivery.isEnabled = false
             buttonToDelivery.setTitle("Ул. Советской конституции 21", for: .normal)
         }
     }

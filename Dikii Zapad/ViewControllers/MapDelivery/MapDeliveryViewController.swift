@@ -108,6 +108,10 @@ class MapDeliveryViewController: UIViewController {
     @objc private func actionLongPressMap(_ gestureRecognizer: UIGestureRecognizer) {
         if gestureRecognizer.state == .began {
             
+            self.bottomSheet.addressTextField.text = ""
+            self.bottomSheet.model = BottomSheetMapViewModel(distance: 0, price: "-", hasDiscount: false, state: .notValid)
+
+            
             let touchPoint = gestureRecognizer.location(in: mapView)
             let coordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
             
@@ -119,10 +123,11 @@ class MapDeliveryViewController: UIViewController {
                 guard let self = self else { return }
                 guard let placeMark = placeMark?.first else { return }
                 
+                let isValidName = Double(placeMark.name ?? "") == nil
                 self.searchLocation.insert(placeMark, at: 0)
                 self.annotationSearch.subtitle = self.createNameLocation(from: placeMark)
                 self.bottomSheet.addressTextField.text = self.createNameLocation(from: placeMark)
-                self.buildingWay()
+                self.buildingWay(isValidName: isValidName)
             }
         }
     }
@@ -227,7 +232,7 @@ private extension MapDeliveryViewController {
         }
     }
     
-    func buildingWay() {
+    func buildingWay(isValidName: Bool = true) {
         mapView.removeOverlays(mapView.overlays)
         
         let startPoint = MKPlacemark(coordinate: shopAnnotation.coordinate)
@@ -257,7 +262,7 @@ private extension MapDeliveryViewController {
                 self.mapView.addOverlay(rout.polyline)
                 let distance = rout.distance
                 let cordage = self.testCalculateSum(distance: distance)
-                let value = cordage.0
+                let value = isValidName ? cordage.0 : 9999
                 let hasSale = cordage.1
                 
                 let price: String
@@ -271,7 +276,7 @@ private extension MapDeliveryViewController {
                     distance: distance,
                     price: price,
                     hasDiscount: cordage.1,
-                    state: .notCalculated
+                    state: value != 9999 ? .valid : .notValid
                 )
                 
                 self.bottomSheet.model = modelBottomSheet
@@ -297,7 +302,7 @@ extension MapDeliveryViewController: BottomSheetMapViewDelegate {
         searchLocation = []
     }
     
-    func buttonDidTouch(state: BottomSheetMapState) {
+    func buttonDidTouch() {
         DataStore.shared.street = (searchLocation.first?.thoroughfare ?? "") + ", " + (searchLocation.first?.locality ?? "")
         DataStore.shared.numberHouse = searchLocation.first?.subThoroughfare ?? ""
         

@@ -14,16 +14,16 @@ struct BottomSheetMapViewModel {
     let price: String
     let hasDiscount: Bool
     
-    let state: BottomSheetMapState
+    var state: BottomSheetMapState
 }
 
 enum BottomSheetMapState {
-    case notCalculated
-    case calculated
+    case valid
+    case notValid
 }
 
 protocol BottomSheetMapViewDelegate: AnyObject {
-    func buttonDidTouch(state: BottomSheetMapState)
+    func buttonDidTouch()
     func cleanLocations()
     func updateLocations(newText: String)
     func showSearchAnnotationWithName(placeMark: CLPlacemark)
@@ -52,6 +52,9 @@ final class BottomSheetMapView: UIView {
             
             priceLabel.text = "\(model.price)"
             distanceLabel.text = "\(model.distance) метров"
+            confirmButton.isEnabled = model.state == .valid
+            let color: UIColor = model.state == .valid ? .orange : .orange.withAlphaComponent(0.3)
+            confirmButton.backgroundColor = color
         }
     }
     
@@ -195,7 +198,7 @@ final class BottomSheetMapView: UIView {
     }
     
     @objc private func confirmButtonDidTap() {
-        delegate?.buttonDidTouch(state: model?.state ?? .notCalculated)
+        delegate?.buttonDidTouch()
     }
     
     func setStackView(locations: [CLPlacemark]) {
@@ -216,6 +219,9 @@ final class BottomSheetMapView: UIView {
                 //TO DO: MOCK
                 self.priceLabel.text = "-"
                 self.distanceLabel.text = "- км"
+                self.confirmButton.isEnabled = false
+                let color: UIColor = self.model?.state == .valid ? .orange : .orange.withAlphaComponent(0.3)
+                self.confirmButton.backgroundColor = color
                 
                 self.delegate?.showSearchAnnotationWithName(placeMark: placeMark)
                 self.delegate?.buildingWayFromBottomSheet()
@@ -265,6 +271,7 @@ extension BottomSheetMapView: UITextFieldDelegate {
         
         if newText.isEmpty || newText == "" {
             delegate?.cleanLocations()
+            self.confirmButton.isEnabled = false
         } else {
             delegate?.updateLocations(newText: newText)
         }

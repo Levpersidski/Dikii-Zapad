@@ -16,21 +16,21 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     
    private func generatetabBar() {
             viewControllers = [
-                generateVC(viewController: MainViewController(), title: "Меню", image: UIImage(systemName:"menucard.fill"), changeImageTo: UIImage(systemName:"menucard.fill")),
-                generateVC(viewController: ActionsViewController(), title: "Акции", image: UIImage(systemName:"percent"), changeImageTo: UIImage(systemName:"figure.basketball")),
-                generateVC(viewController: ContactsViewController(), title: "Контакты", image: UIImage(systemName:"phone.bubble.left"), changeImageTo: UIImage(systemName:"figure.basketball")),
-                generateVC(viewController: CartViewController(), title: "Корзина", image: UIImage(systemName:"trash"), changeImageTo: UIImage(systemName:"figure.basketball"))
+                generateVC(MainViewController(), title: "Меню", image: UIImage(named:"tabIcon_menucard")),
+                generateVC(ActionsViewController(), title: "Акции", image: UIImage(named: "tabIcon_percent")),
+                generateVC(ContactsViewController(), title: "Контакты", image: UIImage(named: "tabIcon_contaccts")),
+                generateVC(CartViewController(), title: "Корзина", image: UIImage(named: "tabIcon_cart"))
             ]
-        
     }
     
-    private func generateVC(viewController:UIViewController, title:String, image:UIImage?, changeImageTo:UIImage?) -> UIViewController {
+    private func generateVC(_ viewController:UIViewController, title:String, image:UIImage?, changeImageTo:UIImage? = nil) -> UIViewController {
         viewController.tabBarItem.title = title
         viewController.tabBarItem.image = image
         viewController.tabBarItem.selectedImage = changeImageTo
         
         return viewController
     }
+    
     private  func setTabBarAppearance() {
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.customOrange], for: .normal)
         
@@ -41,5 +41,3 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         tabBar.layer.cornerRadius = 10
     }
 }
-
-

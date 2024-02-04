@@ -24,7 +24,6 @@ final class LaunchViewController: UIViewController {
     private lazy var blackOverlayView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
-        view.layer.cornerRadius = 20
         view.alpha = 0.7
         return view
     }()
@@ -73,6 +72,7 @@ final class LaunchViewController: UIViewController {
         super.viewDidAppear(animated)
         logoImage.fadeIn(1.5)
         logoLabel.fadeIn(1.5)
+        blackOverlayView.fadeOut(1)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
             self?.endedWelcomeTime = true

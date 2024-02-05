@@ -14,6 +14,7 @@ class ActionsViewController: UIViewController {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.image = UIImage(named: "mainImage")
+        image.alpha = 0.3
         return image
     }()
     

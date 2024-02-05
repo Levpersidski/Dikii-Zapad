@@ -28,6 +28,7 @@ class CartViewController: UIViewController {
         image.contentMode = .scaleAspectFill
         image.image = UIImage(named: "mainImage")
         image.clipsToBounds = true
+        image.alpha = 0.3
         return image
     }()
     

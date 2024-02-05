@@ -12,4 +12,11 @@ extension UIStackView {
         guard let view = self.arrangedSubviews.last else { return }
         self.setCustomSpacing(spacing, after: view)
     }
+    
+    func removeAllArrangedSubviews() {
+        for subView in arrangedSubviews {
+            removeArrangedSubview(subView)
+            subView.removeFromSuperview()
+        }
+    }
 }

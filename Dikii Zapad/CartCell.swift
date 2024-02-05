@@ -103,7 +103,6 @@ class CartCell: UITableViewCell {
             
         }
     }
-    
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -175,11 +174,3 @@ class CartCell: UITableViewCell {
     }
 }
 
-extension UIStackView {
-    func removeAllArrangedSubviews() {
-        for subView in arrangedSubviews {
-            removeArrangedSubview(subView)
-            subView.removeFromSuperview()
-        }
-    }
-}

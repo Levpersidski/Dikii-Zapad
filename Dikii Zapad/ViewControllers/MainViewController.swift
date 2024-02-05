@@ -18,15 +18,8 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(named: "mainImage")
+        imageView.alpha = 0.3
         return imageView
-    }()
-    
-    private lazy var blackOverlayView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .black
-        view.layer.cornerRadius = 10
-        view.alpha = 0.7
-        return view
     }()
     
     private lazy var greyOverlayView: UIView = {
@@ -113,6 +106,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     //MARK: - ViewDidLOad()
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .black
         addSubViews()
         setupConstraints()
         setupModels()
@@ -163,7 +157,6 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         func addSubViews() {
             view.addSubViews(
                 backgroundView,
-                blackOverlayView,
                 greyOverlayView,
                 stripsView,
                 buttonToDelivery,
@@ -177,9 +170,6 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         func setupConstraints() {
             backgroundView.easy.layout(
-                Edges()
-            )
-            blackOverlayView.easy.layout(
                 Edges()
             )
             greyOverlayView.easy.layout(

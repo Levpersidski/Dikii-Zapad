@@ -32,6 +32,7 @@
 		B667A04A2AE58C1E003D8069 /* AdditiveCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B667A0492AE58C1E003D8069 /* AdditiveCell.swift */; };
 		B66D7BA92AFD271F009C34CB /* CheckBoxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66D7BA82AFD271F009C34CB /* CheckBoxButton.swift */; };
 		B66D7BAC2B0A9307009C34CB /* CartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66D7BAB2B0A9307009C34CB /* CartCell.swift */; };
+		B67122992B7E747D00E051EF /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67122982B7E747D00E051EF /* OrderViewController.swift */; };
 		B6DB40FE2AEFF2E6005963ED /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB40FD2AEFF2E6005963ED /* CustomButton.swift */; };
 		B6DF27182ACC387F00FC45D0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */; };
 		B6DF271D2ACC63A500FC45D0 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DF271C2ACC63A500FC45D0 /* MainTabBarController.swift */; };
@@ -69,6 +70,7 @@
 		B667A0492AE58C1E003D8069 /* AdditiveCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditiveCell.swift; sourceTree = "<group>"; };
 		B66D7BA82AFD271F009C34CB /* CheckBoxButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxButton.swift; sourceTree = "<group>"; };
 		B66D7BAB2B0A9307009C34CB /* CartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCell.swift; sourceTree = "<group>"; };
+		B67122982B7E747D00E051EF /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		B6DB40FD2AEFF2E6005963ED /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		B6DF271C2ACC63A500FC45D0 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				B645C3642AC365FC0079C8F2 /* DetailsProductViewController.swift */,
 				B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */,
 				B6DF27222ACC649E00FC45D0 /* CartViewController.swift */,
+				B67122982B7E747D00E051EF /* OrderViewController.swift */,
 				B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */,
 				043842092B657BD2009632DC /* MapDelivery */,
 			);
@@ -290,6 +293,7 @@
 			files = (
 				B6306BBD2AC088D800B0BF80 /* MainViewController.swift in Sources */,
 				B66D7BAC2B0A9307009C34CB /* CartCell.swift in Sources */,
+				B67122992B7E747D00E051EF /* OrderViewController.swift in Sources */,
 				B6DB40FE2AEFF2E6005963ED /* CustomButton.swift in Sources */,
 				B66D7BA92AFD271F009C34CB /* CheckBoxButton.swift in Sources */,
 				B6F3EA562AD5DD1400270662 /* CustomRegisterTextfield.swift in Sources */,

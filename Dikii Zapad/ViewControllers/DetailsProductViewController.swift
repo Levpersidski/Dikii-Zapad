@@ -40,6 +40,7 @@ class DetailsProductViewController: UIViewController {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.image = UIImage(named: "mainImage")
+        image.clipsToBounds = true
         return image
     }()
     
@@ -63,7 +64,7 @@ class DetailsProductViewController: UIViewController {
     }()
     
     private lazy var orderButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.backgroundColor = UIColor.customOrange
         button.layer.cornerRadius = 15
         button.setTitle("Добавить в корзину", for: .normal)
@@ -148,6 +149,12 @@ class DetailsProductViewController: UIViewController {
             priceLabel.text = "\(price) ₽"
         }
     }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
 }
 
 //MARK: - DetailsProductViewController
@@ -169,18 +176,17 @@ private extension DetailsProductViewController {
     
     
     @objc func buttonTapped() {
-        UIView.animate(withDuration: 0.5, animations: { [] in
-           
-            self.orderButton.backgroundColor = UIColor.green
-            self.orderButton.layer.borderWidth = 2
-            // Измените размер кнопки
-            self.orderButton.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-            self.pictureImage.transform = CGAffineTransform(scaleX: 2.2, y: 2.2)
-            
-        }) { _ in
-            // По завершении анимации можете выполнить дополнительные действия
-            self.dismiss(animated: true)
-        }
+//        UIView.animate(withDuration: 0.5, animations: { [] in
+//           
+////            self.orderButton.backgroundColor = UIColor.green
+//            self.orderButton.layer.borderWidth = 2
+//            // Измените размер кнопки
+////            self.orderButton.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+////            self.pictureImage.transform = CGAffineTransform(scaleX: 2.2, y: 2.2)
+//            
+//        }) { _ in
+//            // По завершении анимации можете выполнить дополнительные действия
+//        }
         
         //Все выбранные добавки
         let selectedAdditives = additives.filter({ $0.selected }).map { $0.name }
@@ -193,6 +199,7 @@ private extension DetailsProductViewController {
                                      count: Int(quantityStepper.value))
         
         DataStore.shared.cartViewModel.cells.append(cell)
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func stepperValueChanged(_ sender: UIStepper) {
@@ -208,7 +215,9 @@ private extension DetailsProductViewController {
         )
         
         scrollView.easy.layout(
-            Edges()
+            Top().to(view.safeAreaLayoutGuide, .top),
+            Left(), Right(),
+            Bottom()
         )
         
         contentView.easy.layout(

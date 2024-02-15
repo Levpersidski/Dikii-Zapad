@@ -122,7 +122,8 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         let vc = DetailsProductViewController()
         vc.modelProduct = modelProduct
         vc.additives = modelAdditive
-        present(vc, animated: true)
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func didTouchToToDrinks(sender: UIButton) {

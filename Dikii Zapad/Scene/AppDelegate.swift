@@ -54,7 +54,7 @@ extension UIApplication {
         guard let rootNavigation = appDelegate.window?.rootViewController as? UINavigationController else {
             return nil
         }
-        let tabBar = (rootNavigation.viewControllers.last as? UITabBarController)
+        let tabBar = (rootNavigation.viewControllers[1] as? UITabBarController)
         return tabBar
     }
 }

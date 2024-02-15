@@ -102,7 +102,7 @@ class CartViewController: UIViewController {
         let button  = UIButton(type: .system)
         button.backgroundColor = UIColor.customOrange
         button.layer.cornerRadius = 15
-        button.setTitle("ОФОРМИТЬ ЗАКАЗ", for: .normal)
+        button.setTitle("ПРОДОЛЖИТЬ", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
         button.addTarget(self, action: #selector(makeOrderButtonDidTap), for: .touchUpInside)
@@ -153,6 +153,8 @@ class CartViewController: UIViewController {
         super.viewWillAppear(animated)
         
         updateViews()
+        navigationController?.setNavigationBarHidden(true, animated: true)
+
     }
 }
 
@@ -272,27 +274,10 @@ private extension CartViewController {
     }
     
     @objc func makeOrderButtonDidTap() {
-        startLoadingAnimation(true)
+        let orderVC = OrderViewController()
+        orderVC.orderText = createTextForMessage()
         
-       let message = createTextForMessage()
-        
-        sendTelegramMessage(message) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(_):
-                self.showAlert("Успешно",
-                          message: "Заказ оформлен",
-                          okTitle: "ок", present: true)
-                DataStore.shared.cartViewModel.cells = []
-                self.updateViews()
-            case .failure(_):
-                self.showAlert("Ошибка",
-                          message: "Не удалось оформить заказ\nПопробуйте позже",
-                          okTitle: "ок", present: true)
-            }
-            self.startLoadingAnimation(false)
-        }
+        navigationController?.pushViewController(orderVC, animated: true)
     }
     
     func createTextForMessage() -> String {
@@ -300,42 +285,6 @@ private extension CartViewController {
         let order = model.cells.map{ "\($0.title)\($0.count > 1 ? "(x\($0.count))" : "")" + "\($0.additives.isEmpty ? "" : " - (\($0.additives.joined(separator: ", ")))")" }
         
         return "\(price) Руб.\n\(order.joined(separator: "\n\n"))"
-    }
-    
-    func startLoadingAnimation(_ value: Bool) {
-        value ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
-        self.activityIndicator.isHidden = !value
-        self.makeOrderButton.setTitle(value ? "" : "ОФОРМИТЬ ЗАКАЗ", for: .normal)
-    }
-    
-    func sendTelegramMessage(_ text: String, completion: @escaping (Result<String, ErrorDZ>) -> Void) {
-        let url = URL(string: "http://dikiyzapad-161.ru/test/index.php")!
-        let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
-        let keyMessage = "text"
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("Bearer \(secretToken)", forHTTPHeaderField: "Authorization")
-        request.httpBody = (keyMessage + "=" + text).data(using: .utf8)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                guard let data = data, error == nil else {
-                    completion(.failure(ErrorDZ.badData))
-                    print(error?.localizedDescription ?? "No data")
-                    return
-                }
-                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                    completion(.failure(ErrorDZ.badAuthorisations))
-                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                    print("response = \(response!)")
-                }
-                let responseString = String(data: data, encoding: .utf8)
-                print("Response data = \(responseString ?? "No response")")
-                completion(.success("Заказ успешно отправлен"))
-            }
-        }
-        task.resume()
     }
 }
 

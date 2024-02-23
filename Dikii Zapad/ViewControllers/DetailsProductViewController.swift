@@ -15,6 +15,20 @@ class DetailsProductViewController: UIViewController {
     
     private let heightCell: CGFloat = 40
     
+    private lazy var backgroundImage: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFill
+        image.image = UIImage(named: "mainImage")
+        image.clipsToBounds = true
+        return image
+    }()
+    
+    private lazy var overLayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black.withAlphaComponent(0.7)
+        return view
+    }()
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(AdditiveCell.self, forCellReuseIdentifier: "AdditiveCell")
@@ -34,14 +48,6 @@ class DetailsProductViewController: UIViewController {
     private lazy var contentView: UIView = {
         let view = UIView()
         return view
-    }()
-    
-    private lazy var backgroundImage: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFill
-        image.image = UIImage(named: "mainImage")
-        image.clipsToBounds = true
-        return image
     }()
     
     private lazy var pictureImage: UIImageView = {
@@ -150,7 +156,6 @@ class DetailsProductViewController: UIViewController {
         }
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -160,11 +165,11 @@ class DetailsProductViewController: UIViewController {
 //MARK: - DetailsProductViewController
 private extension DetailsProductViewController {
     func addSubViews() {
-        view.addSubview(backgroundImage)
+        view.addSubviews(backgroundImage, overLayView)
         view.addSubview(scrollView)
 
         scrollView.addSubview(contentView)
-        contentView.addSubViews(pictureImage,
+        contentView.addSubviews(pictureImage,
                                 descriptionLabel,
                                 orderButton,
                                 nameLabel,
@@ -176,18 +181,6 @@ private extension DetailsProductViewController {
     
     
     @objc func buttonTapped() {
-//        UIView.animate(withDuration: 0.5, animations: { [] in
-//           
-////            self.orderButton.backgroundColor = UIColor.green
-//            self.orderButton.layer.borderWidth = 2
-//            // Измените размер кнопки
-////            self.orderButton.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-////            self.pictureImage.transform = CGAffineTransform(scaleX: 2.2, y: 2.2)
-//            
-//        }) { _ in
-//            // По завершении анимации можете выполнить дополнительные действия
-//        }
-        
         //Все выбранные добавки
         let selectedAdditives = additives.filter({ $0.selected }).map { $0.name }
         guard let product = modelProduct else { return }
@@ -213,64 +206,57 @@ private extension DetailsProductViewController {
         backgroundImage.easy.layout(
             Edges()
         )
-        
+        overLayView.easy.layout(
+            Edges()
+        )
         scrollView.easy.layout(
             Top().to(view.safeAreaLayoutGuide, .top),
             Left(), Right(),
             Bottom()
         )
-        
         contentView.easy.layout(
             Edges(),
             Width(UIScreen.main.bounds.width)
         )
-        
         nameLabel.easy.layout(
             Top(20).to(scrollView, .top),
             Left(20),
             Right(20)
         )
-        
         pictureImage.easy.layout(
             Top(20).to(nameLabel, .bottom),
             Left(20),
             Right(20),
             Height(widthImage)
         )
-        
         descriptionLabel.easy.layout(
             Top(35).to(pictureImage, .bottom),
             Left(30),
             Right(30)
         )
-        
         tableView.easy.layout(
             Top(35).to(descriptionLabel, .bottom),
             Left(),
             Right(),
             Height(heightCell * CGFloat(additives.count))
         )
-        
         orderButton.easy.layout(
             Top(50).to(tableView, .bottom),
             Left(30), Right(30),
-            Height(60),
+            Height(54),
             Bottom(10)
         )
-        
         quantityStepper.easy.layout(
             Bottom(10).to(orderButton, .top),
             Left(30),
             Height(30)
         )
-        
         quantityLabel.easy.layout(
             CenterX().to(quantityStepper, .centerX),
             CenterY().to(quantityStepper, .centerY),
             Height().like(quantityStepper),
             Width(30)
         )
-        
         priceLabel.easy.layout(
             Bottom(10).to(orderButton, .top),
             Right(30),
@@ -288,7 +274,6 @@ private extension DetailsProductViewController {
         return totalSumAdditive + totalSumProducts
     }
 }
-
 
 //MARK: - UITableViewDataSource, UITableViewDelegate
 extension DetailsProductViewController: UITableViewDataSource, UITableViewDelegate {

@@ -121,7 +121,7 @@ class CartCell: UITableViewCell {
         
         contentView.addSubview(containerView)
         
-        containerView.addSubViews(
+        containerView.addSubviews(
             image,
             productNameLabel,
             stack,

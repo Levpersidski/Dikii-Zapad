@@ -104,7 +104,7 @@ class ContactsViewController: UIViewController {
 
 private extension ContactsViewController {
     func setupViews() {
-        view.addSubViews(
+        view.addSubviews(
             backgroundImage,
             mapView,
             titleAddressLabel,

@@ -81,7 +81,7 @@ final class LaunchViewController: UIViewController {
     }
     
     private func setupView() {
-        view.addSubViews(backgroundImage,
+        view.addSubviews(backgroundImage,
                          logoImage,
                          burgerImage,
                          logoLabel,

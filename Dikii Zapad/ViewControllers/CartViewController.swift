@@ -160,7 +160,7 @@ class CartViewController: UIViewController {
 
 private extension CartViewController {
     func addSubViews() {
-        view.addSubViews(
+        view.addSubviews(
             backgroundImage,
             containerEmpty,
             containerFull
@@ -168,7 +168,7 @@ private extension CartViewController {
         
         makeOrderButton.addSubview(activityIndicator)
         
-        containerEmpty.addSubViews(
+        containerEmpty.addSubviews(
             halfBlackView,
             emptyBurgerImage,
             titleLabel,
@@ -176,7 +176,7 @@ private extension CartViewController {
             menuButton
         )
         
-        containerFull.addSubViews(
+        containerFull.addSubviews(
             tableView,
             sumLabel,
             pricelabel,
@@ -226,7 +226,7 @@ private extension CartViewController {
             Top(20).to(descriptionLabel, .bottom),
             Left(30),
             Right(30),
-            Height(60),
+            Height(54),
             Bottom()
         )
         
@@ -241,7 +241,7 @@ private extension CartViewController {
             CenterX(),
             Left(16),
             Right(16),
-            Height(60)
+            Height(54)
         )
         
         sumLabel.easy.layout(

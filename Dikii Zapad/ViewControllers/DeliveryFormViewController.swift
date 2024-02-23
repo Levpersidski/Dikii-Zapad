@@ -101,7 +101,7 @@ class DeliveryFormViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
         
-        containerView.addSubViews(
+        containerView.addSubviews(
             addressLabel,
             streetTextField,
             houseTextField,

@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		0416FD162B5D7AE6008A5600 /* OAuthSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD152B5D7AE6008A5600 /* OAuthSwift */; };
 		0416FD192B5D7F68008A5600 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD182B5D7F68008A5600 /* Kingfisher */; };
-		0416FD1B2B5D80F1008A5600 /* UIImage + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0416FD1A2B5D80F1008A5600 /* UIImage + Extension.swift */; };
 		04A906DF2B669F3D0014DE24 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A906DE2B669F3D0014DE24 /* GradientView.swift */; };
 		04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */; };
 		04A9AB462B5C837D002A8A79 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB452B5C837D002A8A79 /* Product.swift */; };
 		04D5E5482B64350C004F336E /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D5E5472B64350C004F336E /* UIViewController + Extension.swift */; };
+		04E6759E2B8894D2007559C6 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6759D2B8894D2007559C6 /* AddressView.swift */; };
+		04E675A02B889E24007559C6 /* UIButtonTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6759F2B889E24007559C6 /* UIButtonTransform.swift */; };
 		04E6F8D92B651C2E0014398B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8D82B651C2E0014398B /* CustomTextField.swift */; };
 		04E6F8DB2B652AE00014398B /* GestureRecognizerHealpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8DA2B652AE00014398B /* GestureRecognizerHealpers.swift */; };
 		04E6F8DD2B653B5C0014398B /* MapDeliveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8DC2B653B5C0014398B /* MapDeliveryViewController.swift */; };
@@ -46,11 +47,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0416FD1A2B5D80F1008A5600 /* UIImage + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Extension.swift"; sourceTree = "<group>"; };
 		04A906DE2B669F3D0014DE24 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsDataService.swift; sourceTree = "<group>"; };
 		04A9AB452B5C837D002A8A79 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		04D5E5472B64350C004F336E /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
+		04E6759D2B8894D2007559C6 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
+		04E6759F2B889E24007559C6 /* UIButtonTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonTransform.swift; sourceTree = "<group>"; };
 		04E6F8D82B651C2E0014398B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		04E6F8DA2B652AE00014398B /* GestureRecognizerHealpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureRecognizerHealpers.swift; sourceTree = "<group>"; };
 		04E6F8DC2B653B5C0014398B /* MapDeliveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDeliveryViewController.swift; sourceTree = "<group>"; };
@@ -155,10 +157,12 @@
 				B6306BC12AC088D900B0BF80 /* Assets.xcassets */,
 				B6306BC62AC088D900B0BF80 /* Info.plist */,
 				B6DB40FD2AEFF2E6005963ED /* CustomButton.swift */,
+				04E6759F2B889E24007559C6 /* UIButtonTransform.swift */,
 				B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */,
 				B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */,
 				B667A0492AE58C1E003D8069 /* AdditiveCell.swift */,
 				B66D7BA82AFD271F009C34CB /* CheckBoxButton.swift */,
+				04E6759D2B8894D2007559C6 /* AddressView.swift */,
 				04A9AB452B5C837D002A8A79 /* Product.swift */,
 			);
 			path = "Dikii Zapad";
@@ -194,7 +198,6 @@
 			children = (
 				B6DF27242ACC7E2A00FC45D0 /* UIColorExtension.swift */,
 				B645C3622AC353060079C8F2 /* UIView + extension.swift */,
-				0416FD1A2B5D80F1008A5600 /* UIImage + Extension.swift */,
 				04D5E5472B64350C004F336E /* UIViewController + Extension.swift */,
 				04ECD5FD2B66CF4500F29F2C /* UIStackView + Extension.swift */,
 			);
@@ -297,8 +300,9 @@
 				B6DB40FE2AEFF2E6005963ED /* CustomButton.swift in Sources */,
 				B66D7BA92AFD271F009C34CB /* CheckBoxButton.swift in Sources */,
 				B6F3EA562AD5DD1400270662 /* CustomRegisterTextfield.swift in Sources */,
-				0416FD1B2B5D80F1008A5600 /* UIImage + Extension.swift in Sources */,
+				04E6759E2B8894D2007559C6 /* AddressView.swift in Sources */,
 				B6F3EA542AD57B4000270662 /* SectionHeaderReusableView.swift in Sources */,
+				04E675A02B889E24007559C6 /* UIButtonTransform.swift in Sources */,
 				04A9AB462B5C837D002A8A79 /* Product.swift in Sources */,
 				B6DF27252ACC7E2A00FC45D0 /* UIColorExtension.swift in Sources */,
 				04E6F8D92B651C2E0014398B /* CustomTextField.swift in Sources */,

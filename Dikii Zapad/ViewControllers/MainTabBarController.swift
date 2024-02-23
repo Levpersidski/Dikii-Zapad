@@ -14,13 +14,13 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         setTabBarAppearance()
     }
     
-   private func generatetabBar() {
-            viewControllers = [
-                generateVC(MainViewController(), title: "Меню", image: UIImage(named:"tabIcon_menucard")),
-                generateVC(ActionsViewController(), title: "Акции", image: UIImage(named: "tabIcon_percent")),
-                generateVC(ContactsViewController(), title: "Контакты", image: UIImage(named: "tabIcon_contaccts")),
-                generateVC(CartViewController(), title: "Корзина", image: UIImage(named: "tabIcon_cart"))
-            ]
+    private func generatetabBar() {
+        viewControllers = [
+            generateVC(MainViewController(), title: "Меню", image: UIImage(named:"tabIcon_menucard")),
+            generateVC(ActionsViewController(), title: "Акции", image: UIImage(named: "tabIcon_percent")),
+            generateVC(ContactsViewController(), title: "Контакты", image: UIImage(named: "tabIcon_contaccts")),
+            generateVC(CartViewController(), title: "Корзина", image: UIImage(named: "tabIcon_cart"))
+        ]
     }
     
     private func generateVC(_ viewController:UIViewController, title:String, image:UIImage?, changeImageTo:UIImage? = nil) -> UIViewController {

@@ -28,7 +28,7 @@ class ActionsViewController: UIViewController {
 
 private extension ActionsViewController {
     func setupViews() {
-        view.addSubViews(backgroundImage)
+        view.addSubviews(backgroundImage)
     }
     
     func setupConstraints() {

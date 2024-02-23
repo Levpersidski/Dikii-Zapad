@@ -30,8 +30,6 @@ extension UIColor {
         UIColor(hex: "1C1C1C")
     }
     
-    
-    
     convenience init(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
@@ -46,5 +44,4 @@ extension UIColor {
 
         self.init(red: red, green: green, blue: blue, alpha: 1.0)
     }
-
 }

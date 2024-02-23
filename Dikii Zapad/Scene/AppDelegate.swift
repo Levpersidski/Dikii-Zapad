@@ -34,15 +34,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
 }
 
 extension AppDelegate {
     class var appDelegate: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
-    
 }
 
 extension UIApplication {
@@ -54,7 +51,7 @@ extension UIApplication {
         guard let rootNavigation = appDelegate.window?.rootViewController as? UINavigationController else {
             return nil
         }
-        let tabBar = (rootNavigation.viewControllers[1] as? UITabBarController)
+        let tabBar = rootNavigation.viewControllers.first(where: {($0 as? UITabBarController) != nil }) as? UITabBarController
         return tabBar
     }
 }

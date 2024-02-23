@@ -10,6 +10,16 @@ import EasyPeasy
 
 final class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
+    private lazy var testButton: UIButton = {
+       let btn = UIButton(frame: CGRect(x: 50, y: 100, width: 50, height: 50))
+        btn.backgroundColor = .orange
+        btn.addTapGesture { _ in
+            let vc = OrderViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        return btn
+    }()
+    
     private var categoriesSection: [String] {
         DataStore.shared.allCategories.compactMap { $0.name }
     }
@@ -156,14 +166,15 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
 //MARK: - Setting
     private extension MainViewController {
         func addSubViews() {
-            view.addSubViews(
+            view.addSubviews(
                 backgroundView,
                 greyOverlayView,
                 stripsView,
                 buttonToDelivery,
                 segmentedControl,
                 scrollForButtons,
-                verticalCollectionView
+                verticalCollectionView,
+                testButton
             )
             
             scrollForButtons.addToScrollView(stackButtons)

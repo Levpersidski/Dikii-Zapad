@@ -142,7 +142,7 @@ final class BottomSheetMapView: UIView {
     
     func setupView() {
         addSubview(containerView)
-        containerView.addSubViews(
+        containerView.addSubviews(
             dragView,
             addressTextField,
             hintsStackView,
@@ -187,7 +187,7 @@ final class BottomSheetMapView: UIView {
         )
         confirmButton.easy.layout(
             Top(10).to(priceLabel, .bottom),
-            Height(60),
+            Height(54),
             Left(16),
             Right(16),
             Bottom(20)

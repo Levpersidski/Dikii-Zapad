@@ -54,5 +54,4 @@ class CheckBoxButton: UIView {
             Edges(7)
         )
     }
-    
 }

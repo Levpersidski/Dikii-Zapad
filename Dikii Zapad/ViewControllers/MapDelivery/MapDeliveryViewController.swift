@@ -79,7 +79,7 @@ class MapDeliveryViewController: UIViewController {
     }
     
     private func setupView() {
-        view.addSubViews(
+        view.addSubviews(
             mapView,
             gradientView,
             bottomSheet

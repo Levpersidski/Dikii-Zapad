@@ -11,6 +11,20 @@ import EasyPeasy
 final class OrderViewController: UIViewController {
     var orderText: String =  ""
     
+    private lazy var backgroundImage: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFill
+        image.image = UIImage(named: "mainImage")
+        image.clipsToBounds = true
+        return image
+    }()
+    
+    private lazy var overLayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black.withAlphaComponent(0.7)
+        return view
+    }()
+    
     private lazy var deliveryLabel: UILabel = {
         let label = UILabel()
         label.text = "Доставка"
@@ -19,12 +33,69 @@ final class OrderViewController: UIViewController {
         return label
     }()
     
+    private lazy var addressButton: UIButtonTransform = {
+        let button = UIButtonTransform(type: .system)
+        button.backgroundColor = UIColor(hex: "1C1C1C")
+        button.maskCorners(radius: 8)
+        button.addTarget(self, action: #selector(addressButtonDidTap), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var addressStack: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fillProportionally
+        stackView.alignment = .center
+        stackView.addArrangedSubview(addressLabel)
+        stackView.addArrangedSubview(arrowImage)
+        stackView.isUserInteractionEnabled = false
+        return stackView
+    }()
+    
+    private lazy var addressLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Ул. Харьковская 12"
+        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.textColor = .white
+        return label
+    }()
+    
+    private lazy var arrowImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .center
+        imageView.image = UIImage(named: "arrow_img")?.withRenderingMode(.alwaysOriginal)
+        imageView.easy.layout(Size(30))
+        return imageView
+    }()
+    
     private lazy var deliveryTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "Время доставки"
         label.font = .systemFont(ofSize: 24, weight: .medium)
         label.textColor = .white
         return label
+    }()
+    
+    private lazy var timeFirstButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Как можно скорее", for: .normal)
+        button.titleLabel?.tintColor = .white
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        button.backgroundColor = UIColor(hex: "1C1C1C")
+        button.maskCorners(radius: 6)
+        button.layer.borderWidth = 1
+        return button
+    }()
+    
+    private lazy var timeSecondButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Ко времени", for: .normal)
+        button.titleLabel?.tintColor = .white
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        button.backgroundColor = UIColor(hex: "1C1C1C")
+        button.maskCorners(radius: 6)
+        button.layer.borderWidth = 1
+        return button
     }()
     
     private  lazy var makeOrderButton: UIButton = {
@@ -38,15 +109,6 @@ final class OrderViewController: UIViewController {
         return button
     }()
     
-    private lazy var backgroundImage: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFill
-        image.image = UIImage(named: "mainImage")
-        image.clipsToBounds = true
-//        image.alpha = 0.3
-        return image
-    }()
-    
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let loader = UIActivityIndicatorView()
         loader.color = .black
@@ -58,23 +120,28 @@ final class OrderViewController: UIViewController {
         super.viewDidLoad()
         addSubViews()
         setupConstraints()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
         
+        setTimeDelivery()
     }
     
     func addSubViews() {
-        view.addSubViews(
+        view.addSubviews(
             backgroundImage,
+            overLayView,
             deliveryLabel,
+            addressButton,
             deliveryTimeLabel,
+            timeFirstButton,
+            timeSecondButton,
             makeOrderButton
         )
         
+        addressButton.addSubview(addressStack)
         makeOrderButton.addSubview(activityIndicator)
     }
     
@@ -82,28 +149,71 @@ final class OrderViewController: UIViewController {
         backgroundImage.easy.layout(
             Edges()
         )
-        
+        overLayView.easy.layout(
+            Edges()
+        )
         deliveryLabel.easy.layout(
             Top(10).to(view.safeAreaLayoutGuide, .top),
             Left(16), Right(16)
         )
-        
+        addressButton.easy.layout(
+            Top(20).to(deliveryLabel, .bottom),
+            Left(16), Right(16),
+            Height(62)
+        )
+        addressStack.easy.layout(
+            Top(),
+            Left(16), Right(16),
+            Bottom()
+        )
         deliveryTimeLabel.easy.layout(
-            Top(10).to(deliveryLabel, .bottom),
+            Top(40).to(addressButton, .bottom),
             Left(16), Right(16)
         )
-      
+        
+        timeFirstButton.easy.layout(
+            Top(20).to(deliveryTimeLabel, .bottom),
+            Left(16), Width(*1.2).like(timeSecondButton),
+            Height(40)
+        )
+        
+        timeSecondButton.easy.layout(
+            Top(20).to(deliveryTimeLabel, .bottom),
+            Left(16).to(timeFirstButton, .right), Right(16),
+            Height(40)
+        )
+        
         makeOrderButton.easy.layout(
             Bottom(20).to(view.safeAreaLayoutGuide, .bottom),
             CenterX(),
             Left(16),
             Right(16),
-            Height(60)
+            Height(54)
         )
-        
         activityIndicator.easy.layout(
             Center()
         )
+    }
+    
+    private func setTimeDelivery() {
+        let time = DataStore.shared.timeDelivery
+        
+        if let time = time {
+            timeFirstButton.layer.borderColor = UIColor.clear.cgColor
+            timeSecondButton.layer.borderColor = UIColor.orange.cgColor
+            
+            timeSecondButton.setTitle(time, for: .normal)
+        } else {
+            timeFirstButton.layer.borderColor = UIColor.orange.cgColor
+            timeSecondButton.layer.borderColor = UIColor.clear.cgColor
+            
+            timeSecondButton.setTitle("Ко времени", for: .normal)
+        }
+    }
+    
+    @objc func addressButtonDidTap() {
+        let viewController = MapDeliveryViewController()
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc func makeOrderButtonDidTap() {

@@ -19,8 +19,8 @@ struct DropDownItemViewModel {
 }
 
 protocol DropDownListDelegate: AnyObject {
-    func dropDownListOpen()
-    func dropDownListClose()
+    func dropDownListOpen(_ dropDown: DropDownList)
+    func dropDownListClose(_ dropDown: DropDownList)
     
     func selectItem(dropDown: DropDownList, itemModel: DropDownItemViewModel)
 }
@@ -150,20 +150,27 @@ final class DropDownList: UIView {
     }
     
     @objc private func addressButtonDidTap() {
-        itemsContainerStack.isHidden ? delegate?.dropDownListOpen() : delegate?.dropDownListClose()
+        itemsContainerStack.isHidden ? delegate?.dropDownListOpen(self) : delegate?.dropDownListClose(self)
         hiddenItems(!itemsContainerStack.isHidden)
     }
     
-    private func hiddenItems(_ value: Bool) {
+    func hiddenItems(_ value: Bool) {
         if value {
             self.layoutIfNeeded()
             UIView.animate(withDuration: 0.2) {
+                self.itemsContainerStack.isHidden = true
+                self.arrowImage.transform = .identity
+            } completion: { _ in
                 self.itemsContainerStack.isHidden = true
                 self.arrowImage.transform = .identity
             }
         } else {
             self.layoutIfNeeded()
             UIView.animate(withDuration: 0.2) {
+                self.itemsContainerStack.isHidden = false
+                let angle: CGFloat = self.modeDrop == .down ? CGFloat.pi/2 : -CGFloat.pi/2
+                self.arrowImage.transform = CGAffineTransform(rotationAngle: angle)
+            } completion: { _ in
                 self.itemsContainerStack.isHidden = false
                 let angle: CGFloat = self.modeDrop == .down ? CGFloat.pi/2 : -CGFloat.pi/2
                 self.arrowImage.transform = CGAffineTransform(rotationAngle: angle)

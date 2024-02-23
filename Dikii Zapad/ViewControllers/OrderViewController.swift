@@ -10,6 +10,12 @@ import EasyPeasy
 
 final class OrderViewController: UIViewController {
     var orderText: String =  ""
+    var priceText: String = "" {
+        didSet {
+            sumValueOrderLabel.text = priceText + " РУБ."
+        }
+    }
+    
     private let hours = [
         "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"
     ]
@@ -137,6 +143,7 @@ final class OrderViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .bold)
         label.textColor = .white
+        label.textAlignment = .right
         return label
     }()
     
@@ -167,6 +174,8 @@ final class OrderViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .bold)
         label.textColor = .white
+        label.textAlignment = .right
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return label
     }()
     
@@ -302,14 +311,19 @@ final class OrderViewController: UIViewController {
         let time = DataStore.shared.timeDelivery
         
         if let time = time {
-            timeFirstButton.layer.borderColor = UIColor.clear.cgColor
-            timeSecondButton.layer.borderColor = UIColor.orange.cgColor
+            loadViewIfNeeded()
+            UIView.animate(withDuration: 0.2) {
+                self.timeFirstButton.layer.borderColor = UIColor.clear.cgColor
+                self.timeSecondButton.layer.borderColor = UIColor.orange.cgColor
+            }
             
             timeSecondButton.setTitle(time, for: .normal)
         } else {
-            timeFirstButton.layer.borderColor = UIColor.orange.cgColor
-            timeSecondButton.layer.borderColor = UIColor.clear.cgColor
-            
+            loadViewIfNeeded()
+            UIView.animate(withDuration: 0.2) {
+                self.timeFirstButton.layer.borderColor = UIColor.orange.cgColor
+                self.timeSecondButton.layer.borderColor = UIColor.clear.cgColor
+            }
             timeSecondButton.setTitle("Ко времени", for: .normal)
         }
     }
@@ -335,6 +349,8 @@ final class OrderViewController: UIViewController {
     }
     
     @objc private func makeOrderButtonDidTap() {
+        payDropList.hiddenItems(true)
+        deliveryDropList.hiddenItems(true)
         dataPicker.fadeOut()
         startLoadingAnimation(true)
         
@@ -365,12 +381,17 @@ final class OrderViewController: UIViewController {
     }
     
     @objc private func timeFirstButtonDidTap() {
+        payDropList.hiddenItems(true)
+        deliveryDropList.hiddenItems(true)
+        
         DataStore.shared.timeDelivery = nil
         dataPicker.fadeOut()
         setTimeDelivery()
     }
     
     @objc private func timeSecondButtonDidTap() {
+        payDropList.hiddenItems(true)
+        deliveryDropList.hiddenItems(true)
         setSelectDadaPucker()
         
         let selectedHour = hours[dataPicker.selectedRow(inComponent: 0)]
@@ -424,11 +445,17 @@ extension OrderViewController: DropDownListDelegate {
     func selectItem(dropDown: DropDownList, itemModel: DropDownItemViewModel) {
         
     }
-    
-    func dropDownListOpen() {
+    func dropDownListOpen(_ dropDown: DropDownList) {
         dataPicker.fadeOut()
+
+        if dropDown === payDropList {
+            deliveryDropList.hiddenItems(true)
+        }
+        if dropDown === deliveryDropList {
+            payDropList.hiddenItems(true)
+        }
     }
     
-    func dropDownListClose() {
+    func dropDownListClose(_ dropDown: DropDownList) {
     }
 }

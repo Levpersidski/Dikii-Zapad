@@ -10,15 +10,15 @@ import EasyPeasy
 
 final class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
-    private lazy var testButton: UIButton = {
-       let btn = UIButton(frame: CGRect(x: 50, y: 100, width: 50, height: 50))
-        btn.backgroundColor = .orange
-        btn.addTapGesture { _ in
-            let vc = OrderViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-        return btn
-    }()
+//    private lazy var testButton: UIButton = {
+//       let btn = UIButton(frame: CGRect(x: 50, y: 100, width: 50, height: 50))
+//        btn.backgroundColor = .orange
+//        btn.addTapGesture { _ in
+//            let vc = OrderViewController()
+//            self.navigationController?.pushViewController(vc, animated: true)
+//        }
+//        return btn
+//    }()
     
     private var categoriesSection: [String] {
         DataStore.shared.allCategories.compactMap { $0.name }
@@ -126,6 +126,9 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        navigationController?.navigationBar.backItem?.title = ""
+        navigationController?.navigationBar.tintColor = UIColor.customOrange
         segmentedValueChanged()
     }
     
@@ -181,8 +184,8 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
                 buttonToDelivery,
                 segmentedControl,
                 scrollForButtons,
-                verticalCollectionView,
-                testButton
+                verticalCollectionView
+//                testButton
             )
             
             scrollForButtons.addToScrollView(stackButtons)

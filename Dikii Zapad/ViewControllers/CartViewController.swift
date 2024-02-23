@@ -160,7 +160,10 @@ class CartViewController: UIViewController {
         super.viewWillAppear(animated)
         
         updateViews()
+
         navigationController?.setNavigationBarHidden(true, animated: true)
+        self.navigationController?.navigationBar.backItem?.title = ""
+
     }
 }
 
@@ -272,7 +275,7 @@ private extension CartViewController {
         tableView.reloadData()
         
         let testSub = model.cells.map { Double($0.price) ?? 0 }.reduce(0, { $0 + $1 })
-        pricelabel.text = "\(testSub)"
+        pricelabel.text = "\(Int(testSub))"
     }
     
     @objc func openMainVC() {
@@ -282,6 +285,7 @@ private extension CartViewController {
     @objc func makeOrderButtonDidTap() {
         let orderVC = OrderViewController()
         orderVC.orderText = createTextForMessage()
+        orderVC.priceText = pricelabel.text ?? ""
         
         navigationController?.pushViewController(orderVC, animated: true)
     }

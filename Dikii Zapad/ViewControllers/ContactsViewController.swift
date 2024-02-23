@@ -72,9 +72,24 @@ class ContactsViewController: UIViewController {
                          .foregroundColor: UIColor(hex: "#FE6F1F")]
         )
 
+        label.addTapGesture { [weak self] _ in
+            self?.openPhoneDialer(with: "89188572257")
+        }
+
         label.attributedText = atrText
         return label
     }()
+    
+    func openPhoneDialer(with phoneNumber: String) {
+        if let phoneURL = URL(string: "tel://\(phoneNumber)") {
+            if UIApplication.shared.canOpenURL(phoneURL) {
+                       UIApplication.shared.open(phoneURL)
+                   } else {
+                       print("Can't open url on this device")
+                   }
+        }
+    }
+
     
     private lazy var titleScheduleLabel: UILabel = {
         let label = UILabel()

@@ -267,14 +267,14 @@ private extension DetailsProductViewController {
         )
     }
     
-    func calculateSum() -> Double {
+    func calculateSum() -> Int {
         let selectedAdditive = additives.filter { $0.selected }.compactMap { Double($0.price) }
         let priceProduct = Double(modelProduct?.price ?? "") ?? 0
         let counter = Double(quantityStepper.value)
     
         let totalSumAdditive = selectedAdditive.reduce(0, { $0 + $1 }) * counter
         let totalSumProducts = priceProduct * counter
-        return totalSumAdditive + totalSumProducts
+        return Int(totalSumAdditive + totalSumProducts)
     }
 }
 

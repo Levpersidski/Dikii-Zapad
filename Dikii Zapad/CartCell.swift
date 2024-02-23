@@ -72,7 +72,7 @@ class CartCell: UITableViewCell {
     
     private lazy var separatorView: UIView = {
        let view = UIView()
-        view.backgroundColor = .orange
+        view.backgroundColor = .customOrange
         return view
     }()
     
@@ -167,7 +167,7 @@ class CartCell: UITableViewCell {
 
         separatorView.easy.layout(
             Top(25).to(priceLabel, .bottom),
-            Height(1),
+            Height(0.5),
             Left(16), Right(16),
             Bottom()
         )

@@ -62,6 +62,16 @@ extension UIView {
         clipsToBounds = true
     }
     
+    func roundCorners(_ radius: CGFloat = 8.0) {
+        layer.masksToBounds = true
+        layer.cornerRadius = radius
+        layer.mask = nil
+        
+        if #available(iOS 13.0, *) {
+            layer.cornerCurve = .continuous
+        }
+    }
+    
 }
     extension UIScrollView {
         func addToScrollView(_ views: UIView...) {
@@ -93,5 +103,18 @@ extension UIView {
         let rec = ClosurePanGestureRecognizer(action: closure)
         self.addGestureRecognizer(rec)
         return rec
+    }
+}
+
+extension UIView {
+    func applyGradient(fromColor: UIColor, toColor: UIColor, fromPoint: CGPoint, toPoint: CGPoint, location: [NSNumber]) {
+        
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.colors = [fromColor.cgColor, toColor.cgColor]
+        gradient.locations = location
+        gradient.startPoint = fromPoint
+        gradient.endPoint = toPoint
+        self.layer.insertSublayer(gradient, at: 0)
     }
 }

@@ -111,11 +111,17 @@ final class BottomSheetMapView: UIView {
     private lazy var confirmButton: UIButton = {
         let button  = UIButton(type: .system)
         button.backgroundColor = UIColor.customOrange
-        button.layer.cornerRadius = 15
+        button.roundCorners(15)
         button.setTitle("ПОДТВЕРДИТЬ", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
         button.addTarget(self, action: #selector(confirmButtonDidTap), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
+        button.applyGradient(fromColor: UIColor(hex: "FF5929"),
+                             toColor: UIColor(hex: "993C1F"),
+                             fromPoint: CGPoint(x: 0.5, y: 0),
+                             toPoint: CGPoint(x: 0.5, y: 1),
+                             location: [0, 1])
         return button
     }()
     

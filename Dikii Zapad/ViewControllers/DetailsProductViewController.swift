@@ -71,12 +71,18 @@ class DetailsProductViewController: UIViewController {
     
     private lazy var orderButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor.customOrange
-        button.layer.cornerRadius = 15
+        button.maskCorners(radius: 15)
         button.setTitle("Добавить в корзину", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.setTitleColor(UIColor.white, for: .normal)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
+        button.applyGradient(fromColor: UIColor(hex: "FF5929"),
+                             toColor: UIColor(hex: "993C1F"),
+                             fromPoint: CGPoint(x: 0.5, y: 0),
+                             toPoint: CGPoint(x: 0.5, y: 1),
+                             location: [0, 1])
+        
         return button
     }()
     
@@ -118,9 +124,6 @@ class DetailsProductViewController: UIViewController {
     let quantityLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.backgroundColor = .clear
-        //        label.layer.borderColor = UIColor(hex: "#FE6F1F").cgColor
-        //        label.layer.borderWidth = 1
         label.textColor = UIColor.customOrange
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16)
@@ -159,7 +162,7 @@ class DetailsProductViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-    }
+    }    
 }
 
 //MARK: - DetailsProductViewController

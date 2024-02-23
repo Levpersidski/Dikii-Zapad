@@ -10,6 +10,12 @@ import EasyPeasy
 
 final class OrderViewController: UIViewController {
     var orderText: String =  ""
+    private let hours = [
+        "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"
+    ]
+    private let minutes = [
+        "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50",  "55"
+    ]
     
     private lazy var backgroundImage: UIImageView = {
         let image = UIImageView()
@@ -22,6 +28,9 @@ final class OrderViewController: UIViewController {
     private lazy var overLayView: UIView = {
         let view = UIView()
         view.backgroundColor = .black.withAlphaComponent(0.7)
+        view.addTapGesture { [weak self] _ in
+            self?.dataPicker.fadeOut()
+        }
         return view
     }()
     
@@ -33,45 +42,25 @@ final class OrderViewController: UIViewController {
         return label
     }()
     
-    private lazy var addressButton: UIButtonTransform = {
-        let button = UIButtonTransform(type: .system)
-        button.backgroundColor = UIColor(hex: "1C1C1C")
-        button.maskCorners(radius: 8)
-        button.addTarget(self, action: #selector(addressButtonDidTap), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var addressStack: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.distribution = .fillProportionally
-        stackView.alignment = .center
-        stackView.addArrangedSubview(addressLabel)
-        stackView.addArrangedSubview(arrowImage)
-        stackView.isUserInteractionEnabled = false
-        return stackView
-    }()
-    
-    private lazy var addressLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Ул. Харьковская 12"
-        label.font = .systemFont(ofSize: 18, weight: .regular)
-        label.textColor = .white
-        return label
-    }()
-    
-    private lazy var arrowImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .center
-        imageView.image = UIImage(named: "arrow_img")?.withRenderingMode(.alwaysOriginal)
-        imageView.easy.layout(Size(30))
-        return imageView
+    private lazy var deliveryDropList: DropDownList = {
+        let view = DropDownList(mode: .down)
+        view.delegate = self
+        view.viewModel = DropDownListViewModel(
+            title: "Введите адрес доставки",
+            items: [
+                DropDownItemViewModel(title: "На вынос", isSelected: false),
+                DropDownItemViewModel(title: "Сохраненный адрес - тест", isSelected: false),
+                DropDownItemViewModel(title: "Указать новый адресс", isSelected: true)
+            ]
+        )
+        view.clipsToBounds = true
+        return view
     }()
     
     private lazy var deliveryTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "Время доставки"
-        label.font = .systemFont(ofSize: 24, weight: .medium)
+        label.font = .systemFont(ofSize: 20, weight: .medium)
         label.textColor = .white
         return label
     }()
@@ -84,6 +73,7 @@ final class OrderViewController: UIViewController {
         button.backgroundColor = UIColor(hex: "1C1C1C")
         button.maskCorners(radius: 6)
         button.layer.borderWidth = 1
+        button.addTarget(self, action: #selector(timeFirstButtonDidTap), for: .touchUpInside)
         return button
     }()
     
@@ -95,17 +85,105 @@ final class OrderViewController: UIViewController {
         button.backgroundColor = UIColor(hex: "1C1C1C")
         button.maskCorners(radius: 6)
         button.layer.borderWidth = 1
+        button.addTarget(self, action: #selector(timeSecondButtonDidTap), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var dataPicker: UIPickerView = {
+        let picker = UIPickerView()
+        picker.dataSource = self
+        picker.delegate = self
+        picker.isHidden = true
+        picker.undoManager?.runLoopModes = [.tracking]
+        picker.backgroundColor = .white
+        picker.maskCorners(radius: 10)
+        return picker
+    }()
+    
+    private lazy var payDropList: DropDownList = {
+        let view = DropDownList(mode: .up)
+        view.delegate = self
+        view.viewModel = DropDownListViewModel(
+            title: "Оплата: Наличными",
+            items: [
+                DropDownItemViewModel(title: "Наличными", isSelected: true),
+                DropDownItemViewModel(title: "Картой", isSelected: false),
+                DropDownItemViewModel(title: "СБП", isSelected: true)
+            ]
+        )
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    
+    private lazy var sumDeliveryStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.distribution = .fillProportionally
+        stack.addArrangedSubview(sumDeliveryLabel)
+        stack.addArrangedSubview(sumValueDeliveryLabel)
+        return stack
+    }()
+    
+    private lazy var sumDeliveryLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Доставка:"
+        label.font = .systemFont(ofSize: 20, weight: .medium)
+        label.textColor = .white
+        return label
+    }()
+    
+    private lazy var sumValueDeliveryLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.textColor = .white
+        return label
+    }()
+    
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(hex: "FE6F1F")
+        return view
+    }()
+    
+    private lazy var sumOrderStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.distribution = .fillProportionally
+        stack.addArrangedSubview(sumOrderLabel)
+        stack.addArrangedSubview(sumValueOrderLabel)
+        return stack
+    }()
+    
+    private lazy var sumOrderLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Сумма заказа:"
+        label.font = .systemFont(ofSize: 20, weight: .medium)
+        label.textColor = .white
+        return label
+    }()
+    
+    private lazy var sumValueOrderLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.textColor = .white
+        return label
     }()
     
     private  lazy var makeOrderButton: UIButton = {
         let button  = UIButton(type: .system)
-        button.backgroundColor = UIColor.customOrange
-        button.layer.cornerRadius = 15
+        button.maskCorners(radius: 15)
         button.setTitle("ОФОРМИТЬ ЗАКАЗ", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
         button.addTarget(self, action: #selector(makeOrderButtonDidTap), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
+        button.applyGradient(fromColor: UIColor(hex: "FF5929"),
+                             toColor: UIColor(hex: "993C1F"),
+                             fromPoint: CGPoint(x: 0.5, y: 0),
+                             toPoint: CGPoint(x: 0.5, y: 1),
+                             location: [0, 1])
+        
         return button
     }()
     
@@ -127,6 +205,14 @@ final class OrderViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
         
         setTimeDelivery()
+        
+        let street = DataStore.shared.street
+        let numberHouse = DataStore.shared.numberHouse
+        if !street.isEmpty, !numberHouse.isEmpty {
+            var newModel = deliveryDropList.viewModel
+            newModel?.title = "\(street) \(numberHouse)"
+            deliveryDropList.viewModel = newModel
+        }
     }
     
     func addSubViews() {
@@ -134,40 +220,36 @@ final class OrderViewController: UIViewController {
             backgroundImage,
             overLayView,
             deliveryLabel,
-            addressButton,
+            deliveryDropList,
             deliveryTimeLabel,
             timeFirstButton,
             timeSecondButton,
-            makeOrderButton
+            makeOrderButton,
+            sumDeliveryStack,
+            separatorView,
+            sumOrderStack,
+            payDropList,
+            dataPicker
         )
         
-        addressButton.addSubview(addressStack)
         makeOrderButton.addSubview(activityIndicator)
     }
     
     func setupConstraints() {
-        backgroundImage.easy.layout(
-            Edges()
-        )
-        overLayView.easy.layout(
-            Edges()
-        )
+        backgroundImage.easy.layout(Edges())
+        overLayView.easy.layout(Edges())
         deliveryLabel.easy.layout(
             Top(10).to(view.safeAreaLayoutGuide, .top),
             Left(16), Right(16)
         )
-        addressButton.easy.layout(
+       
+        deliveryDropList.easy.layout(
             Top(20).to(deliveryLabel, .bottom),
-            Left(16), Right(16),
-            Height(62)
+            Left(), Right()
         )
-        addressStack.easy.layout(
-            Top(),
-            Left(16), Right(16),
-            Bottom()
-        )
+        
         deliveryTimeLabel.easy.layout(
-            Top(40).to(addressButton, .bottom),
+            Top(40).to(deliveryDropList, .bottom),
             Left(16), Right(16)
         )
         
@@ -176,13 +258,20 @@ final class OrderViewController: UIViewController {
             Left(16), Width(*1.2).like(timeSecondButton),
             Height(40)
         )
-        
         timeSecondButton.easy.layout(
             Top(20).to(deliveryTimeLabel, .bottom),
             Left(16).to(timeFirstButton, .right), Right(16),
             Height(40)
         )
-        
+        activityIndicator.easy.layout(
+            Center()
+        )
+        dataPicker.easy.layout(
+            Top(10).to(timeSecondButton, .bottom),
+            Right().to(timeSecondButton, .right),
+            Height(180),
+            Width().like(timeSecondButton)
+        )
         makeOrderButton.easy.layout(
             Bottom(20).to(view.safeAreaLayoutGuide, .bottom),
             CenterX(),
@@ -190,8 +279,22 @@ final class OrderViewController: UIViewController {
             Right(16),
             Height(54)
         )
-        activityIndicator.easy.layout(
-            Center()
+        sumOrderStack.easy.layout(
+            Bottom(16).to(makeOrderButton, .top),
+            Left(16), Right(16)
+        )
+        separatorView.easy.layout(
+            Bottom(13).to(sumOrderStack, .top),
+            Left(16), Right(16),
+            Height(0.5)
+        )
+        sumDeliveryStack.easy.layout(
+            Bottom(13).to(separatorView, .top),
+            Left(16), Right(16)
+        )
+        payDropList.easy.layout(
+            Bottom(20).to(sumDeliveryStack, .top),
+            Left(), Right()
         )
     }
     
@@ -211,65 +314,121 @@ final class OrderViewController: UIViewController {
         }
     }
     
-    @objc func addressButtonDidTap() {
-        let viewController = MapDeliveryViewController()
-        navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    @objc func makeOrderButtonDidTap() {
-        startLoadingAnimation(true)
-                
-        sendTelegramMessage(orderText) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(_):
-                self.showAlert("Успешно",
-                          message: "Заказ оформлен",
-                          okTitle: "ок", present: true)
-                DataStore.shared.cartViewModel.cells = []
-            case .failure(_):
-                self.showAlert("Ошибка",
-                          message: "Не удалось оформить заказ\nПопробуйте позже",
-                          okTitle: "ок", present: true)
-            }
-            self.startLoadingAnimation(false)
+    private func setSelectDadaPucker() {
+        guard let values = DataStore.shared.timeDelivery?.components(separatedBy: ":"),
+              values.count == 2,
+              dataPicker.numberOfComponents == 2
+        else {
+            return
+        }
+        
+        values.enumerated().forEach {
+            guard let indexComponent = $0.offset == 0 ? hours.firstIndex(of: $0.element) : minutes.firstIndex(of: $0.element) else { return }
+            dataPicker.selectRow(indexComponent, inComponent: $0.offset, animated: false)
         }
     }
     
-    func startLoadingAnimation(_ value: Bool) {
+    private func startLoadingAnimation(_ value: Bool) {
         value ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
         self.activityIndicator.isHidden = !value
         self.makeOrderButton.setTitle(value ? "" : "ОФОРМИТЬ ЗАКАЗ", for: .normal)
     }
     
-    func sendTelegramMessage(_ text: String, completion: @escaping (Result<String, ErrorDZ>) -> Void) {
-        let url = URL(string: "http://dikiyzapad-161.ru/test/index.php")!
-        let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
-        let keyMessage = "text"
+    @objc private func makeOrderButtonDidTap() {
+        dataPicker.fadeOut()
+        startLoadingAnimation(true)
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("Bearer \(secretToken)", forHTTPHeaderField: "Authorization")
-        request.httpBody = (keyMessage + "=" + text).data(using: .utf8)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                guard let data = data, error == nil else {
-                    completion(.failure(ErrorDZ.badData))
-                    print(error?.localizedDescription ?? "No data")
-                    return
-                }
-                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                    completion(.failure(ErrorDZ.badAuthorisations))
-                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                    print("response = \(response!)")
-                }
-                let responseString = String(data: data, encoding: .utf8)
-                print("Response data = \(responseString ?? "No response")")
-                completion(.success("Заказ успешно отправлен"))
+        TelegramManager.shared.sendMessage(orderText) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(_):
+                self.showAlert("Успешно",
+                               message: "Заказ оформлен",
+                               okTitle: "ок", present: true)
+                DataStore.shared.cartViewModel.cells = []
+            case .failure(_):
+                self.showAlert("Ошибка",
+                               message: "Не удалось оформить заказ\nПопробуйте позже",
+                               okTitle: "ок", present: true)
             }
+            self.startLoadingAnimation(false)
         }
-        task.resume()
+    }
+    
+    @objc private func datePickerValueChanged(sender: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        
+        let selectedTime = dateFormatter.string(from: sender.date)
+        print("Selected time: \(selectedTime)")
+    }
+    
+    @objc private func timeFirstButtonDidTap() {
+        DataStore.shared.timeDelivery = nil
+        dataPicker.fadeOut()
+        setTimeDelivery()
+    }
+    
+    @objc private func timeSecondButtonDidTap() {
+        setSelectDadaPucker()
+        
+        let selectedHour = hours[dataPicker.selectedRow(inComponent: 0)]
+        let selectedMinute = minutes[dataPicker.selectedRow(inComponent: 1)]
+        DataStore.shared.timeDelivery = "\(selectedHour):\(selectedMinute)"
+        setTimeDelivery()
+        
+        if dataPicker.isHidden {
+            dataPicker.fadeIn()
+        } else {
+            dataPicker.fadeOut()
+        }
+    }
+}
+
+//MARK: - UIPickerViewDataSource, UIPickerViewDelegate
+extension OrderViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2 // Два компонента: часы и минуты
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if component == 0 {
+            return hours.count
+        } else {
+            return minutes.count
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if component == 0 {
+            return "\(hours[row])"
+        } else {
+            return "\(minutes[row])"
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedHour = hours[pickerView.selectedRow(inComponent: 0)]
+        let selectedMinute = minutes[pickerView.selectedRow(inComponent: 1)]
+        
+        print("Selected time: \(selectedHour):\(selectedMinute)")
+        timeSecondButton.setTitle("\(selectedHour):\(selectedMinute)", for: .normal)
+        DataStore.shared.timeDelivery = "\(selectedHour):\(selectedMinute)"
+        setTimeDelivery()
+    }
+}
+
+//MARK: - DropDownListDelegate
+extension OrderViewController: DropDownListDelegate {
+    func selectItem(dropDown: DropDownList, itemModel: DropDownItemViewModel) {
+        
+    }
+    
+    func dropDownListOpen() {
+        dataPicker.fadeOut()
+    }
+    
+    func dropDownListClose() {
     }
 }

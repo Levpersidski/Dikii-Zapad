@@ -15,6 +15,9 @@
 		04D5E5482B64350C004F336E /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D5E5472B64350C004F336E /* UIViewController + Extension.swift */; };
 		04E6759E2B8894D2007559C6 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6759D2B8894D2007559C6 /* AddressView.swift */; };
 		04E675A02B889E24007559C6 /* UIButtonTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6759F2B889E24007559C6 /* UIButtonTransform.swift */; };
+		04E675A22B890415007559C6 /* TelegramManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E675A12B890415007559C6 /* TelegramManager.swift */; };
+		04E675A42B890EC7007559C6 /* DropDownList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E675A32B890EC7007559C6 /* DropDownList.swift */; };
+		04E675A62B891343007559C6 /* ItemSelectableDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E675A52B891343007559C6 /* ItemSelectableDropDown.swift */; };
 		04E6F8D92B651C2E0014398B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8D82B651C2E0014398B /* CustomTextField.swift */; };
 		04E6F8DB2B652AE00014398B /* GestureRecognizerHealpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8DA2B652AE00014398B /* GestureRecognizerHealpers.swift */; };
 		04E6F8DD2B653B5C0014398B /* MapDeliveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8DC2B653B5C0014398B /* MapDeliveryViewController.swift */; };
@@ -53,6 +56,9 @@
 		04D5E5472B64350C004F336E /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
 		04E6759D2B8894D2007559C6 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
 		04E6759F2B889E24007559C6 /* UIButtonTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonTransform.swift; sourceTree = "<group>"; };
+		04E675A12B890415007559C6 /* TelegramManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelegramManager.swift; sourceTree = "<group>"; };
+		04E675A32B890EC7007559C6 /* DropDownList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownList.swift; sourceTree = "<group>"; };
+		04E675A52B891343007559C6 /* ItemSelectableDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSelectableDropDown.swift; sourceTree = "<group>"; };
 		04E6F8D82B651C2E0014398B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		04E6F8DA2B652AE00014398B /* GestureRecognizerHealpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureRecognizerHealpers.swift; sourceTree = "<group>"; };
 		04E6F8DC2B653B5C0014398B /* MapDeliveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDeliveryViewController.swift; sourceTree = "<group>"; };
@@ -113,6 +119,7 @@
 			children = (
 				04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */,
 				04E6F8DA2B652AE00014398B /* GestureRecognizerHealpers.swift */,
+				04E675A12B890415007559C6 /* TelegramManager.swift */,
 			);
 			path = Healpers;
 			sourceTree = "<group>";
@@ -122,6 +129,8 @@
 			children = (
 				04E6F8D82B651C2E0014398B /* CustomTextField.swift */,
 				04A906DE2B669F3D0014DE24 /* GradientView.swift */,
+				04E675A32B890EC7007559C6 /* DropDownList.swift */,
+				04E675A52B891343007559C6 /* ItemSelectableDropDown.swift */,
 			);
 			path = CommonElements;
 			sourceTree = "<group>";
@@ -299,12 +308,14 @@
 				B67122992B7E747D00E051EF /* OrderViewController.swift in Sources */,
 				B6DB40FE2AEFF2E6005963ED /* CustomButton.swift in Sources */,
 				B66D7BA92AFD271F009C34CB /* CheckBoxButton.swift in Sources */,
+				04E675A22B890415007559C6 /* TelegramManager.swift in Sources */,
 				B6F3EA562AD5DD1400270662 /* CustomRegisterTextfield.swift in Sources */,
 				04E6759E2B8894D2007559C6 /* AddressView.swift in Sources */,
 				B6F3EA542AD57B4000270662 /* SectionHeaderReusableView.swift in Sources */,
 				04E675A02B889E24007559C6 /* UIButtonTransform.swift in Sources */,
 				04A9AB462B5C837D002A8A79 /* Product.swift in Sources */,
 				B6DF27252ACC7E2A00FC45D0 /* UIColorExtension.swift in Sources */,
+				04E675A62B891343007559C6 /* ItemSelectableDropDown.swift in Sources */,
 				04E6F8D92B651C2E0014398B /* CustomTextField.swift in Sources */,
 				04ECD5FA2B66C71F00F29F2C /* BottomSheetMapView.swift in Sources */,
 				B6DF27182ACC387F00FC45D0 /* LaunchViewController.swift in Sources */,
@@ -321,6 +332,7 @@
 				04E6F8DD2B653B5C0014398B /* MapDeliveryViewController.swift in Sources */,
 				04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */,
 				B6DF27232ACC649E00FC45D0 /* CartViewController.swift in Sources */,
+				04E675A42B890EC7007559C6 /* DropDownList.swift in Sources */,
 				B667A04A2AE58C1E003D8069 /* AdditiveCell.swift in Sources */,
 				B6306BB92AC088D800B0BF80 /* AppDelegate.swift in Sources */,
 				B6F3EA5A2AD9604000270662 /* DeliveryFormViewController.swift in Sources */,

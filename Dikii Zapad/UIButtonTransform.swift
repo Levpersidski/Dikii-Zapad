@@ -43,6 +43,7 @@ class UIButtonTransform: UIButton {
      }
     
     private func animate() {
+        self.layoutIfNeeded()
         UIView.animate(withDuration: 0.2) {
             self.subviews.first?.transform = CGAffineTransform(scaleX: 0.98, y: 0.98)
             self.subviews.first?.alpha = 0.7
@@ -50,6 +51,7 @@ class UIButtonTransform: UIButton {
     }
     
     private func animateIdentity() {
+        self.layoutIfNeeded()
         UIView.animate(withDuration: 0.2) {
             self.subviews.first?.transform = .identity
             self.subviews.first?.alpha = 1

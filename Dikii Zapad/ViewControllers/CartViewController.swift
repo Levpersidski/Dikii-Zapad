@@ -101,11 +101,18 @@ class CartViewController: UIViewController {
     private  lazy var makeOrderButton: UIButton = {
         let button  = UIButton(type: .system)
         button.backgroundColor = UIColor.customOrange
-        button.layer.cornerRadius = 15
+        button.roundCorners(15)
         button.setTitle("ПРОДОЛЖИТЬ", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
         button.addTarget(self, action: #selector(makeOrderButtonDidTap), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
+        button.applyGradient(fromColor: UIColor(hex: "FF5929"),
+                             toColor: UIColor(hex: "993C1F"),
+                             fromPoint: CGPoint(x: 0.5, y: 0),
+                             toPoint: CGPoint(x: 0.5, y: 1),
+                             location: [0, 1])
+        
         return button
     }()
     
@@ -119,7 +126,7 @@ class CartViewController: UIViewController {
     private lazy var menuButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = UIColor.customOrange
-        button.layer.cornerRadius = 15
+        button.maskCorners(radius: 15)
         button.setTitle("Перейти в меню", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.setTitleColor(UIColor.white, for: .normal)
@@ -154,7 +161,6 @@ class CartViewController: UIViewController {
         
         updateViews()
         navigationController?.setNavigationBarHidden(true, animated: true)
-
     }
 }
 

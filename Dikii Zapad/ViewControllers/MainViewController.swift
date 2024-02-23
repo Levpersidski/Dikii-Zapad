@@ -113,7 +113,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     private lazy var sizeCell: CGFloat = (UIScreen.main.bounds.size.width / 2) - 20
     private lazy var minimumLineSpacing: CGFloat = 2
     
-    //MARK: - ViewDidLOad()
+    //MARK: - ViewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -126,6 +126,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        segmentedValueChanged()
     }
     
     private func openDetailProductVC(_ modelProduct: Product, _ modelAdditive: [AdditiveProduct]) {
@@ -142,18 +143,25 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         guard verticalCollectionView.numberOfItems(inSection: section) > 0 else { return }
         
         verticalCollectionView.scrollToItem(at: IndexPath(item: 0, section: section), at: .top, animated: true)
-        
     }
     
-    @objc func segmentedValueChanged(sender: UISegmentedControl) {
-        
-        if sender.selectedSegmentIndex == 0 {
-            buttonToDelivery.setTitle("Указать адресс доставки >", for: .normal)
+    @objc func segmentedValueChanged() {
+        if segmentedControl.selectedSegmentIndex == 0 {
             buttonToDelivery.isEnabled = true
+            
+            let street = DataStore.shared.street
+            let numberHouse = DataStore.shared.numberHouse
+            if !street.isEmpty, !numberHouse.isEmpty {
+                buttonToDelivery.setTitle("\(street) \(numberHouse)", for: .normal)
+            } else {
+                buttonToDelivery.setTitle("Указать адресс доставки >", for: .normal)
+            }
         } else {
             buttonToDelivery.isEnabled = false
             buttonToDelivery.setTitle("Ул. Советской конституции 21", for: .normal)
         }
+        
+        DataStore.shared.outSideOrder = segmentedControl.selectedSegmentIndex == 0
     }
     
     @objc func didTouchToToDelivery() {

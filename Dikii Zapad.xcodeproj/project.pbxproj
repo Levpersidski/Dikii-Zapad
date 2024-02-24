@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0416FD162B5D7AE6008A5600 /* OAuthSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD152B5D7AE6008A5600 /* OAuthSwift */; };
 		0416FD192B5D7F68008A5600 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD182B5D7F68008A5600 /* Kingfisher */; };
+		042487E42B8A2F89000F9CEC /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042487E32B8A2F89000F9CEC /* CustomAlert.swift */; };
 		04A906DF2B669F3D0014DE24 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A906DE2B669F3D0014DE24 /* GradientView.swift */; };
 		04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */; };
 		04A9AB462B5C837D002A8A79 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB452B5C837D002A8A79 /* Product.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		042487E32B8A2F89000F9CEC /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		04A906DE2B669F3D0014DE24 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsDataService.swift; sourceTree = "<group>"; };
 		04A9AB452B5C837D002A8A79 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			children = (
 				04E6F8D82B651C2E0014398B /* CustomTextField.swift */,
 				04A906DE2B669F3D0014DE24 /* GradientView.swift */,
+				042487E32B8A2F89000F9CEC /* CustomAlert.swift */,
 				04E675A32B890EC7007559C6 /* DropDownList.swift */,
 				04E675A52B891343007559C6 /* ItemSelectableDropDown.swift */,
 			);
@@ -316,6 +319,7 @@
 				B6DB40FE2AEFF2E6005963ED /* CustomButton.swift in Sources */,
 				B66D7BA92AFD271F009C34CB /* CheckBoxButton.swift in Sources */,
 				04E675A22B890415007559C6 /* TelegramManager.swift in Sources */,
+				042487E42B8A2F89000F9CEC /* CustomAlert.swift in Sources */,
 				B6F3EA562AD5DD1400270662 /* CustomRegisterTextfield.swift in Sources */,
 				04E6759E2B8894D2007559C6 /* AddressView.swift in Sources */,
 				B6F3EA542AD57B4000270662 /* SectionHeaderReusableView.swift in Sources */,

@@ -10,15 +10,16 @@ import EasyPeasy
 
 final class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
-//    private lazy var testButton: UIButton = {
-//       let btn = UIButton(frame: CGRect(x: 50, y: 100, width: 50, height: 50))
-//        btn.backgroundColor = .orange
-//        btn.addTapGesture { _ in
-//            let vc = OrderViewController()
-//            self.navigationController?.pushViewController(vc, animated: true)
-//        }
-//        return btn
-//    }()
+    private lazy var testButton: UIButton = {
+       let btn = UIButton(frame: CGRect(x: 50, y: 100, width: 50, height: 50))
+        btn.backgroundColor = .orange
+        btn.addTapGesture { _ in
+            let window = UIApplication.appDelegate.window!
+            let model = CustomAlertViewModel(title: "Тест алерта",
+                                             subtitle: "Тут сбатайтл и описание алерта")
+            CustomAlert.open(in: window, model: model)        }
+        return btn
+    }()
     
     private var categoriesSection: [String] {
         DataStore.shared.allCategories.compactMap { $0.name }
@@ -184,8 +185,8 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
                 buttonToDelivery,
                 segmentedControl,
                 scrollForButtons,
-                verticalCollectionView
-//                testButton
+                verticalCollectionView,
+                testButton
             )
             
             scrollForButtons.addToScrollView(stackButtons)

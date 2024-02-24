@@ -359,14 +359,25 @@ final class OrderViewController: UIViewController {
             
             switch result {
             case .success(_):
-                self.showAlert("Успешно",
-                               message: "Заказ оформлен",
-                               okTitle: "ок", present: true)
+                if let window =  UIApplication.appDelegate.window {
+                    let model = CustomAlertViewModel(title: "Благодарим за заказ!", subtitle: "Мы перезвоним вам в течении 15 минут для подтверждения заказа!")
+                    CustomAlert.open(in: window, model: model)
+                }
+                self.navigationController?.popViewController(animated: true)
+           
+//                self.showAlert("Успешно",
+//                               message: "Заказ оформлен",
+//                               okTitle: "ок", present: true)
                 DataStore.shared.cartViewModel.cells = []
             case .failure(_):
-                self.showAlert("Ошибка",
-                               message: "Не удалось оформить заказ\nПопробуйте позже",
-                               okTitle: "ок", present: true)
+                
+                if let window =  UIApplication.appDelegate.window {
+                    let model = CustomAlertViewModel(title: "Ошибка", subtitle: "Не удалось оформить заказ\nПопробуйте позже")
+                    CustomAlert.open(in: window, model: model)
+                }
+//                self.showAlert("Ошибка",
+//                               message: "Не удалось оформить заказ\nПопробуйте позже",
+//                               okTitle: "ок", present: true)
             }
             self.startLoadingAnimation(false)
         }

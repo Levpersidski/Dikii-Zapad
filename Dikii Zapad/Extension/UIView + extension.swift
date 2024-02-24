@@ -9,6 +9,38 @@ import UIKit
 
 //MAAK: - extension View
 extension UIView {
+    
+    class func animate(withTension tension: CGFloat, friction: CGFloat, mass: CGFloat = 1.0, delay: TimeInterval = 0, initialSpringVelocity velocity: CGFloat = 0, options: UIView.AnimationOptions = [], animations: @escaping () -> Void, completion: ((Bool) -> Void)? = nil) {
+        let damping = friction / sqrt(2 * (1 * tension))
+        let undampedFrequency = sqrt(tension / mass)
+
+        let epsilon: CGFloat = 0.001
+        var duration: TimeInterval = 0
+
+        if damping < 1 {
+            let a = sqrt(1 - pow(damping, 2))
+            let b = velocity / (a * undampedFrequency)
+            let c = damping / a
+            let d = -((b - c) / epsilon)
+            if d > 0 {
+                duration = TimeInterval(log(d) / (damping * undampedFrequency))
+            }
+        }
+
+        UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: damping, initialSpringVelocity: velocity, options: options, animations: animations, completion: completion)
+    }
+    
+    class func springAnimate(animations: @escaping () -> Void, delay: TimeInterval = 0, completion: ((Bool) -> Void)? = nil) {
+        UIView.animate(withTension: 381.47,
+                       friction: 20.17,
+                       mass: 1,
+                       delay: delay,
+                       initialSpringVelocity: 0,
+                       options: .curveEaseInOut,
+                       animations: animations,
+                       completion: completion)
+    }
+    
     func addSubviews(_ views: UIView...) {
         views.forEach { addSubview($0) }
     }

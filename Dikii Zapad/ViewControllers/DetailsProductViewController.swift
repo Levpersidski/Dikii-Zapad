@@ -192,7 +192,8 @@ private extension DetailsProductViewController {
                                      price: ("\(calculateSum())"),
                                      additives: selectedAdditives,
                                      imageURL: product.imageURL,
-                                     count: Int(quantityStepper.value))
+                                     count: Int(quantityStepper.value),
+                                     uuid: UUID())
         
         DataStore.shared.cartViewModel.cells.append(cell)
         navigationController?.popViewController(animated: true)

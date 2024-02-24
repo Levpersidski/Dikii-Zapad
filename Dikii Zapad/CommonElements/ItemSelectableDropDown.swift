@@ -20,7 +20,7 @@ final class ItemSelectableDropDown: UIButtonTransform {
         didSet {
             guard let model = viewModel else { return }
             
-            checkBoxImageView.image = model.isSelected ? nil : nil
+            checkBoxImageView.image = model.isSelected ? UIImage(named: "selectedItem") : UIImage(named: "unSelectedItem")
             titleTextLabel.text = model.title
         }
     }

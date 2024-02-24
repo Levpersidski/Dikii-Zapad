@@ -16,9 +16,16 @@ struct CartCellViewModel {
     let imageURL: URL?
     
     let count: Int
+    let uuid: UUID
+}
+
+protocol CartCellDelegate: AnyObject {
+    func removeButtonDidTap(uuid: UUID)
 }
 
 class CartCell: UITableViewCell {
+    
+    weak var delegate: CartCellDelegate?
     
     var isLast: Bool = false {
         didSet {
@@ -47,6 +54,15 @@ class CartCell: UITableViewCell {
         name.textColor = .white
         name.numberOfLines = 0
         return name
+    }()
+    
+    private lazy var removeButton: UIButton = {
+        let btn = UIButton()
+        btn.contentMode = .center
+        btn.setImage(UIImage(named: "closeAlert")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        btn.tintColor = .gray
+        btn.addTarget(self, action: #selector(removeButtonDidTap), for: .touchUpInside)
+        return btn
     }()
     
     private lazy var stack: UIStackView = {
@@ -124,6 +140,7 @@ class CartCell: UITableViewCell {
         containerView.addSubviews(
             image,
             productNameLabel,
+            removeButton,
             stack,
             priceLabel,
             countLabel,
@@ -149,6 +166,12 @@ class CartCell: UITableViewCell {
             Right(17)
         )
         
+        removeButton.easy.layout(
+            Top(26),
+            Right(16),
+            Size(34)
+        )
+        
         stack.easy.layout(
             Top(10).to(productNameLabel, .bottom),
             Left(17).to(image, .right),
@@ -171,6 +194,10 @@ class CartCell: UITableViewCell {
             Left(16), Right(16),
             Bottom()
         )
+    }
+    
+    @objc func removeButtonDidTap() {
+        delegate?.removeButtonDidTap(uuid: model?.uuid ?? UUID())
     }
 }
 

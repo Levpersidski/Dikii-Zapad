@@ -112,7 +112,7 @@ final class OrderViewController: UIViewController {
         view.viewModel = DropDownListViewModel(
             title: "Оплата: Наличными",
             items: [
-                DropDownItemViewModel(title: "Наличными", isSelected: true),
+                DropDownItemViewModel(title: "Наличными", isSelected: false),
                 DropDownItemViewModel(title: "Картой", isSelected: false),
                 DropDownItemViewModel(title: "СБП", isSelected: true)
             ]

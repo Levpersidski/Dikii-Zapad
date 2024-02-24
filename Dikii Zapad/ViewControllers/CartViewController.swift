@@ -268,14 +268,16 @@ private extension CartViewController {
         )
     }
     
-    func updateViews() {
+    func updateViews(reload: Bool = true) {
         containerEmpty.isHidden = !(model.cells.isEmpty)
         containerFull.isHidden = (model.cells.isEmpty)
         
-        tableView.reloadData()
-        
         let testSub = model.cells.map { Double($0.price) ?? 0 }.reduce(0, { $0 + $1 })
         pricelabel.text = "\(Int(testSub))"
+        
+        if reload {
+            tableView.reloadData()
+        }
     }
     
     @objc func openMainVC() {
@@ -310,6 +312,19 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
                 
         cell.model = model.cells[indexPath.row]
         cell.isLast = indexPath.row == model.cells.count - 1
+        cell.delegate = self
         return cell
     }
+}
+
+//MARK: - CartCellDelegate
+extension CartViewController: CartCellDelegate {
+    func removeButtonDidTap(uuid: UUID) {
+        if let index = DataStore.shared.cartViewModel.cells.firstIndex(where: { $0.uuid == uuid }) {
+            DataStore.shared.cartViewModel.cells.remove(at: index)
+            tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
+        }
+        updateViews(reload: false)
+    }
+
 }

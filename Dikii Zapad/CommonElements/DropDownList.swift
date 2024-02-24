@@ -10,12 +10,13 @@ import EasyPeasy
 
 struct DropDownListViewModel {
     var title: String
-    let items: [DropDownItemViewModel]
+    var items: [DropDownItemViewModel]
 }
 
 struct DropDownItemViewModel {
     let title: String
-    let isSelected: Bool
+    var isSelected: Bool
+    var index: Int = 0
 }
 
 protocol DropDownListDelegate: AnyObject {
@@ -44,6 +45,7 @@ final class DropDownList: UIView {
             model.items.enumerated().forEach { item in
                 let view = ItemSelectableDropDown()
                 view.viewModel = item.element
+                view.viewModel?.index = item.offset
                 view.delegate = self
                 itemsContainerStack.addArrangedSubview(view)
             }
@@ -182,12 +184,19 @@ final class DropDownList: UIView {
 //MARK: - ItemSelectableDropDownDelegate
 extension DropDownList: ItemSelectableDropDownDelegate {
     func didSelectItem(model: DropDownItemViewModel?) {
-        hiddenItems(true)
-        
         guard let model = model else { return }
         
-        delegate?.selectItem(dropDown: self, itemModel: model)
-        viewModel?.title = model.title
+        hiddenItems(true)
+        
+        var updatedViewModel = viewModel
+        updatedViewModel?.items.enumerated().forEach({ enumItem in
+            updatedViewModel?.items[enumItem.offset].isSelected = false
+        })
+        updatedViewModel?.items[model.index].isSelected = !model.isSelected
+        updatedViewModel?.title = model.title
         addressLabel.text = model.title
+        
+        viewModel = updatedViewModel
+        delegate?.selectItem(dropDown: self, itemModel: model)
     }
 }

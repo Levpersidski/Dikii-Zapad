@@ -7,8 +7,12 @@
 
 import UIKit
 import EasyPeasy
+import InputMask
 
 class DeliveryFormViewController: UIViewController {
+    let phoneListener = PhoneInputListener { _, string, completed, _ in
+        DataStore.shared.phoneNumber = completed ? string : nil
+    }
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: .zero)
@@ -76,7 +80,9 @@ class DeliveryFormViewController: UIViewController {
     private lazy var numberPhoneTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Номер телефона"
-        textField.delegate = self
+        textField.visibleMask = "+7 (XXX) XXX-XX-XX"
+        textField.keyboardType = .phonePad
+        textField.delegate = phoneListener
         return textField
     }()
     
@@ -86,6 +92,7 @@ class DeliveryFormViewController: UIViewController {
         
         setupView()
         setupConstrains()
+        phoneListener.textFieldDelegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,6 +101,7 @@ class DeliveryFormViewController: UIViewController {
         
         streetTextField.text = DataStore.shared.street
         houseTextField.text = DataStore.shared.numberHouse
+        numberPhoneTextField.text = DataStore.shared.phoneNumber?.maskAsPhone()
     }
     
     func setupView() {
@@ -163,7 +171,6 @@ class DeliveryFormViewController: UIViewController {
             Right(16),
             Bottom(40)
         )
-        
     }
 }
 
@@ -193,6 +200,17 @@ extension DeliveryFormViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField == streetTextField || textField == houseTextField {
             openMapDeliveryViewController()
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let startEditPhone = (textField.text == "" || textField.text == "+") && textField == numberPhoneTextField
+        
+        if startEditPhone {
+            numberPhoneTextField.text = "+7"
             return false
         } else {
             return true

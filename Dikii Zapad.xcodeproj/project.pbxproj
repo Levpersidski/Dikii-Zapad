@@ -12,6 +12,8 @@
 		04A906DF2B669F3D0014DE24 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A906DE2B669F3D0014DE24 /* GradientView.swift */; };
 		04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */; };
 		04A9AB462B5C837D002A8A79 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB452B5C837D002A8A79 /* Product.swift */; };
+		04AE02C22B8A0CCC0032C3A4 /* InputMask in Frameworks */ = {isa = PBXBuildFile; productRef = 04AE02C12B8A0CCC0032C3A4 /* InputMask */; };
+		04AE02C42B8A2C000032C3A4 /* String + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AE02C32B8A2C000032C3A4 /* String + extension.swift */; };
 		04D5E5482B64350C004F336E /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D5E5472B64350C004F336E /* UIViewController + Extension.swift */; };
 		04E6759E2B8894D2007559C6 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6759D2B8894D2007559C6 /* AddressView.swift */; };
 		04E675A02B889E24007559C6 /* UIButtonTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6759F2B889E24007559C6 /* UIButtonTransform.swift */; };
@@ -53,6 +55,7 @@
 		04A906DE2B669F3D0014DE24 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsDataService.swift; sourceTree = "<group>"; };
 		04A9AB452B5C837D002A8A79 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		04AE02C32B8A2C000032C3A4 /* String + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + extension.swift"; sourceTree = "<group>"; };
 		04D5E5472B64350C004F336E /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
 		04E6759D2B8894D2007559C6 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
 		04E6759F2B889E24007559C6 /* UIButtonTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonTransform.swift; sourceTree = "<group>"; };
@@ -97,6 +100,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0416FD192B5D7F68008A5600 /* Kingfisher in Frameworks */,
+				04AE02C22B8A0CCC0032C3A4 /* InputMask in Frameworks */,
 				0416FD162B5D7AE6008A5600 /* OAuthSwift in Frameworks */,
 				B6306BD32AC1D69200B0BF80 /* EasyPeasy in Frameworks */,
 			);
@@ -209,6 +213,7 @@
 				B645C3622AC353060079C8F2 /* UIView + extension.swift */,
 				04D5E5472B64350C004F336E /* UIViewController + Extension.swift */,
 				04ECD5FD2B66CF4500F29F2C /* UIStackView + Extension.swift */,
+				04AE02C32B8A2C000032C3A4 /* String + extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -242,6 +247,7 @@
 				B6306BD22AC1D69200B0BF80 /* EasyPeasy */,
 				0416FD152B5D7AE6008A5600 /* OAuthSwift */,
 				0416FD182B5D7F68008A5600 /* Kingfisher */,
+				04AE02C12B8A0CCC0032C3A4 /* InputMask */,
 			);
 			productName = "Dikii Zapad";
 			productReference = B6306BB52AC088D800B0BF80 /* Dikii Zapad.app */;
@@ -276,6 +282,7 @@
 				0416FD112B5D762B008A5600 /* XCRemoteSwiftPackageReference "OhhAuth" */,
 				0416FD142B5D7AE6008A5600 /* XCRemoteSwiftPackageReference "OAuthSwift" */,
 				0416FD172B5D7F68008A5600 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				04AE02C02B8A0CCB0032C3A4 /* XCRemoteSwiftPackageReference "input-mask-ios" */,
 			);
 			productRefGroup = B6306BB62AC088D800B0BF80 /* Products */;
 			projectDirPath = "";
@@ -329,6 +336,7 @@
 				B645C3652AC365FC0079C8F2 /* DetailsProductViewController.swift in Sources */,
 				04A906DF2B669F3D0014DE24 /* GradientView.swift in Sources */,
 				B645C3632AC353060079C8F2 /* UIView + extension.swift in Sources */,
+				04AE02C42B8A2C000032C3A4 /* String + extension.swift in Sources */,
 				04E6F8DD2B653B5C0014398B /* MapDeliveryViewController.swift in Sources */,
 				04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */,
 				B6DF27232ACC649E00FC45D0 /* CartViewController.swift in Sources */,
@@ -564,6 +572,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		04AE02C02B8A0CCB0032C3A4 /* XCRemoteSwiftPackageReference "input-mask-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RedMadRobot/input-mask-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 		B6306BD12AC1D69200B0BF80 /* XCRemoteSwiftPackageReference "EasyPeasy" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nakiostudio/EasyPeasy.git";
@@ -584,6 +600,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0416FD172B5D7F68008A5600 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		04AE02C12B8A0CCC0032C3A4 /* InputMask */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04AE02C02B8A0CCB0032C3A4 /* XCRemoteSwiftPackageReference "input-mask-ios" */;
+			productName = InputMask;
 		};
 		B6306BD22AC1D69200B0BF80 /* EasyPeasy */ = {
 			isa = XCSwiftPackageProductDependency;

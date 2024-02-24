@@ -16,6 +16,8 @@ struct AdditiveProduct {
 class DataStore {
     var street: String = "" // to do userDefaults
     var numberHouse: String = "" // to do userDefaults
+    var phoneNumber: String? = nil
+    
     var timeDelivery: String? = nil
     var outSideOrder = true
 

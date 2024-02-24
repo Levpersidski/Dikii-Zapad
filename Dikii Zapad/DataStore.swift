@@ -14,12 +14,14 @@ struct AdditiveProduct {
 }
 
 class DataStore {
-    var street: String = "" // to do userDefaults
-    var numberHouse: String = "" // to do userDefaults
+    var userDeliveryLocation: UserDeliveryLocationModel? = nil
+    var name: String? = nil
     var phoneNumber: String? = nil
     
     var timeDelivery: String? = nil
-    var outSideOrder = true
+    var outSideOrder = false
+    
+    var searchCity: String? = "Новошахтинск "
 
     ///All category
     var allCategories: [Category] = []

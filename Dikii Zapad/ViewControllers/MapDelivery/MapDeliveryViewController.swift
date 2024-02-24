@@ -10,10 +10,17 @@ import MapKit
 import CoreLocation
 import EasyPeasy
 
+struct UserDeliveryLocationModel {
+    var address: String = ""
+    var hasSale: Bool = false
+    var priceDelivery: Int = 0
+}
+
 class MapDeliveryViewController: UIViewController {
     var geoCoder: CLGeocoder = CLGeocoder()
     var searchLocation: [CLPlacemark] = []
     
+    var usedModel: UserDeliveryLocationModel?
     
     //TO DO: Mock location shop
     let latitude: CLLocationDegrees = 47.752105
@@ -71,6 +78,8 @@ class MapDeliveryViewController: UIViewController {
         view.backgroundColor = .black
         setupView()
         setupConstrains()
+        
+        usedModel = DataStore.shared.userDeliveryLocation
         
         view.addTapGesture { [weak self] _ in
             self?.view.endEditing(true)
@@ -155,22 +164,15 @@ class MapDeliveryViewController: UIViewController {
     }
 
     
-    private func createNameLocation(from placeMark: CLPlacemark) -> String {
-        let string: String
-        
+    private func createNameLocation(from placeMark: CLPlacemark) -> String {        
         let name = placeMark.name ?? "" //Улица, дом
-        let locality = placeMark.locality ?? "" //Город
+//        let locality = placeMark.locality ?? "" //Город
 //        let thoroughfare = placeMark.thoroughfare ?? "" // Улица
 //        let subThoroughfare = placeMark.subThoroughfare ?? "" //Дом
 //        let administrativeArea = placeMark.administrativeArea
 //        let region = placeMark.region
-        
-        if locality != name {
-            string = name + ", " + locality
-        } else {
-            string = locality
-        }
-        return string
+
+        return name
     }
 }
 
@@ -255,6 +257,8 @@ private extension MapDeliveryViewController {
                                 okTitle: "Повторить",
                                 present: true,
                                 completion: { [weak self] in self?.buildingWay() })
+                
+//                self.usedModel = nil
                 return
             }
             
@@ -272,10 +276,16 @@ private extension MapDeliveryViewController {
                     price = "\(value) ₽ \(hasSale ? "Скидка от 700 ₽" : "")"
                 }
                 
+                self.usedModel = UserDeliveryLocationModel(
+                    address: self.annotationSearch.subtitle ?? "",
+                    hasSale: hasSale,
+                    priceDelivery: Int(value)
+                )
+                
                 let modelBottomSheet = BottomSheetMapViewModel(
                     distance: distance,
                     price: price,
-                    hasDiscount: cordage.1,
+                    hasDiscount: hasSale,
                     state: value != 9999 ? .valid : .notValid
                 )
                 
@@ -303,14 +313,14 @@ extension MapDeliveryViewController: BottomSheetMapViewDelegate {
     }
     
     func buttonDidTouch() {
-        DataStore.shared.street = (searchLocation.first?.thoroughfare ?? "") + ", " + (searchLocation.first?.locality ?? "")
-        DataStore.shared.numberHouse = searchLocation.first?.subThoroughfare ?? ""
-        
+        DataStore.shared.userDeliveryLocation = usedModel
         navigationController?.popViewController(animated: true)
     }
     
     func updateLocations(newText: String) {
-        getLocation(from: newText) { [weak self] newPlaceMarks in
+        let searchCity = DataStore.shared.searchCity ?? ""
+        let updatedText = searchCity + newText
+        getLocation(from: updatedText) { [weak self] newPlaceMarks in
             guard let newPlaceMarks = newPlaceMarks else { return }
             
             self?.addAndFilterLocations(placeMarks: newPlaceMarks) { [weak self] filteredPlaceMarks in

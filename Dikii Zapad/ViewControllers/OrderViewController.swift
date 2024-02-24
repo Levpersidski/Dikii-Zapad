@@ -10,11 +10,11 @@ import EasyPeasy
 
 final class OrderViewController: UIViewController {
     var orderText: String =  ""
-    var priceText: String = "" {
-        didSet {
-            sumValueOrderLabel.text = priceText + " РУБ."
-        }
-    }
+    var priceAllProduct: String = "" //{
+//        didSet {
+//            sumValueOrderLabel.text = priceAllProduct + " РУБ."
+//        }
+//    }
     
     private let hours = [
         "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"
@@ -53,11 +53,7 @@ final class OrderViewController: UIViewController {
         view.delegate = self
         view.viewModel = DropDownListViewModel(
             title: "Введите адрес доставки",
-            items: [
-                DropDownItemViewModel(title: "На вынос", isSelected: false),
-                DropDownItemViewModel(title: "Сохраненный адрес - тест", isSelected: false),
-                DropDownItemViewModel(title: "Указать новый адресс", isSelected: true)
-            ]
+            items: []
         )
         view.clipsToBounds = true
         return view
@@ -109,18 +105,9 @@ final class OrderViewController: UIViewController {
     private lazy var payDropList: DropDownList = {
         let view = DropDownList(mode: .up)
         view.delegate = self
-        view.viewModel = DropDownListViewModel(
-            title: "Оплата: Наличными",
-            items: [
-                DropDownItemViewModel(title: "Наличными", isSelected: false),
-                DropDownItemViewModel(title: "Картой", isSelected: false),
-                DropDownItemViewModel(title: "СБП", isSelected: true)
-            ]
-        )
         view.clipsToBounds = true
         return view
     }()
-    
     
     private lazy var sumDeliveryStack: UIStackView = {
         let stack = UIStackView()
@@ -215,13 +202,78 @@ final class OrderViewController: UIViewController {
         
         setTimeDelivery()
         
-        let street = DataStore.shared.street
-        let numberHouse = DataStore.shared.numberHouse
-        if !street.isEmpty, !numberHouse.isEmpty {
-            var newModel = deliveryDropList.viewModel
-            newModel?.title = "\(street) \(numberHouse)"
-            deliveryDropList.viewModel = newModel
+        deliveryDropList.viewModel = prepareDeliveryListModel()
+        payDropList.viewModel = preparePayListModel()
+        
+        let sumModel = prepareSumDelivery()
+        sumValueDeliveryLabel.text = sumModel.0
+        sumDeliveryLabel.isHidden = sumModel.0.isEmpty
+        
+        sumValueOrderLabel.text = sumModel.1
+    }
+    
+    private func prepareSumDelivery() -> (String, String) {
+        let userModel = DataStore.shared.userDeliveryLocation
+        let isOutSideOrder = DataStore.shared.outSideOrder
+        let priceAllProduct = Int(priceAllProduct) ?? 0
+        
+        var sumDelivery = ""
+        var sumOrder: Int = 0
+        
+        if let userModel = userModel, isOutSideOrder {
+            let price = userModel.priceDelivery
+            
+            if userModel.hasSale {
+                sumDelivery = priceAllProduct > 700 ? "Бесплатно" : "\(price) РУБ."
+                sumOrder = priceAllProduct > 700 ? priceAllProduct : priceAllProduct + price
+            } else {
+                sumDelivery = "\(price) РУБ."
+                sumOrder = priceAllProduct + price
+            }
+        } else {
+            sumDelivery = isOutSideOrder ? "Не известно" : ""
+            sumOrder = priceAllProduct
         }
+        return (sumDelivery, "\(sumOrder) РУБ.")
+    }
+    
+    private func prepareDeliveryListModel() -> DropDownListViewModel{
+        let address = DataStore.shared.userDeliveryLocation?.address
+        let isOutSideOrder = DataStore.shared.outSideOrder
+        var model = DropDownListViewModel(
+            title: isOutSideOrder ? (address ?? "Выберите тип заказа") : "На вынос",
+            items: [
+                DropDownItemViewModel(title: "На вынос", isSelected: !isOutSideOrder) {
+                    DataStore.shared.outSideOrder = false
+                },
+                DropDownItemViewModel(title: "Указать новый адресс", isSelected: false) { [weak self] in
+                    DataStore.shared.outSideOrder = true
+                    let mapView = MapDeliveryViewController()
+                    self?.navigationController?.pushViewController(mapView, animated: true)
+                }
+            ]
+        )
+        if let address = address {
+            let item = DropDownItemViewModel(title: address, isSelected: isOutSideOrder) {
+                DataStore.shared.outSideOrder = true
+            }
+            
+            model.items.insert(item, at: 0)
+        }
+        
+        return model
+    }
+    
+    private func preparePayListModel() -> DropDownListViewModel {
+        let model = DropDownListViewModel(
+            title: "Оплата: Наличными",
+            items: [
+                DropDownItemViewModel(title: "Наличными", isSelected: true),
+                DropDownItemViewModel(title: "Картой", isSelected: false),
+                DropDownItemViewModel(title: "СБП", isSelected: false)
+            ]
+        )
+        return model
     }
     
     func addSubViews() {
@@ -454,8 +506,15 @@ extension OrderViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 //MARK: - DropDownListDelegate
 extension OrderViewController: DropDownListDelegate {
     func selectItem(dropDown: DropDownList, itemModel: DropDownItemViewModel) {
-        
+        if dropDown == deliveryDropList {
+            itemModel.completion?()
+            
+            let sumModel = prepareSumDelivery()
+            sumValueDeliveryLabel.text = sumModel.0
+            sumDeliveryLabel.isHidden = sumModel.0.isEmpty
+        }
     }
+    
     func dropDownListOpen(_ dropDown: DropDownList) {
         dataPicker.fadeOut()
 

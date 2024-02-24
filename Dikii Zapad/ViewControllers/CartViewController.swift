@@ -287,7 +287,7 @@ private extension CartViewController {
     @objc func makeOrderButtonDidTap() {
         let orderVC = OrderViewController()
         orderVC.orderText = createTextForMessage()
-        orderVC.priceText = pricelabel.text ?? ""
+        orderVC.priceAllProduct = pricelabel.text ?? ""
         
         navigationController?.pushViewController(orderVC, animated: true)
     }

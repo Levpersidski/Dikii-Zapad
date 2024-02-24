@@ -131,6 +131,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         navigationController?.navigationBar.backItem?.title = ""
         navigationController?.navigationBar.tintColor = UIColor.customOrange
+        segmentedControl.selectedSegmentIndex = DataStore.shared.outSideOrder ? 0 : 1
         segmentedValueChanged()
     }
     
@@ -154,10 +155,8 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         if segmentedControl.selectedSegmentIndex == 0 {
             buttonToDelivery.isEnabled = true
             
-            let street = DataStore.shared.street
-            let numberHouse = DataStore.shared.numberHouse
-            if !street.isEmpty, !numberHouse.isEmpty {
-                buttonToDelivery.setTitle("\(street) \(numberHouse)", for: .normal)
+            if let address = DataStore.shared.userDeliveryLocation?.address {
+                buttonToDelivery.setTitle(address, for: .normal)
             } else {
                 buttonToDelivery.setTitle("Указать адресс доставки >", for: .normal)
             }

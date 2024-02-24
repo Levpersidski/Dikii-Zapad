@@ -17,6 +17,8 @@ struct DropDownItemViewModel {
     let title: String
     var isSelected: Bool
     var index: Int = 0
+    
+    var completion: (() -> Void)? = nil
 }
 
 protocol DropDownListDelegate: AnyObject {
@@ -34,6 +36,7 @@ enum ModeDrop {
 final class DropDownList: UIView {
     weak var delegate: DropDownListDelegate?
     let modeDrop: ModeDrop
+    let canUnselect: Bool = false
     
     var viewModel: DropDownListViewModel? {
         didSet {
@@ -192,7 +195,7 @@ extension DropDownList: ItemSelectableDropDownDelegate {
         updatedViewModel?.items.enumerated().forEach({ enumItem in
             updatedViewModel?.items[enumItem.offset].isSelected = false
         })
-        updatedViewModel?.items[model.index].isSelected = !model.isSelected
+        updatedViewModel?.items[model.index].isSelected = canUnselect ? !model.isSelected : true
         updatedViewModel?.title = model.title
         addressLabel.text = model.title
         

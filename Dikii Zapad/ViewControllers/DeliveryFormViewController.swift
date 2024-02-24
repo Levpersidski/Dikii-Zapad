@@ -99,8 +99,7 @@ class DeliveryFormViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
         
-        streetTextField.text = DataStore.shared.street
-        houseTextField.text = DataStore.shared.numberHouse
+        streetTextField.text = DataStore.shared.userDeliveryLocation?.address
         numberPhoneTextField.text = DataStore.shared.phoneNumber?.maskAsPhone()
     }
     

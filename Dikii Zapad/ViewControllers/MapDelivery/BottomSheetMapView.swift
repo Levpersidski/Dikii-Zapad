@@ -53,8 +53,8 @@ final class BottomSheetMapView: UIView {
             priceLabel.text = "\(model.price)"
             distanceLabel.text = "\(model.distance) метров"
             confirmButton.isEnabled = model.state == .valid
-            let color: UIColor = model.state == .valid ? .orange : .orange.withAlphaComponent(0.3)
-            confirmButton.backgroundColor = color
+            let alpha: CGFloat = model.state == .valid ? 1 : 0.3
+            confirmButton.alpha = alpha
         }
     }
     
@@ -226,8 +226,8 @@ final class BottomSheetMapView: UIView {
                 self.priceLabel.text = "-"
                 self.distanceLabel.text = "- км"
                 self.confirmButton.isEnabled = false
-                let color: UIColor = self.model?.state == .valid ? .orange : .orange.withAlphaComponent(0.3)
-                self.confirmButton.backgroundColor = color
+                let alpha: CGFloat = self.model?.state == .valid ? 1 : 0.3
+                self.confirmButton.alpha = alpha
                 
                 self.delegate?.showSearchAnnotationWithName(placeMark: placeMark)
                 self.delegate?.buildingWayFromBottomSheet()

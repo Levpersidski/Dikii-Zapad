@@ -14,10 +14,11 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
        let btn = UIButton(frame: CGRect(x: 50, y: 100, width: 50, height: 50))
         btn.backgroundColor = .orange
         btn.addTapGesture { _ in
-            let window = UIApplication.appDelegate.window!
-            let model = CustomAlertViewModel(title: "Тест алерта",
-                                             subtitle: "Тут сбатайтл и описание алерта")
-            CustomAlert.open(in: window, model: model)        }
+//            let window = UIApplication.appDelegate.window!
+//            let model = CustomAlertViewModel(title: "Тест алерта",
+//                                             subtitle: "Тут сбатайтл и описание алерта")
+//            CustomAlert.open(in: window, model: model)
+        }
         return btn
     }()
     
@@ -185,8 +186,8 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
                 buttonToDelivery,
                 segmentedControl,
                 scrollForButtons,
-                verticalCollectionView,
-                testButton
+                verticalCollectionView
+//                testButton
             )
             
             scrollForButtons.addToScrollView(stackButtons)

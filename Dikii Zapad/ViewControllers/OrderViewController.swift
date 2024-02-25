@@ -260,8 +260,11 @@ final class OrderViewController: UIViewController {
         var model = DropDownListViewModel(
             title: isOutSideOrder ? (address ?? "Выберите тип заказа") : "На вынос",
             items: [
-                DropDownItemViewModel(title: "На вынос", isSelected: !isOutSideOrder) {
+                DropDownItemViewModel(title: "На вынос", isSelected: !isOutSideOrder) { [weak self] in
                     DataStore.shared.outSideOrder = false
+                    let sumModel = self?.prepareSumDelivery()
+                    self?.sumValueDeliveryLabel.text = sumModel?.0
+                    self?.sumValueOrderLabel.text = sumModel?.1
                 },
                 DropDownItemViewModel(title: "Указать новый адресс", isSelected: false) { [weak self] in
                     DataStore.shared.outSideOrder = true
@@ -271,8 +274,11 @@ final class OrderViewController: UIViewController {
             ]
         )
         if let address = address {
-            let item = DropDownItemViewModel(title: address, isSelected: isOutSideOrder) {
+            let item = DropDownItemViewModel(title: address, isSelected: isOutSideOrder) { [weak self] in
                 DataStore.shared.outSideOrder = true
+                let sumModel = self?.prepareSumDelivery()
+                self?.sumValueDeliveryLabel.text = sumModel?.0
+                self?.sumValueOrderLabel.text = sumModel?.1
             }
             
             model.items.insert(item, at: 0)

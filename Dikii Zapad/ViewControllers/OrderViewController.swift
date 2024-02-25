@@ -9,12 +9,18 @@ import UIKit
 import EasyPeasy
 
 final class OrderViewController: UIViewController {
-    var orderText: String =  ""
-    var priceAllProduct: String = "" //{
-//        didSet {
-//            sumValueOrderLabel.text = priceAllProduct + " РУБ."
-//        }
-//    }
+//    var orderText: String =  ""
+//    var priceAllProduct: String = ""
+    
+    private var isValidDeliveryTime: Bool = true {
+        didSet {
+            timeSecondButton.titleLabel?.tintColor = isValidDeliveryTime ? .white : .red
+            makeOrderButton.isEnabled = isValidDeliveryTime
+            makeOrderButton.alpha = isValidDeliveryTime ? 1 : 0.3
+        }
+    }
+    
+    private var priceDelivery: Int = 0
     
     private let hours = [
         "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"
@@ -201,23 +207,26 @@ final class OrderViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
         
         setTimeDelivery()
+        isValidDeliveryTime = checkValidTimeInDataSore()
         
         deliveryDropList.viewModel = prepareDeliveryListModel()
         payDropList.viewModel = preparePayListModel()
         
         let sumModel = prepareSumDelivery()
         sumValueDeliveryLabel.text = sumModel.0
-        sumDeliveryLabel.isHidden = sumModel.0.isEmpty
-        
         sumValueOrderLabel.text = sumModel.1
+        
+        sumDeliveryLabel.isHidden = sumModel.0.isEmpty
     }
     
     private func prepareSumDelivery() -> (String, String) {
+        let productsModel = DataStore.shared.cartViewModel
         let userModel = DataStore.shared.userDeliveryLocation
         let isOutSideOrder = DataStore.shared.outSideOrder
-        let priceAllProduct = Int(priceAllProduct) ?? 0
+        let priceAllProduct = Int(productsModel.cells.map { Double($0.price) }.reduce(0, { $0 + $1 }))
         
         var sumDelivery = ""
+        var priceDelivery = 0
         var sumOrder: Int = 0
         
         if let userModel = userModel, isOutSideOrder {
@@ -226,14 +235,22 @@ final class OrderViewController: UIViewController {
             if userModel.hasSale {
                 sumDelivery = priceAllProduct > 700 ? "Бесплатно" : "\(price) РУБ."
                 sumOrder = priceAllProduct > 700 ? priceAllProduct : priceAllProduct + price
+                
+                priceDelivery = priceAllProduct > 700 ? 0 : price
             } else {
                 sumDelivery = "\(price) РУБ."
                 sumOrder = priceAllProduct + price
+                
+                priceDelivery = price
             }
         } else {
             sumDelivery = isOutSideOrder ? "Не известно" : ""
             sumOrder = priceAllProduct
+            
+            priceDelivery = 0
         }
+        
+        self.priceDelivery = priceDelivery
         return (sumDelivery, "\(sumOrder) РУБ.")
     }
     
@@ -400,13 +417,28 @@ final class OrderViewController: UIViewController {
         self.makeOrderButton.setTitle(value ? "" : "ОФОРМИТЬ ЗАКАЗ", for: .normal)
     }
     
+    private func createTextForMessage() -> String {
+        let name = DataStore.shared.name ?? "Нет имени"
+        let model = DataStore.shared.cartViewModel
+        let userModel = DataStore.shared.userDeliveryLocation
+        let address = DataStore.shared.outSideOrder ? (userModel?.address ?? "") : "На вынос"
+        let time = DataStore.shared.timeDelivery ?? "как можно скорее"
+        
+        let price = Int(model.cells.map { Double($0.price) }.reduce(0, { $0 + $1 }))
+        let order = model.cells.map{ "\($0.title)\($0.count > 1 ? "(x\($0.count))" : "")" + "\($0.additives.isEmpty ? "" : " - (\($0.additives.joined(separator: ", ")))")" }
+        
+        return "\(price + priceDelivery) Руб.\n\(order.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(name) т: +\(DataStore.shared.phoneNumber ?? "")"
+    }
+    
     @objc private func makeOrderButtonDidTap() {
+        guard checkValidTimeInDataSore() else { return }
+        
         payDropList.hiddenItems(true)
         deliveryDropList.hiddenItems(true)
         dataPicker.fadeOut()
         startLoadingAnimation(true)
         
-        TelegramManager.shared.sendMessage(orderText) { [weak self] result in
+        TelegramManager.shared.sendMessage(createTextForMessage()) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -435,21 +467,15 @@ final class OrderViewController: UIViewController {
         }
     }
     
-    @objc private func datePickerValueChanged(sender: UIDatePicker) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        
-        let selectedTime = dateFormatter.string(from: sender.date)
-        print("Selected time: \(selectedTime)")
-    }
-    
     @objc private func timeFirstButtonDidTap() {
+        isValidDeliveryTime = true
         payDropList.hiddenItems(true)
         deliveryDropList.hiddenItems(true)
         
         DataStore.shared.timeDelivery = nil
         dataPicker.fadeOut()
         setTimeDelivery()
+        isValidDeliveryTime = checkValidTimeInDataSore()
     }
     
     @objc private func timeSecondButtonDidTap() {
@@ -461,7 +487,8 @@ final class OrderViewController: UIViewController {
         let selectedMinute = minutes[dataPicker.selectedRow(inComponent: 1)]
         DataStore.shared.timeDelivery = "\(selectedHour):\(selectedMinute)"
         setTimeDelivery()
-        
+        isValidDeliveryTime = checkValidTimeInDataSore()
+
         if dataPicker.isHidden {
             dataPicker.fadeIn()
         } else {
@@ -499,7 +526,30 @@ extension OrderViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         print("Selected time: \(selectedHour):\(selectedMinute)")
         timeSecondButton.setTitle("\(selectedHour):\(selectedMinute)", for: .normal)
         DataStore.shared.timeDelivery = "\(selectedHour):\(selectedMinute)"
+        
         setTimeDelivery()
+        isValidDeliveryTime = checkValidTimeInDataSore()
+    }
+    
+    @discardableResult
+    func checkValidTimeInDataSore() -> Bool {
+        guard let timeToDelivery = DataStore.shared.timeDelivery else {
+            isValidDeliveryTime = true
+            return true
+        }
+        
+        let components = timeToDelivery.components(separatedBy: ":")
+        guard components.count == 2 else {
+            isValidDeliveryTime = true
+            return true
+        }
+    
+        let calendar = Calendar.current
+        var dateComponents = calendar.dateComponents([.year, .month, .day], from: Date())
+        dateComponents.hour = Int(components[0]) // Устанавливаем часы
+        dateComponents.minute = Int(components[1]) // Устанавливаем минуты
+        let date = calendar.date(from: dateComponents) ?? Date()
+        return date > Date()
     }
 }
 

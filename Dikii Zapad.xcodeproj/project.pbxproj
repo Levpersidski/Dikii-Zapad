@@ -11,6 +11,7 @@
 		0416FD192B5D7F68008A5600 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD182B5D7F68008A5600 /* Kingfisher */; };
 		042487E42B8A2F89000F9CEC /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042487E32B8A2F89000F9CEC /* CustomAlert.swift */; };
 		042487EA2B8B296C000F9CEC /* ActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042487E92B8B296C000F9CEC /* ActionsCell.swift */; };
+		042487EC2B8B5930000F9CEC /* Date + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042487EB2B8B5930000F9CEC /* Date + extension.swift */; };
 		04A906DF2B669F3D0014DE24 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A906DE2B669F3D0014DE24 /* GradientView.swift */; };
 		04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */; };
 		04A9AB462B5C837D002A8A79 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB452B5C837D002A8A79 /* Product.swift */; };
@@ -56,6 +57,7 @@
 /* Begin PBXFileReference section */
 		042487E32B8A2F89000F9CEC /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		042487E92B8B296C000F9CEC /* ActionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsCell.swift; sourceTree = "<group>"; };
+		042487EB2B8B5930000F9CEC /* Date + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + extension.swift"; sourceTree = "<group>"; };
 		04A906DE2B669F3D0014DE24 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsDataService.swift; sourceTree = "<group>"; };
 		04A9AB452B5C837D002A8A79 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				04D5E5472B64350C004F336E /* UIViewController + Extension.swift */,
 				04ECD5FD2B66CF4500F29F2C /* UIStackView + Extension.swift */,
 				04AE02C32B8A2C000032C3A4 /* String + extension.swift */,
+				042487EB2B8B5930000F9CEC /* Date + extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 				04E6F8D92B651C2E0014398B /* CustomTextField.swift in Sources */,
 				04ECD5FA2B66C71F00F29F2C /* BottomSheetMapView.swift in Sources */,
 				B6DF27182ACC387F00FC45D0 /* LaunchViewController.swift in Sources */,
+				042487EC2B8B5930000F9CEC /* Date + extension.swift in Sources */,
 				04D5E5482B64350C004F336E /* UIViewController + Extension.swift in Sources */,
 				B6DF271F2ACC640700FC45D0 /* ActionsViewController.swift in Sources */,
 				B6DF271D2ACC63A500FC45D0 /* MainTabBarController.swift in Sources */,

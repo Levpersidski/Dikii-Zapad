@@ -272,7 +272,7 @@ private extension CartViewController {
         containerEmpty.isHidden = !(model.cells.isEmpty)
         containerFull.isHidden = (model.cells.isEmpty)
         
-        let testSub = model.cells.map { Double($0.price) ?? 0 }.reduce(0, { $0 + $1 })
+        let testSub = model.cells.map { Double($0.price) }.reduce(0, { $0 + $1 })
         pricelabel.text = "\(Int(testSub))"
         
         if reload {
@@ -286,17 +286,7 @@ private extension CartViewController {
     
     @objc func makeOrderButtonDidTap() {
         let orderVC = OrderViewController()
-        orderVC.orderText = createTextForMessage()
-        orderVC.priceAllProduct = pricelabel.text ?? ""
-        
         navigationController?.pushViewController(orderVC, animated: true)
-    }
-    
-    func createTextForMessage() -> String {
-        let price = pricelabel.text ?? "-"
-        let order = model.cells.map{ "\($0.title)\($0.count > 1 ? "(x\($0.count))" : "")" + "\($0.additives.isEmpty ? "" : " - (\($0.additives.joined(separator: ", ")))")" }
-        
-        return "\(price) Руб.\n\(order.joined(separator: "\n\n"))"
     }
 }
 

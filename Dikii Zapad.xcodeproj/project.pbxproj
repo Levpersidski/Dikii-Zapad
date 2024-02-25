@@ -10,6 +10,7 @@
 		0416FD162B5D7AE6008A5600 /* OAuthSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD152B5D7AE6008A5600 /* OAuthSwift */; };
 		0416FD192B5D7F68008A5600 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD182B5D7F68008A5600 /* Kingfisher */; };
 		042487E42B8A2F89000F9CEC /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042487E32B8A2F89000F9CEC /* CustomAlert.swift */; };
+		042487EA2B8B296C000F9CEC /* ActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042487E92B8B296C000F9CEC /* ActionsCell.swift */; };
 		04A906DF2B669F3D0014DE24 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A906DE2B669F3D0014DE24 /* GradientView.swift */; };
 		04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */; };
 		04A9AB462B5C837D002A8A79 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB452B5C837D002A8A79 /* Product.swift */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		042487E32B8A2F89000F9CEC /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
+		042487E92B8B296C000F9CEC /* ActionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsCell.swift; sourceTree = "<group>"; };
 		04A906DE2B669F3D0014DE24 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsDataService.swift; sourceTree = "<group>"; };
 		04A9AB452B5C837D002A8A79 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -111,6 +113,45 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		042487E52B8B28B3000F9CEC /* TabVieeweControllers */ = {
+			isa = PBXGroup;
+			children = (
+				042487E72B8B2931000F9CEC /* MainViewController */,
+				042487E82B8B2952000F9CEC /* ActionsViewController */,
+				B6DF27202ACC643500FC45D0 /* ContactsViewController.swift */,
+				B6DF27222ACC649E00FC45D0 /* CartViewController.swift */,
+			);
+			path = TabVieeweControllers;
+			sourceTree = "<group>";
+		};
+		042487E62B8B28F6000F9CEC /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */,
+				B6DF271C2ACC63A500FC45D0 /* MainTabBarController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		042487E72B8B2931000F9CEC /* MainViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B6306BBC2AC088D800B0BF80 /* MainViewController.swift */,
+				B645C3602AC34F960079C8F2 /* ProductCell.swift */,
+				B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */,
+			);
+			path = MainViewController;
+			sourceTree = "<group>";
+		};
+		042487E82B8B2952000F9CEC /* ActionsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B6DF271E2ACC640700FC45D0 /* ActionsViewController.swift */,
+				042487E92B8B296C000F9CEC /* ActionsCell.swift */,
+			);
+			path = ActionsViewController;
+			sourceTree = "<group>";
+		};
 		043842092B657BD2009632DC /* MapDelivery */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,7 +207,6 @@
 				B6DF27272ACD5F0000FC45D0 /* Scene */,
 				B6DF27262ACD5EB800FC45D0 /* Extension */,
 				B66D7BAA2B054610009C34CB /* ViewControllers */,
-				B645C3602AC34F960079C8F2 /* ProductCell.swift */,
 				B66D7BAB2B0A9307009C34CB /* CartCell.swift */,
 				04E6F8D72B651BF30014398B /* CommonElements */,
 				B645C35E2AC349D80079C8F2 /* DataStore.swift */,
@@ -175,7 +215,6 @@
 				B6DB40FD2AEFF2E6005963ED /* CustomButton.swift */,
 				04E6759F2B889E24007559C6 /* UIButtonTransform.swift */,
 				B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */,
-				B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */,
 				B667A0492AE58C1E003D8069 /* AdditiveCell.swift */,
 				B66D7BA82AFD271F009C34CB /* CheckBoxButton.swift */,
 				04E6759D2B8894D2007559C6 /* AddressView.swift */,
@@ -195,13 +234,9 @@
 		B66D7BAA2B054610009C34CB /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				B6DF271C2ACC63A500FC45D0 /* MainTabBarController.swift */,
-				B6DF27202ACC643500FC45D0 /* ContactsViewController.swift */,
-				B6DF271E2ACC640700FC45D0 /* ActionsViewController.swift */,
-				B6306BBC2AC088D800B0BF80 /* MainViewController.swift */,
+				042487E62B8B28F6000F9CEC /* Main */,
+				042487E52B8B28B3000F9CEC /* TabVieeweControllers */,
 				B645C3642AC365FC0079C8F2 /* DetailsProductViewController.swift */,
-				B6DF27172ACC387F00FC45D0 /* LaunchViewController.swift */,
-				B6DF27222ACC649E00FC45D0 /* CartViewController.swift */,
 				B67122982B7E747D00E051EF /* OrderViewController.swift */,
 				B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */,
 				043842092B657BD2009632DC /* MapDelivery */,
@@ -340,6 +375,7 @@
 				B645C3652AC365FC0079C8F2 /* DetailsProductViewController.swift in Sources */,
 				04A906DF2B669F3D0014DE24 /* GradientView.swift in Sources */,
 				B645C3632AC353060079C8F2 /* UIView + extension.swift in Sources */,
+				042487EA2B8B296C000F9CEC /* ActionsCell.swift in Sources */,
 				04AE02C42B8A2C000032C3A4 /* String + extension.swift in Sources */,
 				04E6F8DD2B653B5C0014398B /* MapDeliveryViewController.swift in Sources */,
 				04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */,

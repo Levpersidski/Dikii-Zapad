@@ -42,7 +42,7 @@ final class OrderViewController: UIViewController {
     
     private lazy var deliveryLabel: UILabel = {
         let label = UILabel()
-        label.text = "Доставка"
+        label.text = "Оформление"
         label.font = .systemFont(ofSize: 24, weight: .medium)
         label.textColor = .white
         return label

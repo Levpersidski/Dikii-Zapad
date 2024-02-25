@@ -12,9 +12,9 @@ class ActionsViewController: UIViewController {
     
     private var items: [ActionCellViewModel] = [
         ActionCellViewModel(urlString: "http://dikiyzapad-161.ru/test/testImage.png"),
-        ActionCellViewModel(urlString: "https://dikiyzapad-161.ru/test/Group%201@3x.png"),
+        ActionCellViewModel(urlString: "http://dikiyzapad-161.ru/test/testImage.png"),
         ActionCellViewModel(urlString: "http://dikiyzapad-161.ru/wp-content/uploads/2024/01/hot.webp"),
-        ActionCellViewModel(urlString: "https://dikiyzapad-161.ru/test/Group%201@3x.png")
+        ActionCellViewModel(urlString: "http://dikiyzapad-161.ru/test/testImage.png"),
     ]
     
     private lazy var backgroundImage: UIImageView = {

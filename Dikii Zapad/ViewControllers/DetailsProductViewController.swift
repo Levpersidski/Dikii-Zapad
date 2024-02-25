@@ -189,14 +189,37 @@ private extension DetailsProductViewController {
         guard let product = modelProduct else { return }
         
         let cell = CartCellViewModel(title: product.name,
-                                     price: ("\(calculateSum())"),
+                                     price: calculateSum(),
                                      additives: selectedAdditives,
                                      imageURL: product.imageURL,
                                      count: Int(quantityStepper.value),
                                      uuid: UUID())
         
-        DataStore.shared.cartViewModel.cells.append(cell)
+        mergeDoubleOrAddInDataStore(cell)
         navigationController?.popViewController(animated: true)
+    }
+    
+    private func mergeDoubleOrAddInDataStore(_ cell: CartCellViewModel) {
+        let copy = DataStore.shared.cartViewModel.cells.filter { $0.title == cell.title }.first(where: { product in
+            let isCopy: Bool
+            
+            if product.additives.count == cell.additives.count {
+                isCopy = product.additives.allSatisfy({ cell.additives.contains($0) })
+            } else {
+                isCopy = false
+            }
+            return isCopy
+        })
+
+        //Если нашли копию то увеличиваем счетчик
+        if copy != nil, let index = DataStore.shared.cartViewModel.cells.firstIndex(where: { $0.uuid == copy?.uuid }) {
+            DataStore.shared.cartViewModel.cells[index].count += cell.count
+            DataStore.shared.cartViewModel.cells[index].price += cell.price
+        }
+        //Иначе добавляем новый эллемент
+        else {
+            DataStore.shared.cartViewModel.cells.append(cell)
+        }
     }
     
     @objc func stepperValueChanged(_ sender: UIStepper) {

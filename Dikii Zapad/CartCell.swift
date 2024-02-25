@@ -11,11 +11,11 @@ import EasyPeasy
 
 struct CartCellViewModel {
     let title: String
-    let price: String
+    var price: Int
     let additives: [String]
     let imageURL: URL?
     
-    let count: Int
+    var count: Int
     let uuid: UUID
 }
 

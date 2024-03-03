@@ -42,7 +42,7 @@ class DataStore {
           return UserDefaults.standard.string(forKey: "nameUserDataStore")
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "isUserNotWantedPushes")
+            UserDefaults.standard.set(newValue, forKey: "nameUserDataStore")
         }
     }
     

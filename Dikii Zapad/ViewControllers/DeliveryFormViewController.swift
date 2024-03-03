@@ -10,6 +10,8 @@ import EasyPeasy
 import InputMask
 
 class DeliveryFormViewController: UIViewController {
+    private var topScrollViewConstraint: NSLayoutConstraint!
+    
     let phoneListener = PhoneInputListener { _, string, completed, _ in
         DataStore.shared.phoneNumber = completed ? string : nil
     }
@@ -93,6 +95,11 @@ class DeliveryFormViewController: UIViewController {
         setupView()
         setupConstrains()
         phoneListener.textFieldDelegate = self
+        addObserverKeyboard()
+    }
+    
+    deinit {
+        removeObserverKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -101,6 +108,8 @@ class DeliveryFormViewController: UIViewController {
         
         streetTextField.text = DataStore.shared.userDeliveryLocation?.address
         numberPhoneTextField.text = DataStore.shared.phoneNumber?.maskAsPhone()
+       
+        nameTextField.text = DataStore.shared.name
     }
     
     func setupView() {
@@ -129,6 +138,8 @@ class DeliveryFormViewController: UIViewController {
             Left(), Right(),
             Bottom()
         )
+        
+        topScrollViewConstraint = scrollView.easy.layout(Top().to(view.safeAreaLayoutGuide, .top)).first
         
         containerView.easy.layout(
             Edges(),
@@ -194,6 +205,20 @@ private extension DeliveryFormViewController {
 //MARK: - UITextFieldDelegate
 extension DeliveryFormViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
+        
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        if textField == nameTextField {
+            DataStore.shared.name = textField.text
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == nameTextField {
+            textField.endEditing(true)
+        }
+        return true
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -214,5 +239,36 @@ extension DeliveryFormViewController: UITextFieldDelegate {
         } else {
             return true
         }
+    }
+}
+
+//MARK: -Observer
+extension DeliveryFormViewController {
+    private func addObserverKeyboard() {
+        NotificationCenter.default.addObserver( self, selector: #selector(kbWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver( self, selector: #selector(kbWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func removeObserverKeyboard() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func kbWillShow(_ notification: Notification) {
+        let userInfo = notification.userInfo
+        let kbFrameSize = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        
+        topScrollViewConstraint.constant = -kbFrameSize.height/2
+        UIView.animate(withDuration: 0.27, animations: {
+            self.view.layoutSubviews()
+        })
+    }
+    
+    @objc private func kbWillHide() {
+        
+        topScrollViewConstraint.constant = 0
+        UIView.animate(withDuration: 0.27, animations: {
+            self.view.layoutSubviews()
+        })
     }
 }

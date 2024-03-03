@@ -306,7 +306,7 @@ final class OrderViewController: UIViewController {
             title: "Оплата: Наличными",
             items: [
                 DropDownItemViewModel(title: "Наличными", isSelected: true),
-                DropDownItemViewModel(title: "Картой", isSelected: false),
+                DropDownItemViewModel(title: "Картой (курьеру)", isSelected: false),
                 DropDownItemViewModel(title: "СБП", isSelected: false)
             ]
         )
@@ -437,22 +437,38 @@ final class OrderViewController: UIViewController {
     }
     
     private func createTextForMessage() -> String {
-        let name = DataStore.shared.name ?? "Нет имени"
         let model = DataStore.shared.cartViewModel
         let userModel = DataStore.shared.userDeliveryLocation
-        let address = DataStore.shared.outSideOrder ? (userModel?.address ?? "") : "На вынос"
         
-        let time: String
+        let name = DataStore.shared.name ?? "Нет имени"
+        let price = Int(model.cells.map { Double($0.price) }.reduce(0, { $0 + $1 }))
+        
+        var time: String = "Время доставки: "
         if let timeDelivery = DataStore.shared.timeDelivery {
-            time = timeDelivery.0.description + " " + timeDelivery.1
+            time += timeDelivery.0.description + " " + timeDelivery.1
         } else {
-            time = "как можно скорее"
+            time += "как можно скорее"
         }
         
-        let price = Int(model.cells.map { Double($0.price) }.reduce(0, { $0 + $1 }))
-        let order = model.cells.map{ "\($0.title)\($0.count > 1 ? "(x\($0.count))" : "")" + "\($0.additives.isEmpty ? "" : " - (\($0.additives.joined(separator: ", ")))")" }
+        let address: String
+        if DataStore.shared.outSideOrder {
+            address = "Адресс: \(userModel?.address ?? "")"
+        } else {
+            address = "На вынос"
+        }
         
-        return "\(price + priceDelivery) Руб.\n\(order.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(name) т: +\(DataStore.shared.phoneNumber ?? "")"
+        let orderText = model.cells.map { model in
+            let category = DataStore.shared.allCategories.first(where: { $0.id == model.categoryId })?.name ?? ""
+            
+            let categoryAndName = "(\(category))" + " " + model.title
+            let count = model.count > 1 ? "(x\(model.count))" : ""
+            
+            return """
+\(categoryAndName)\(count) \(model.additives.isEmpty ? "" : " - (\(model.additives.joined(separator: ", ")))")
+"""
+        }
+        
+        return "\(price + priceDelivery) Руб.\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(name) т: +\(DataStore.shared.phoneNumber ?? "")"
     }
     
     @objc private func makeOrderButtonDidTap() {

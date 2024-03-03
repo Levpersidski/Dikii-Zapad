@@ -193,6 +193,7 @@ private extension DetailsProductViewController {
                                      additives: selectedAdditives,
                                      imageURL: product.imageURL,
                                      count: Int(quantityStepper.value),
+                                     categoryId: product.categories.first?.id ?? 0,
                                      uuid: UUID())
         
         mergeDoubleOrAddInDataStore(cell)

@@ -16,6 +16,7 @@ struct CartCellViewModel {
     let imageURL: URL?
     
     var count: Int
+    let categoryId: Int
     let uuid: UUID
 }
 

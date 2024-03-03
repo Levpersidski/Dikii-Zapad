@@ -472,6 +472,14 @@ final class OrderViewController: UIViewController {
     }
     
     @objc private func makeOrderButtonDidTap() {
+        guard DataStore.shared.phoneNumber != nil else {
+            let window = UIApplication.appDelegate.window ?? UIView()
+            let model = CustomAlertViewModel(title: "Не хватает данных",
+                                             subtitle: "Укажите номер телефона для заказа")
+            CustomAlert.open(in: window, model: model)
+            return
+        }
+        
         guard checkValidTimeInDataSore() else { return }
         
         payDropList.hiddenItems(true)
@@ -485,7 +493,7 @@ final class OrderViewController: UIViewController {
             switch result {
             case .success(_):
                 if let window =  UIApplication.appDelegate.window {
-                    let model = CustomAlertViewModel(title: "Благодарим за заказ!", subtitle: "Мы перезвоним вам в течении 15 минут для подтверждения заказа!")
+                    let model = CustomAlertViewModel(title: "Благодарим за заказ!", subtitle: "Мы перезвоним вам на номер: \(DataStore.shared.phoneNumber?.maskAsPhone() ?? "") в течении 15 минут для подтверждения заказа!")
                     CustomAlert.open(in: window, model: model)
                 }
                 self.navigationController?.popViewController(animated: true)

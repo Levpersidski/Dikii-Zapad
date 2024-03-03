@@ -197,6 +197,7 @@ private extension DetailsProductViewController {
                                      uuid: UUID())
         
         mergeDoubleOrAddInDataStore(cell)
+        showDoneView()
         navigationController?.popViewController(animated: true)
     }
     
@@ -300,6 +301,32 @@ private extension DetailsProductViewController {
         let totalSumAdditive = selectedAdditive.reduce(0, { $0 + $1 }) * counter
         let totalSumProducts = priceProduct * counter
         return Int(totalSumAdditive + totalSumProducts)
+    }
+    
+    func showDoneView() {
+        let window = UIApplication.appDelegate.window ?? UIView()
+        let containerView = UIView()
+        containerView.alpha = 0
+        containerView.backgroundColor = .black.withAlphaComponent(0.8)
+        containerView.maskCorners(radius: 10)
+        containerView.frame = CGRect(x: (window.frame.width / 2) - 50,
+                                     y: (window.frame.height / 2) - 50,
+                                     width: 100,
+                                     height: 100)
+        
+        let imageView = UIImageView(image: UIImage(named: "done")?.withRenderingMode(.alwaysOriginal))
+        imageView.frame = CGRect(x: 12.5, y: 12.5, width: 75, height: 75)
+        
+        window.addSubview(containerView)
+        containerView.addSubview(imageView)
+        
+        containerView.fadeIn {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                containerView.fadeOut {
+                    containerView.removeFromSuperview()
+                }
+            }
+        }
     }
 }
 

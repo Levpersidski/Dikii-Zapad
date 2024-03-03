@@ -64,7 +64,7 @@ class DataStore {
         }
     }
     
-    var timeDelivery: String? = nil
+    var timeDelivery: (DayType, String)? = nil
     
     var searchCity: String? = "Новошахтинск "
 

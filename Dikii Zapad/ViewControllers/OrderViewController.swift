@@ -8,10 +8,21 @@
 import UIKit
 import EasyPeasy
 
-final class OrderViewController: UIViewController {
-//    var orderText: String =  ""
-//    var priceAllProduct: String = ""
+enum DayType: Int {
+    case today = 0
+    case tomorrow = 1
     
+    var description: String {
+        switch self {
+        case .today:
+            return "Сегодня"
+        case .tomorrow:
+            return "Завтра"
+        }
+    }
+}
+
+final class OrderViewController: UIViewController {
     private var isValidDeliveryTime: Bool = true {
         didSet {
             timeSecondButton.titleLabel?.tintColor = isValidDeliveryTime ? .white : .red
@@ -28,6 +39,8 @@ final class OrderViewController: UIViewController {
     private let minutes = [
         "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50",  "55"
     ]
+    
+    private let days: [DayType] = [.today, .tomorrow]
     
     private lazy var backgroundImage: UIImageView = {
         let image = UIImageView()
@@ -105,6 +118,7 @@ final class OrderViewController: UIViewController {
         picker.undoManager?.runLoopModes = [.tracking]
         picker.backgroundColor = .white
         picker.maskCorners(radius: 10)
+        picker.tintColor = .red
         return picker
     }()
     
@@ -352,9 +366,8 @@ final class OrderViewController: UIViewController {
         )
         dataPicker.easy.layout(
             Top(10).to(timeSecondButton, .bottom),
-            Right().to(timeSecondButton, .right),
-            Height(180),
-            Width().like(timeSecondButton)
+            Left().to(timeFirstButton, .left), Right().to(timeSecondButton, .right),
+            Height(180)
         )
         makeOrderButton.easy.layout(
             Bottom(20).to(view.safeAreaLayoutGuide, .bottom),
@@ -392,7 +405,7 @@ final class OrderViewController: UIViewController {
                 self.timeSecondButton.layer.borderColor = UIColor.orange.cgColor
             }
             
-            timeSecondButton.setTitle(time, for: .normal)
+            timeSecondButton.setTitle(time.1, for: .normal)
         } else {
             loadViewIfNeeded()
             UIView.animate(withDuration: 0.2) {
@@ -404,17 +417,17 @@ final class OrderViewController: UIViewController {
     }
     
     private func setSelectDadaPucker() {
-        guard let values = DataStore.shared.timeDelivery?.components(separatedBy: ":"),
-              values.count == 2,
-              dataPicker.numberOfComponents == 2
-        else {
+        guard let time = DataStore.shared.timeDelivery else {
+            return
+        }
+        let componentsTime = time.1.components(separatedBy: ":")
+        guard componentsTime.count == 2, dataPicker.numberOfComponents == 3 else {
             return
         }
         
-        values.enumerated().forEach {
-            guard let indexComponent = $0.offset == 0 ? hours.firstIndex(of: $0.element) : minutes.firstIndex(of: $0.element) else { return }
-            dataPicker.selectRow(indexComponent, inComponent: $0.offset, animated: false)
-        }
+        dataPicker.selectRow(time.0.rawValue, inComponent: 0, animated: false)
+        dataPicker.selectRow(hours.firstIndex(of: componentsTime[0]) ?? 0, inComponent: 1, animated: false)
+        dataPicker.selectRow(minutes.firstIndex(of: componentsTime[1]) ?? 0, inComponent: 2, animated: false)
     }
     
     private func startLoadingAnimation(_ value: Bool) {
@@ -428,7 +441,13 @@ final class OrderViewController: UIViewController {
         let model = DataStore.shared.cartViewModel
         let userModel = DataStore.shared.userDeliveryLocation
         let address = DataStore.shared.outSideOrder ? (userModel?.address ?? "") : "На вынос"
-        let time = DataStore.shared.timeDelivery ?? "как можно скорее"
+        
+        let time: String
+        if let timeDelivery = DataStore.shared.timeDelivery {
+            time = timeDelivery.0.description + " " + timeDelivery.1
+        } else {
+            time = "как можно скорее"
+        }
         
         let price = Int(model.cells.map { Double($0.price) }.reduce(0, { $0 + $1 }))
         let order = model.cells.map{ "\($0.title)\($0.count > 1 ? "(x\($0.count))" : "")" + "\($0.additives.isEmpty ? "" : " - (\($0.additives.joined(separator: ", ")))")" }
@@ -454,10 +473,6 @@ final class OrderViewController: UIViewController {
                     CustomAlert.open(in: window, model: model)
                 }
                 self.navigationController?.popViewController(animated: true)
-           
-//                self.showAlert("Успешно",
-//                               message: "Заказ оформлен",
-//                               okTitle: "ок", present: true)
                 DataStore.shared.cartViewModel.cells = []
             case .failure(_):
                 
@@ -465,9 +480,6 @@ final class OrderViewController: UIViewController {
                     let model = CustomAlertViewModel(title: "Ошибка", subtitle: "Не удалось оформить заказ\nПопробуйте позже")
                     CustomAlert.open(in: window, model: model)
                 }
-//                self.showAlert("Ошибка",
-//                               message: "Не удалось оформить заказ\nПопробуйте позже",
-//                               okTitle: "ок", present: true)
             }
             self.startLoadingAnimation(false)
         }
@@ -489,9 +501,10 @@ final class OrderViewController: UIViewController {
         deliveryDropList.hiddenItems(true)
         setSelectDadaPucker()
         
-        let selectedHour = hours[dataPicker.selectedRow(inComponent: 0)]
-        let selectedMinute = minutes[dataPicker.selectedRow(inComponent: 1)]
-        DataStore.shared.timeDelivery = "\(selectedHour):\(selectedMinute)"
+        let selectedDay = days[dataPicker.selectedRow(inComponent: 0)]
+        let selectedHour = hours[dataPicker.selectedRow(inComponent: 1)]
+        let selectedMinute = minutes[dataPicker.selectedRow(inComponent: 2)]
+        DataStore.shared.timeDelivery = (selectedDay, "\(selectedHour):\(selectedMinute)")
         setTimeDelivery()
         isValidDeliveryTime = checkValidTimeInDataSore()
 
@@ -506,32 +519,40 @@ final class OrderViewController: UIViewController {
 //MARK: - UIPickerViewDataSource, UIPickerViewDelegate
 extension OrderViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2 // Два компонента: часы и минуты
+        return 3 // Три компонента: Дни, часы и минуты
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if component == 0 {
+            return days.count
+        } else if component == 1 {
             return hours.count
         } else {
             return minutes.count
         }
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        let string: String
+        
         if component == 0 {
-            return "\(hours[row])"
+            string = days[row].description
+        } else if component == 1 {
+            string = hours[row]
         } else {
-            return "\(minutes[row])"
+            string = minutes[row]
         }
+        return NSAttributedString(string: string, attributes: [.foregroundColor: UIColor.black])
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let selectedHour = hours[pickerView.selectedRow(inComponent: 0)]
-        let selectedMinute = minutes[pickerView.selectedRow(inComponent: 1)]
+        let selectedDay = days[pickerView.selectedRow(inComponent: 0)]
+        let selectedHour = hours[pickerView.selectedRow(inComponent: 1)]
+        let selectedMinute = minutes[pickerView.selectedRow(inComponent: 2)]
         
-        print("Selected time: \(selectedHour):\(selectedMinute)")
+        print("Selected time: \(selectedDay.description) \(selectedHour):\(selectedMinute)")
         timeSecondButton.setTitle("\(selectedHour):\(selectedMinute)", for: .normal)
-        DataStore.shared.timeDelivery = "\(selectedHour):\(selectedMinute)"
+        DataStore.shared.timeDelivery = (selectedDay, "\(selectedHour):\(selectedMinute)")
         
         setTimeDelivery()
         isValidDeliveryTime = checkValidTimeInDataSore()
@@ -544,7 +565,7 @@ extension OrderViewController: UIPickerViewDataSource, UIPickerViewDelegate {
             return true
         }
         
-        let components = timeToDelivery.components(separatedBy: ":")
+        let components = timeToDelivery.1.components(separatedBy: ":")
         guard components.count == 2 else {
             isValidDeliveryTime = true
             return true
@@ -552,6 +573,7 @@ extension OrderViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
         let calendar = Calendar.current
         var dateComponents = calendar.dateComponents([.year, .month, .day], from: Date())
+        dateComponents.day = timeToDelivery.0 == .today ?  dateComponents.day : (dateComponents.day ?? 0) + 1
         dateComponents.hour = Int(components[0]) // Устанавливаем часы
         dateComponents.minute = Int(components[1]) // Устанавливаем минуты
         let date = calendar.date(from: dateComponents) ?? Date()

@@ -9,13 +9,7 @@ import UIKit
 import EasyPeasy
 
 class ActionsViewController: UIViewController {
-    
-    private var items: [ActionCellViewModel] = [
-        ActionCellViewModel(urlString: "http://dikiyzapad-161.ru/test/testImage.png"),
-        ActionCellViewModel(urlString: "http://dikiyzapad-161.ru/test/testImage.png"),
-        ActionCellViewModel(urlString: "http://dikiyzapad-161.ru/wp-content/uploads/2024/01/hot.webp"),
-        ActionCellViewModel(urlString: "http://dikiyzapad-161.ru/test/testImage.png"),
-    ]
+    private var items: [ActionCellViewModel] = []
     
     private lazy var backgroundImage: UIImageView = {
         let image = UIImageView()
@@ -54,11 +48,17 @@ class ActionsViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        prepareViewModel()
     }
 }
 
 //MARK: - Private
 private extension ActionsViewController {
+    func prepareViewModel() {
+        items = DataStore.shared.promotionURLs.map{ ActionCellViewModel(urlString: $0) }
+        verticalCollectionView.reloadData()
+    }
+    
     func setupViews() {
         view.addSubviews(backgroundImage)
         view.addSubview(verticalCollectionView)
@@ -79,7 +79,6 @@ private extension ActionsViewController {
 
 //MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension ActionsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }

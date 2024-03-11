@@ -10,17 +10,7 @@ import EasyPeasy
 
 final class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
-    private lazy var testButton: UIButton = {
-       let btn = UIButton(frame: CGRect(x: 50, y: 100, width: 50, height: 50))
-        btn.backgroundColor = .orange
-        btn.addTapGesture { _ in
-//            let window = UIApplication.appDelegate.window!
-//            let model = CustomAlertViewModel(title: "Тест алерта",
-//                                             subtitle: "Тут сбатайтл и описание алерта")
-//            CustomAlert.open(in: window, model: model)
-        }
-        return btn
-    }()
+    private let generalSettings = DataStore.shared.generalSettings
     
     private var categoriesSection: [String] {
         DataStore.shared.allCategories.compactMap { $0.name }
@@ -63,7 +53,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     private lazy var buttonToDelivery: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
-        button.setTitle("Ул. Советской конституции 21", for: .normal)
+        button.setTitle(generalSettings?.shopLocation.subtitle ?? "", for: .normal)
         button.addTarget(self, action: #selector(didTouchToToDelivery), for: .touchUpInside)
         button.setTitleColor(.customOrange, for: .normal)
         button.isEnabled = false
@@ -162,7 +152,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
             }
         } else {
             buttonToDelivery.isEnabled = false
-            buttonToDelivery.setTitle("Ул. Советской конституции 21", for: .normal)
+            buttonToDelivery.setTitle(generalSettings?.shopLocation.subtitle ?? "", for: .normal)
         }
         
         DataStore.shared.outSideOrder = segmentedControl.selectedSegmentIndex == 0
@@ -186,7 +176,6 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
                 segmentedControl,
                 scrollForButtons,
                 verticalCollectionView
-//                testButton
             )
             
             scrollForButtons.addToScrollView(stackButtons)
@@ -252,7 +241,6 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
                                        isShadow: true,
                                        titleColor: .white,
                                        tag: index)
-//                btn.backgroundColor = index == 0 ? .orange : .clear
                 btn.addTarget(self, action: #selector(didTouchToToDrinks), for: .touchUpInside)
                 stackButtons.addArrangedSubview(btn)
             }
@@ -260,7 +248,7 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
        
     }
 
-//MAKR: - UICollectionViewDelegate, UICollectionViewDataSource
+//MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -329,17 +317,4 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
         return AdditiveProduct(name: title, price: value)
     }
-    
-    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let sections = verticalCollectionView.indexPathsForVisibleItems.map { $0.section }.sorted { $0 < $1 }
-//
-//        if let section = sections.first {
-//            stackButtons.arrangedSubviews.enumerated().forEach { (index, view) in
-//                view.backgroundColor = index == section ? .orange : .clear
-//            }
-//
-//            print("=--= Currently visible section: \(section)")
-//        }
-//    }
 }

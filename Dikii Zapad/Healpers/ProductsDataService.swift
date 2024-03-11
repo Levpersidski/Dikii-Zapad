@@ -63,6 +63,15 @@ class ProductsDataService {
             }
         }
         
+        groupLoading.enter()
+        loadPromotionsUrl { urls, error in
+            DispatchQueue.main.async { [weak self] in
+                print("DBG loaded \(urls == nil ? "error loadPromotions" : "has \(urls?.count ?? 0) promotions")")
+                DataStore.shared.promotionURLs = urls ?? []
+                self?.groupLoading.leave()
+            }
+        }
+        
         groupLoading.notify(queue: .main) { [weak self] in
             guard let self else { return }
             //Save in dataStore
@@ -110,7 +119,6 @@ private extension ProductsDataService {
         let urlString = "http://dikiyzapad-161.ru/test/getGlobalSettings.php"
         let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
         
-        
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "GET"
         request.setValue("Bearer \(secretToken)", forHTTPHeaderField: "Authorization")
@@ -129,4 +137,31 @@ private extension ProductsDataService {
             }
         }.resume()
     }
+    
+    func loadPromotionsUrl(completion: @escaping ([String]?, Error?) -> Void) {
+        let urlString = "http://dikiyzapad-161.ru/test/getPromotions.php"
+        let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
+        
+        var request = URLRequest(url: URL(string: urlString)!)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(secretToken)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(nil, DZError.badData)
+                return
+            }
+            
+            do {
+                let result = try JSONDecoder().decode(PromotionData.self, from: data)
+                completion(result.imageUrls, nil)
+            } catch {
+                completion(nil, DZError.parce)
+            }
+        }.resume()
+    }
+}
+
+struct PromotionData: Codable {
+    let imageUrls: [String]
 }

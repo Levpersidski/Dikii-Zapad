@@ -16,6 +16,7 @@ struct AdditiveProduct {
 class DataStore {
     var allCategories: [Category] = []
     var allProducts: [Product] = []
+    var promotionURLs: [String] = []
     
     var generalSettings: GeneralSettings?
     var searchCity: String? {

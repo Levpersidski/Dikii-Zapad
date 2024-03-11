@@ -54,6 +54,15 @@ class ProductsDataService {
             }
         }
         
+        groupLoading.enter()
+        loadGeneralSettings { settings, error in
+            DispatchQueue.main.async { [weak self] in
+                DataStore.shared.generalSettings = settings
+                print("DBG loaded \(settings == nil ? "error general settings" : "has general settings") categories")
+                self?.groupLoading.leave()
+            }
+        }
+        
         groupLoading.notify(queue: .main) { [weak self] in
             guard let self else { return }
             //Save in dataStore
@@ -61,7 +70,7 @@ class ProductsDataService {
             let isEmptyCategories = self.categories?.isEmpty ?? true
             let isEmptyProducts = self.products?.isEmpty ?? true
             
-            completion(!(isEmptyCategories) && !(isEmptyProducts))
+            completion(!(isEmptyCategories) && !(isEmptyProducts) && DataStore.shared.generalSettings != nil)
         }
     }
     
@@ -69,8 +78,7 @@ class ProductsDataService {
         let products = products ?? []
         let categories = categories ?? []
 
-        DataStore.shared.allProducts = products //.filter({ $0.categories.first?.id == 18 })
-        
+        DataStore.shared.allProducts = products
         DataStore.shared.allCategories = categories
     }
 }
@@ -96,5 +104,29 @@ private extension ProductsDataService {
                 completion(nil, error)
             }
         }
+    }
+    
+    func loadGeneralSettings(completion: @escaping (GeneralSettings?, Error?) -> Void) {
+        let urlString = "http://dikiyzapad-161.ru/test/getGlobalSettings.php"
+        let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
+        
+        
+        var request = URLRequest(url: URL(string: urlString)!)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(secretToken)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(nil, DZError.badData)
+                return
+            }
+            
+            do {
+                let result = try JSONDecoder().decode(GeneralSettings.self, from: data)
+                completion(result, nil)
+            } catch {
+                completion(nil, DZError.parce)
+            }
+        }.resume()
     }
 }

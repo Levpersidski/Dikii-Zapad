@@ -10,10 +10,11 @@ import EasyPeasy
 import MapKit
 
 class ContactsViewController: UIViewController {
-    //TO DO: Mock location shop
-    let latitude: CLLocationDegrees = 47.752105
-    let longitude: CLLocationDegrees = 39.935179
-    lazy var locationShop = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    private let generalSettings = DataStore.shared.generalSettings
+    private lazy var locationShop = CLLocationCoordinate2D(
+        latitude: generalSettings?.shopLocation.latitude ?? 0,
+        longitude: generalSettings?.shopLocation.longitude ?? 0
+    )
     
     private lazy var backgroundImage: UIImageView = {
         let image = UIImageView()
@@ -26,8 +27,8 @@ class ContactsViewController: UIViewController {
     
     private lazy var shopAnnotation: MKPointAnnotation = {
         let annotation = MKPointAnnotation()
-        annotation.title = "DikiyZapad"
-        annotation.subtitle = "Советской конституции 21"
+        annotation.title = generalSettings?.shopLocation.title
+        annotation.subtitle = generalSettings?.shopLocation.subtitle
         annotation.coordinate = locationShop
         return annotation
     }()
@@ -48,7 +49,7 @@ class ContactsViewController: UIViewController {
     
     private lazy var textAddressLabel: UILabel = {
         let label = UILabel()
-        label.text = "г. Новошахтинск,\nУл. Советской конституции 21"
+        label.text = generalSettings?.contacts.address
         label.font = .systemFont(ofSize: 16, weight: .regular)
         label.textColor = .white
         label.numberOfLines = 0
@@ -66,14 +67,14 @@ class ContactsViewController: UIViewController {
     private lazy var numberPhoneLabel: UILabel = {
         let label = UILabel()
         let atrText = NSMutableAttributedString(
-            string: "8(918)857-22-57",
+            string: generalSettings?.contacts.numberPhone.maskAsPhone() ?? "",
             attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue,
                          .font: UIFont.systemFont(ofSize: 18, weight: .regular),
                          .foregroundColor: UIColor(hex: "#FE6F1F")]
         )
 
         label.addTapGesture { [weak self] _ in
-            self?.openPhoneDialer(with: "89188572257")
+            self?.openPhoneDialer(with: self?.generalSettings?.contacts.numberPhone ?? "")
         }
 
         label.attributedText = atrText
@@ -101,7 +102,7 @@ class ContactsViewController: UIViewController {
     
     private lazy var textScheduleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Ежедневно: 10:00 - 23:00"
+        label.text = generalSettings?.contacts.textSchedule
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.textColor = .white
         return label

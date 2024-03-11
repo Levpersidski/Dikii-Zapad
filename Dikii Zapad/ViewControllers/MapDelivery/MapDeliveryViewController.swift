@@ -22,16 +22,16 @@ class MapDeliveryViewController: UIViewController {
     
     var usedModel: UserDeliveryLocationModel?
     
-    //TO DO: Mock location shop
-    let latitude: CLLocationDegrees = 47.752105
-    let longitude: CLLocationDegrees = 39.935179
-    lazy var locationShop = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-    
+    private let generalSettings = DataStore.shared.generalSettings
+    private lazy var locationShop = CLLocationCoordinate2D(
+        latitude: generalSettings?.shopLocation.latitude ?? 0,
+        longitude: generalSettings?.shopLocation.longitude ?? 0
+    )
     
     private lazy var shopAnnotation: MKPointAnnotation = {
         let annotation = MKPointAnnotation()
-        annotation.title = "DikiyZapad"
-        annotation.subtitle = "Советской конституции 21"
+        annotation.title = generalSettings?.shopLocation.title
+        annotation.subtitle = generalSettings?.shopLocation.subtitle
         annotation.coordinate = locationShop
         return annotation
     }()
@@ -141,37 +141,20 @@ class MapDeliveryViewController: UIViewController {
         }
     }
     
-    private func testCalculateSum(distance: CLLocationDistance) -> (Double, Bool) {
-//        let value: Double = Double(distance)
-        
-        if distance < 1700 {
-            return (50, true) //Центр
-        } else if distance < 2500 {
-            return (50, false) // Горловка-Горькая - 50р
-        } else if distance < 9000 {
-            return (100, false) //Кировка-Городская-Радио-Микрорайон-Западная-ЖБК - 100р
-        } else if distance < 11000 {
-            return (150, false) // Новая Соколовка-Алексеевка 150р
-        } else if distance < 12000 {
-            return (200, false) // Старая Соколовка-пос.Красный 200р
-        } else if distance < 15000 {
-            return (250, false) // Самбек 250р.
-        } else if distance < 22000 {
-            return (300, false) // Юбилейная-Нефтезавод 300р.
+    private func calculateSum(distance: CLLocationDistance) -> (Double, Bool) {
+        let pointDistance = generalSettings?.deliveryInfo.distances ?? []
+        for point in pointDistance {
+            if distance < Double(point.maxDistance) {
+                ///Если входим в диапазон возвращаем значение
+                return (Double(point.price), point.hasSale)
+            }
         }
-        
+        ///Если не входим в диапазон возвращаем ошибку значение 9999
         return (9999, false)
     }
-
     
     private func createNameLocation(from placeMark: CLPlacemark) -> String {        
-        let name = placeMark.name ?? "" //Улица, дом
-//        let locality = placeMark.locality ?? "" //Город
-//        let thoroughfare = placeMark.thoroughfare ?? "" // Улица
-//        let subThoroughfare = placeMark.subThoroughfare ?? "" //Дом
-//        let administrativeArea = placeMark.administrativeArea
-//        let region = placeMark.region
-
+        let name = placeMark.name ?? ""
         return name
     }
 }
@@ -235,6 +218,8 @@ private extension MapDeliveryViewController {
     }
     
     func buildingWay(isValidName: Bool = true) {
+        let saleInfo = generalSettings?.deliveryInfo.saleInfo
+
         mapView.removeOverlays(mapView.overlays)
         
         let startPoint = MKPlacemark(coordinate: shopAnnotation.coordinate)
@@ -258,14 +243,13 @@ private extension MapDeliveryViewController {
                                 present: true,
                                 completion: { [weak self] in self?.buildingWay() })
                 
-//                self.usedModel = nil
                 return
             }
             
             if let rout = response.routes.first {
                 self.mapView.addOverlay(rout.polyline)
                 let distance = rout.distance
-                let cordage = self.testCalculateSum(distance: distance)
+                let cordage = self.calculateSum(distance: distance)
                 let value = isValidName ? cordage.0 : 9999
                 let hasSale = cordage.1
                 
@@ -273,7 +257,7 @@ private extension MapDeliveryViewController {
                 if value == 9999 {
                     price = "НЕ ВЕЗЕМ!"
                 } else {
-                    price = "\(value) ₽ \(hasSale ? "Скидка от 700 ₽" : "")"
+                    price = "\(value) ₽ \(hasSale ? (saleInfo?.textSale ?? "") : "")"
                 }
                 
                 self.usedModel = UserDeliveryLocationModel(

@@ -234,6 +234,7 @@ final class OrderViewController: UIViewController {
     }
     
     private func prepareSumDelivery() -> (String, String) {
+        let minPriceSale: Int = DataStore.shared.generalSettings?.deliveryInfo.saleInfo.minPrice ?? 0
         let productsModel = DataStore.shared.cartViewModel
         let userModel = DataStore.shared.userDeliveryLocation
         let isOutSideOrder = DataStore.shared.outSideOrder
@@ -247,10 +248,10 @@ final class OrderViewController: UIViewController {
             let price = userModel.priceDelivery
             
             if userModel.hasSale {
-                sumDelivery = priceAllProduct > 700 ? "Бесплатно" : "\(price) РУБ."
-                sumOrder = priceAllProduct > 700 ? priceAllProduct : priceAllProduct + price
+                sumDelivery = priceAllProduct > minPriceSale ? "Бесплатно" : "\(price) РУБ."
+                sumOrder = priceAllProduct > minPriceSale ? priceAllProduct : priceAllProduct + price
                 
-                priceDelivery = priceAllProduct > 700 ? 0 : price
+                priceDelivery = priceAllProduct > minPriceSale ? 0 : price
             } else {
                 sumDelivery = "\(price) РУБ."
                 sumOrder = priceAllProduct + price

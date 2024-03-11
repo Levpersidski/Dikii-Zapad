@@ -14,6 +14,18 @@ struct AdditiveProduct {
 }
 
 class DataStore {
+    var allCategories: [Category] = []
+    var allProducts: [Product] = []
+    
+    var generalSettings: GeneralSettings?
+    var searchCity: String? {
+        get {
+            generalSettings?.deliveryInfo.searchLocation
+        }
+    }
+    
+    
+    
     var userDeliveryLocation: UserDeliveryLocationModel? {
         get {
             let addressUserDeliveryLocation = UserDefaults.standard.string(forKey: "addressUserDeliveryLocation")
@@ -65,13 +77,6 @@ class DataStore {
     }
     
     var timeDelivery: (DayType, String)? = nil
-    
-    var searchCity: String? = "Новошахтинск "
-
-    ///All category
-    var allCategories: [Category] = []
-    ///All products
-    var allProducts: [Product] = []
     var cartViewModel: CartViewModel = CartViewModel()
     
     static let shared = DataStore()

@@ -22,8 +22,8 @@ class ProductsDataService {
     private let consumerSecret = "cs_413015e37ab0d3b03e8f7164d0bfa3a18f8930a6"
     
     ///Ссылка для продуктов
-    private let urlProduct = "http://dikiyzapad-161.ru/wp-json/wc/v3/products"
-    private let urlCategories = "http://dikiyzapad-161.ru/wp-json/wc/v3/products/categories"
+    private let urlProduct = "https://dikiyzapad-161.ru/wp-json/wc/v3/products"
+    private let urlCategories = "https://dikiyzapad-161.ru/wp-json/wc/v3/products/categories"
     
     var products: [Product]? = []
     var categories: [Category]? = []
@@ -116,7 +116,7 @@ private extension ProductsDataService {
     }
     
     func loadGeneralSettings(completion: @escaping (GeneralSettings?, Error?) -> Void) {
-        let urlString = "http://dikiyzapad-161.ru/test/getGlobalSettings.php"
+        let urlString = "https://dikiyzapad-161.ru/test/getGlobalSettings.php"
         let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
         
         var request = URLRequest(url: URL(string: urlString)!)
@@ -139,7 +139,7 @@ private extension ProductsDataService {
     }
     
     func loadPromotionsUrl(completion: @escaping ([String]?, Error?) -> Void) {
-        let urlString = "http://dikiyzapad-161.ru/test/getPromotions.php"
+        let urlString = "https://dikiyzapad-161.ru/test/getPromotions.php"
         let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
         
         var request = URLRequest(url: URL(string: urlString)!)

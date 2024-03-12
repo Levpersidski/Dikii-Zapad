@@ -8,7 +8,7 @@
 import Foundation
 
 final class TelegramManager {
-    private let url = URL(string: "http://dikiyzapad-161.ru/test/index.php")!
+    private let url = URL(string: "https://dikiyzapad-161.ru/test/index.php")!
     private let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
     
     private init() {}

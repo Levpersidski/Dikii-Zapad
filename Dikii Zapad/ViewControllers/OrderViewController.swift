@@ -662,7 +662,7 @@ extension OrderViewController: UIPickerViewDataSource, UIPickerViewDelegate {
             return true
         }
         
-        var futureDate = Date().plus(minutes: 20)
+        let futureDate = Date().plus(minutes: 20)
         var customDate = Date().set(hours: Int(components[0]), minutes: Int(components[1]))
         
         if timeToDelivery.0 == .tomorrow {

@@ -59,8 +59,8 @@ class ProductCell: UICollectionViewCell {
         label.font = UIFont(name: "Capture it", size: 13)
         label.textColor = .white
         label.textAlignment = .center
-        label.numberOfLines = 0
-        //label.adjustsFontSizeToFitWidth = true // Разрешаем уменьшение размера шрифта
+        label.numberOfLines = 1
+        label.adjustsFontSizeToFitWidth = true // Разрешаем уменьшение размера шрифта
         label.minimumScaleFactor = 0.5 //
         return label
     }()

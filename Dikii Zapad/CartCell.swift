@@ -8,7 +8,6 @@
 import UIKit
 import EasyPeasy
 
-
 struct CartCellViewModel {
     let title: String
     var price: Int
@@ -88,7 +87,7 @@ class CartCell: UITableViewCell {
     }()
     
     private lazy var separatorView: UIView = {
-       let view = UIView()
+        let view = UIView()
         view.backgroundColor = .customOrange
         return view
     }()
@@ -164,7 +163,7 @@ class CartCell: UITableViewCell {
         productNameLabel.easy.layout(
             Top(26),
             Left(17).to(image, .right),
-            Right(17)
+            Right(60)
         )
         
         removeButton.easy.layout(

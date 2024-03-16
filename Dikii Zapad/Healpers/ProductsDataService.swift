@@ -97,7 +97,7 @@ private extension ProductsDataService {
     
     func download<T: Codable>(_ urlString: String, _ group: DispatchGroup?, completion: @escaping (T?, Error?) -> Void) {
         group?.enter()
-        let oAuthSwift = OAuth1Swift(consumerKey: consumerKey, consumerSecret: consumerSecret)        
+        let oAuthSwift = OAuth1Swift(consumerKey: consumerKey, consumerSecret: consumerSecret)
         let baseURL = URL(string: urlString)!
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
         let params = [

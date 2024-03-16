@@ -307,8 +307,7 @@ final class OrderViewController: UIViewController {
             title: "Оплата: Наличными",
             items: [
                 DropDownItemViewModel(title: "Наличными", isSelected: true),
-                DropDownItemViewModel(title: "Картой (курьеру)", isSelected: false),
-                DropDownItemViewModel(title: "СБП", isSelected: false)
+                DropDownItemViewModel(title: "Картой (при получении)", isSelected: false)
             ]
         )
         return model
@@ -419,6 +418,7 @@ final class OrderViewController: UIViewController {
     
     private func setSelectDadaPucker() {
         guard let time = DataStore.shared.timeDelivery else {
+            setCurrentTime(plus: 20)
             return
         }
         let componentsTime = time.1.components(separatedBy: ":")
@@ -429,6 +429,22 @@ final class OrderViewController: UIViewController {
         dataPicker.selectRow(time.0.rawValue, inComponent: 0, animated: false)
         dataPicker.selectRow(hours.firstIndex(of: componentsTime[0]) ?? 0, inComponent: 1, animated: false)
         dataPicker.selectRow(minutes.firstIndex(of: componentsTime[1]) ?? 0, inComponent: 2, animated: false)
+    }
+    
+    private func setCurrentTime(plus minute: Int = 0) {
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let futureDate = calendar.date(byAdding: .minute, value: minute, to: currentDate) ?? Date()
+        let components = calendar.dateComponents([.hour, .minute, .second], from: futureDate)
+        
+        let hoursIndex = self.hours.compactMap{ Int($0) }.closestIndexGreaterOrEqual(to: components.hour ?? 0)
+        let minuteIndex = self.minutes.compactMap{ Int($0) }.closestIndexGreaterOrEqual(to: components.minute ?? 0)
+        
+        if let hoursIndex, let minuteIndex {
+            dataPicker.selectRow(DayType.today.rawValue, inComponent: 0, animated: false)
+            dataPicker.selectRow(hoursIndex, inComponent: 1, animated: false)
+            dataPicker.selectRow(minuteIndex, inComponent: 2, animated: false)
+        }
     }
     
     private func startLoadingAnimation(_ value: Bool) {
@@ -595,14 +611,23 @@ extension OrderViewController: UIPickerViewDataSource, UIPickerViewDelegate {
             isValidDeliveryTime = true
             return true
         }
-    
+        
+        print("=--= date \(Date())")
         let calendar = Calendar.current
-        var dateComponents = calendar.dateComponents([.year, .month, .day], from: Date())
+        let futureDate = calendar.date(byAdding: .minute, value: 19, to: Date()) ?? Date()
+        print("=--= futureDate \(futureDate)")
+
+        var dateComponents = calendar.dateComponents([.year, .month, .hour, .day, .minute, .second], from: futureDate)
+        
         dateComponents.day = timeToDelivery.0 == .today ?  dateComponents.day : (dateComponents.day ?? 0) + 1
         dateComponents.hour = Int(components[0]) // Устанавливаем часы
         dateComponents.minute = Int(components[1]) // Устанавливаем минуты
         let date = calendar.date(from: dateComponents) ?? Date()
-        return date > Date()
+        
+        print("=--= test \(date) > \(futureDate) == \(date >= futureDate)")
+        print("=--= -------")
+
+        return date >= futureDate
     }
 }
 

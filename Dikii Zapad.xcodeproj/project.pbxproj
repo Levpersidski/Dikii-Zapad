@@ -29,6 +29,7 @@
 		04E6F8DD2B653B5C0014398B /* MapDeliveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6F8DC2B653B5C0014398B /* MapDeliveryViewController.swift */; };
 		04ECD5FA2B66C71F00F29F2C /* BottomSheetMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ECD5F92B66C71F00F29F2C /* BottomSheetMapView.swift */; };
 		04ECD5FE2B66CF4500F29F2C /* UIStackView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ECD5FD2B66CF4500F29F2C /* UIStackView + Extension.swift */; };
+		04FC3D9F2BA550FC00B5B666 /* Array + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC3D9E2BA550FC00B5B666 /* Array + extension.swift */; };
 		B6306BB92AC088D800B0BF80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BB82AC088D800B0BF80 /* AppDelegate.swift */; };
 		B6306BBB2AC088D800B0BF80 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BBA2AC088D800B0BF80 /* SceneDelegate.swift */; };
 		B6306BBD2AC088D800B0BF80 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6306BBC2AC088D800B0BF80 /* MainViewController.swift */; };
@@ -75,6 +76,7 @@
 		04E6F8DC2B653B5C0014398B /* MapDeliveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDeliveryViewController.swift; sourceTree = "<group>"; };
 		04ECD5F92B66C71F00F29F2C /* BottomSheetMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetMapView.swift; sourceTree = "<group>"; };
 		04ECD5FD2B66CF4500F29F2C /* UIStackView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView + Extension.swift"; sourceTree = "<group>"; };
+		04FC3D9E2BA550FC00B5B666 /* Array + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array + extension.swift"; sourceTree = "<group>"; };
 		B6306BB52AC088D800B0BF80 /* Dikii Zapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dikii Zapad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6306BB82AC088D800B0BF80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B6306BBA2AC088D800B0BF80 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				04ECD5FD2B66CF4500F29F2C /* UIStackView + Extension.swift */,
 				04AE02C32B8A2C000032C3A4 /* String + extension.swift */,
 				042487EB2B8B5930000F9CEC /* Date + extension.swift */,
+				04FC3D9E2BA550FC00B5B666 /* Array + extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6306BBD2AC088D800B0BF80 /* MainViewController.swift in Sources */,
+				04FC3D9F2BA550FC00B5B666 /* Array + extension.swift in Sources */,
 				B66D7BAC2B0A9307009C34CB /* CartCell.swift in Sources */,
 				B67122992B7E747D00E051EF /* OrderViewController.swift in Sources */,
 				B6DB40FE2AEFF2E6005963ED /* CustomButton.swift in Sources */,

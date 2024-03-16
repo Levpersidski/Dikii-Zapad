@@ -55,6 +55,9 @@ final class OrderViewController: UIViewController {
         view.backgroundColor = .black.withAlphaComponent(0.7)
         view.addTapGesture { [weak self] _ in
             self?.dataPicker.fadeOut()
+            self?.view.endEditing(true)
+            self?.payDropList.hiddenItems(true)
+            self?.deliveryDropList.hiddenItems(true)
         }
         return view
     }()
@@ -108,6 +111,29 @@ final class OrderViewController: UIViewController {
         button.layer.borderWidth = 1
         button.addTarget(self, action: #selector(timeSecondButtonDidTap), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var textView: UITextView = {
+        let textView = UITextView()
+        textView.backgroundColor = UIColor(hex: "1C1C1C").withAlphaComponent(0.6)
+        textView.layer.borderWidth = 1
+        textView.isScrollEnabled = false
+        textView.font = .systemFont(ofSize: 16, weight: .medium)
+        textView.textColor = .white.withAlphaComponent(0.8)
+        textView.delegate = self
+        textView.roundCorners(8)
+        textView.textContainer.lineFragmentPadding = 16
+        textView.adjustsFontForContentSizeCategory = true
+        return textView
+    }()
+    
+    private lazy var textViewPlaceholder: UILabel = {
+        let label = UILabel()
+        label.text = "Комментарии к заказу"
+        label.textColor = .white.withAlphaComponent(0.6)
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.numberOfLines = 1
+        return label
     }()
     
     private lazy var dataPicker: UIPickerView = {
@@ -322,6 +348,8 @@ final class OrderViewController: UIViewController {
             deliveryTimeLabel,
             timeFirstButton,
             timeSecondButton,
+            textView,
+            textViewPlaceholder,
             makeOrderButton,
             sumDeliveryStack,
             separatorView,
@@ -361,6 +389,20 @@ final class OrderViewController: UIViewController {
             Left(16).to(timeFirstButton, .right), Right(16),
             Height(40)
         )
+        
+        textView.easy.layout(
+            Top(20).to(timeSecondButton, .bottom),
+            Height(>=40),
+            Left(16), Right(16),
+            Bottom(<=16).to(payDropList, .top)
+        )
+        
+        textViewPlaceholder.easy.layout(
+            Top().to(textView, .top),
+            Left(16).to(textView, .left), Right(16).to(textView, .right),
+            Height(40)
+        )
+        
         activityIndicator.easy.layout(
             Center()
         )
@@ -435,7 +477,11 @@ final class OrderViewController: UIViewController {
         let currentDate = Date()
         let calendar = Calendar.current
         let futureDate = calendar.date(byAdding: .minute, value: minute, to: currentDate) ?? Date()
-        let components = calendar.dateComponents([.hour, .minute, .second], from: futureDate)
+        var components = calendar.dateComponents([.hour, .minute, .second], from: futureDate)
+        if components.minute ?? 0 >= 55 {
+            components.hour = (components.hour ?? 0) + 1
+            components.minute = 0
+        }
         
         let hoursIndex = self.hours.compactMap{ Int($0) }.closestIndexGreaterOrEqual(to: components.hour ?? 0)
         let minuteIndex = self.minutes.compactMap{ Int($0) }.closestIndexGreaterOrEqual(to: components.minute ?? 0)
@@ -489,6 +535,8 @@ final class OrderViewController: UIViewController {
     }
     
     @objc private func makeOrderButtonDidTap() {
+        view.endEditing(true)
+
         guard DataStore.shared.phoneNumber != nil else {
             let window = UIApplication.appDelegate.window ?? UIView()
             let model = CustomAlertViewModel(title: "Не хватает данных",
@@ -527,6 +575,7 @@ final class OrderViewController: UIViewController {
     }
     
     @objc private func timeFirstButtonDidTap() {
+        view.endEditing(true)
         isValidDeliveryTime = true
         payDropList.hiddenItems(true)
         deliveryDropList.hiddenItems(true)
@@ -538,6 +587,7 @@ final class OrderViewController: UIViewController {
     }
     
     @objc private func timeSecondButtonDidTap() {
+        view.endEditing(true)
         payDropList.hiddenItems(true)
         deliveryDropList.hiddenItems(true)
         setSelectDadaPucker()
@@ -612,22 +662,13 @@ extension OrderViewController: UIPickerViewDataSource, UIPickerViewDelegate {
             return true
         }
         
-        print("=--= date \(Date())")
-        let calendar = Calendar.current
-        let futureDate = calendar.date(byAdding: .minute, value: 20, to: Date()) ?? Date()
-        print("=--= futureDate \(futureDate)")
-
-        var dateComponents = calendar.dateComponents([.year, .month, .hour, .day, .minute, .second], from: Date())
+        var futureDate = Date().plus(minutes: 20)
+        var customDate = Date().set(hours: Int(components[0]), minutes: Int(components[1]))
         
-        dateComponents.day = timeToDelivery.0 == .today ?  dateComponents.day : (dateComponents.day ?? 0) + 1
-        dateComponents.hour = Int(components[0])// Устанавливаем часы
-        dateComponents.minute = Int(components[1]) // Устанавливаем минуты
-        let date = calendar.date(from: dateComponents) ?? Date()
-        
-        print("=--= test \(date) > \(futureDate) == \(date >= futureDate)")
-        print("=--= -------")
-
-        return date >= futureDate
+        if timeToDelivery.0 == .tomorrow {
+            customDate = customDate?.plus(days: 1)
+        }
+        return customDate ?? Date() >= futureDate ?? Date()
     }
 }
 
@@ -644,6 +685,7 @@ extension OrderViewController: DropDownListDelegate {
     }
     
     func dropDownListOpen(_ dropDown: DropDownList) {
+        view.endEditing(true)
         dataPicker.fadeOut()
 
         if dropDown === payDropList {
@@ -655,5 +697,29 @@ extension OrderViewController: DropDownListDelegate {
     }
     
     func dropDownListClose(_ dropDown: DropDownList) {
+    }
+}
+
+//MARK: - UITextViewDelegate
+extension OrderViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        let isEmptyText = textView.text.isEmpty
+        textViewPlaceholder.isHidden = !isEmptyText
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        dataPicker.fadeOut()
+        payDropList.hiddenItems(true)
+        deliveryDropList.hiddenItems(true)
+        
+        let isEmptyText = textView.text.isEmpty
+        textViewPlaceholder.isHidden = !isEmptyText
+        textView.layer.borderColor = UIColor.orange.cgColor
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        let isEmptyText = textView.text.isEmpty
+        textViewPlaceholder.isHidden = !isEmptyText
+        textView.layer.borderColor = UIColor.clear.cgColor
     }
 }

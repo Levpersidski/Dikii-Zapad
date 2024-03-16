@@ -9,17 +9,33 @@ import Foundation
 
 
 extension Date {
-//    public init(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int = 0, nanosecond: Int = 0) {
-//        var components = DateComponents()
-//        components.year = year
-//        components.month = month
-//        components.day = day
-//        components.hour = hour
-//        components.minute = minute
-//        components.second = second
-//        components.nanosecond = nanosecond
-////        components.timeZone = region.timeZone
-////        components.calendar = region.calendar
-//        self = region.calendar.date(from: components)!
-//    }
+   func plus(days: Int? = nil, hours: Int? = nil, minutes: Int? = nil) -> Date? {
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.year, .month, .hour, .day, .minute], from: self)
+        if let days {
+            components.day = (components.day ?? 0) + days
+        }
+        if let hours {
+            components.hour = (components.hour ?? 0) + hours
+        }
+        if let minutes {
+            components.minute = (components.minute ?? 0) + minutes
+        }
+        return calendar.date(from: components)
+    }
+    
+    func set(days: Int? = nil, hours: Int? = nil, minutes: Int? = nil) -> Date? {
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.year, .month, .hour, .day, .minute], from: self)
+        if let days {
+            components.day = days
+        }
+        if let hours {
+            components.hour = hours
+        }
+        if let minutes {
+            components.minute = minutes
+        }
+        return calendar.date(from: components)
+    }
 }

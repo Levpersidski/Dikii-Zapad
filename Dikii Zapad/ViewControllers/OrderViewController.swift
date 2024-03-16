@@ -614,13 +614,13 @@ extension OrderViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         
         print("=--= date \(Date())")
         let calendar = Calendar.current
-        let futureDate = calendar.date(byAdding: .minute, value: 19, to: Date()) ?? Date()
+        let futureDate = calendar.date(byAdding: .minute, value: 20, to: Date()) ?? Date()
         print("=--= futureDate \(futureDate)")
 
-        var dateComponents = calendar.dateComponents([.year, .month, .hour, .day, .minute, .second], from: futureDate)
+        var dateComponents = calendar.dateComponents([.year, .month, .hour, .day, .minute, .second], from: Date())
         
         dateComponents.day = timeToDelivery.0 == .today ?  dateComponents.day : (dateComponents.day ?? 0) + 1
-        dateComponents.hour = Int(components[0]) // Устанавливаем часы
+        dateComponents.hour = Int(components[0])// Устанавливаем часы
         dateComponents.minute = Int(components[1]) // Устанавливаем минуты
         let date = calendar.date(from: dateComponents) ?? Date()
         

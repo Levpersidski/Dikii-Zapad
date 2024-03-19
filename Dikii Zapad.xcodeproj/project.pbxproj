@@ -18,6 +18,7 @@
 		04A9AB462B5C837D002A8A79 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9AB452B5C837D002A8A79 /* Product.swift */; };
 		04AE02C22B8A0CCC0032C3A4 /* InputMask in Frameworks */ = {isa = PBXBuildFile; productRef = 04AE02C12B8A0CCC0032C3A4 /* InputMask */; };
 		04AE02C42B8A2C000032C3A4 /* String + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AE02C32B8A2C000032C3A4 /* String + extension.swift */; };
+		04BDEEF12BAA20DE005C1095 /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BDEEF02BAA20DE005C1095 /* LocationDataManager.swift */; };
 		04D5E5482B64350C004F336E /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D5E5472B64350C004F336E /* UIViewController + Extension.swift */; };
 		04E6759E2B8894D2007559C6 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6759D2B8894D2007559C6 /* AddressView.swift */; };
 		04E675A02B889E24007559C6 /* UIButtonTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E6759F2B889E24007559C6 /* UIButtonTransform.swift */; };
@@ -65,6 +66,7 @@
 		04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsDataService.swift; sourceTree = "<group>"; };
 		04A9AB452B5C837D002A8A79 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		04AE02C32B8A2C000032C3A4 /* String + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + extension.swift"; sourceTree = "<group>"; };
+		04BDEEF02BAA20DE005C1095 /* LocationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
 		04D5E5472B64350C004F336E /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
 		04E6759D2B8894D2007559C6 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
 		04E6759F2B889E24007559C6 /* UIButtonTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonTransform.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				04A9AB432B5C79C6002A8A79 /* ProductsDataService.swift */,
 				04E6F8DA2B652AE00014398B /* GestureRecognizerHealpers.swift */,
 				04E675A12B890415007559C6 /* TelegramManager.swift */,
+				04BDEEF02BAA20DE005C1095 /* LocationDataManager.swift */,
 			);
 			path = Healpers;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 				B6DF27212ACC643600FC45D0 /* ContactsViewController.swift in Sources */,
 				B645C3652AC365FC0079C8F2 /* DetailsProductViewController.swift in Sources */,
 				04A906DF2B669F3D0014DE24 /* GradientView.swift in Sources */,
+				04BDEEF12BAA20DE005C1095 /* LocationDataManager.swift in Sources */,
 				B645C3632AC353060079C8F2 /* UIView + extension.swift in Sources */,
 				042487EA2B8B296C000F9CEC /* ActionsCell.swift in Sources */,
 				04AE02C42B8A2C000032C3A4 /* String + extension.swift in Sources */,

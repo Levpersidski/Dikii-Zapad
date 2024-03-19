@@ -8,10 +8,16 @@
 import UIKit
 import EasyPeasy
 import InputMask
+import CoreLocation
 
 class DeliveryFormViewController: UIViewController {
-    private var topScrollViewConstraint: NSLayoutConstraint!
     
+    private let generalSetting = DataStore.shared.generalSettings
+    private let locationManager = LocationDataManager.shared
+
+    private var topScrollViewConstraint: NSLayoutConstraint!
+    private var bottomButtonConstraint: NSLayoutConstraint!
+
     let phoneListener = PhoneInputListener { _, string, completed, _ in
         DataStore.shared.phoneNumber = completed ? string : nil
     }
@@ -24,6 +30,15 @@ class DeliveryFormViewController: UIViewController {
             self?.view.endEditing(true)
         }
         return scrollView
+    }()
+    
+    private lazy var confirmButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("Тест. применить", for: .normal)
+        btn.roundCorners(10)
+        btn.backgroundColor = .orange
+        btn.addTarget(self, action: #selector(confirmButtonDidTap), for: .touchUpInside)
+        return btn
     }()
     
     private lazy var containerView: UIView = {
@@ -56,11 +71,19 @@ class DeliveryFormViewController: UIViewController {
         return textField
     }()
     
-    private lazy var houseTextField: CustomTextField = {
-        let textField = CustomTextField()
-        textField.placeholder = "Дом"
-        textField.delegate = self
-        return textField
+    private lazy var openMapButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Указать на карте", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 18)
+        button.setTitleColor(UIColor(hex: "#F39578"), for: .normal)
+        let image = UIImage(named: "arrowMap")?.withRenderingMode(.alwaysOriginal)
+        button.setImage(image, for: .normal)
+        button.semanticContentAttribute = .forceRightToLeft
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 26, bottom: 0, right: 0)
+        button.addTarget(self, action: #selector(openMapButtonDidTap), for: .touchUpInside)
+        button.contentHorizontalAlignment = .left
+        return button
     }()
     
     private lazy var contactsLabel: UILabel = {
@@ -98,6 +121,11 @@ class DeliveryFormViewController: UIViewController {
         addObserverKeyboard()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.endEditing(true)
+    }
+    
     deinit {
         removeObserverKeyboard()
     }
@@ -114,14 +142,13 @@ class DeliveryFormViewController: UIViewController {
     
     func setupView() {
         view.addSubview(backgroundView)
-        view.addSubview(scrollView)
+        view.addSubviews(scrollView, confirmButton)
         scrollView.addSubview(containerView)
         
         containerView.addSubviews(
             addressLabel,
             streetTextField,
-            houseTextField,
-            
+            openMapButton,
             contactsLabel,
             nameTextField,
             numberPhoneTextField
@@ -157,15 +184,16 @@ class DeliveryFormViewController: UIViewController {
             Right(16)
         )
 
-        houseTextField.easy.layout(
-            Top(7).to(streetTextField, .bottom),
+        openMapButton.easy.layout(
+            Top(12).to(streetTextField, .bottom),
             Left(16),
-            Right(16)
+            Right(16),
+            Height(40)
         )
         
         //MOCK
         contactsLabel.easy.layout(
-            Top(79).to(houseTextField, .bottom),
+            Top(79).to(openMapButton, .bottom),
             Left(16), Right(16)
         )
         
@@ -181,6 +209,13 @@ class DeliveryFormViewController: UIViewController {
             Right(16),
             Bottom(40)
         )
+        
+        confirmButton.easy.layout(
+            Height(40),
+            Left(16), Right(16)
+        )
+        
+        bottomButtonConstraint = confirmButton.easy.layout(Bottom(40)).first
     }
 }
 
@@ -200,6 +235,11 @@ private extension DeliveryFormViewController {
             navigationController?.pushViewController(mapVC, animated: true)
         }
     }
+    
+    @objc
+    func openMapButtonDidTap() {
+        openMapDeliveryViewController()
+    }
 }
 
 //MARK: - UITextFieldDelegate
@@ -215,35 +255,103 @@ extension DeliveryFormViewController: UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == nameTextField {
+        if textField == nameTextField || textField == streetTextField {
             textField.endEditing(true)
         }
         return true
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if textField == streetTextField || textField == houseTextField {
-            openMapDeliveryViewController()
-            return false
+        if textField == streetTextField {
+            return true
         } else {
             return true
         }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let startEditPhone = (textField.text == "" || textField.text == "+") && textField == numberPhoneTextField
         
-        if startEditPhone {
-            numberPhoneTextField.text = "+7"
-            return false
-        } else {
-            return true
+        //Seet numberPhoneTextField
+        if textField == numberPhoneTextField {
+            let startEditPhone = (textField.text == "" || textField.text == "+") && textField == numberPhoneTextField
+            
+            if startEditPhone {
+                numberPhoneTextField.text = "+7"
+                return false
+            } else {
+                return true
+            }
+        }
+        if textField == streetTextField {
+            guard let newText = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) else {
+                return true
+            }
+        }
+        return true
+    }
+    
+    func searchLocation(_ string: String) {
+        locationManager.cleanLocations()
+        
+        //Вначале загружаю локации
+        locationManager.getLocations(
+            prefixSearch: generalSetting?.deliveryInfo.searchLocation ?? "",
+            name: string
+        ) { [weak self] placemarks in
+            guard let placemark = placemarks.first else {
+                self?.streetTextField.showError()
+                self?.showAlert("Ошибка", message: "Не удалось построить по вашему адрессу")
+                return
+            }
+            let startLocation = CLLocationCoordinate2D(
+                latitude: self?.generalSetting?.shopLocation.latitude ?? 0,
+                longitude: self?.generalSetting?.shopLocation.longitude ?? 0
+            )
+            let endLocation = CLLocationCoordinate2D(
+                latitude: placemark.location?.coordinate.latitude ?? 0,
+                longitude: placemark.location?.coordinate.longitude ?? 0
+            )
+            //По получ. локациям строю ммаршрут
+            LocationDataManager.shared.buildingWay(
+                startLocation: startLocation,
+                endLocation: endLocation) { [weak self] error, rout in
+                    guard let self = self, error == nil, let rout = rout else {
+                        self?.streetTextField.showError()
+                        self?.showAlert("Ошибка", message: "Не удалось построить по вашему адрессу")
+                        return
+                    }
+                    
+                    let cortage = self.locationManager.getSumDelyvery(rout.distance)
+                    let value = cortage.0
+                    let hasSale = cortage.1
+                    
+                    guard value != 9999 else {
+                        self.streetTextField.showError()
+                        
+                        let max = self.generalSetting?.deliveryInfo.distances.map{$0.maxDistance}.sorted(by: {$0 > $1}).first ?? 0
+                        self.showAlert("Ошибка", message: "Не удалось построить по вашему адрессу\nМаксимальная дальность доставки \(max)м.")
+                        return
+                    }
+                    self.streetTextField.hideError()
+                    
+                    DataStore.shared.userDeliveryLocation = UserDeliveryLocationModel(
+                        address: placemark.name ?? "",
+                        hasSale: hasSale,
+                        priceDelivery: Int(value)
+                    )
+                }
         }
     }
 }
 
 //MARK: -Observer
 extension DeliveryFormViewController {
+    
+    @objc
+    func confirmButtonDidTap() {
+        searchLocation(streetTextField.text ?? "")
+    }
+    
     private func addObserverKeyboard() {
         NotificationCenter.default.addObserver( self, selector: #selector(kbWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver( self, selector: #selector(kbWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -258,7 +366,10 @@ extension DeliveryFormViewController {
         let userInfo = notification.userInfo
         let kbFrameSize = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        topScrollViewConstraint.constant = -kbFrameSize.height/2
+        if !streetTextField.isFirstResponder {
+            topScrollViewConstraint.constant = -kbFrameSize.height/2
+        }
+        bottomButtonConstraint.constant = -20 - kbFrameSize.height
         UIView.animate(withDuration: 0.27, animations: {
             self.view.layoutSubviews()
         })
@@ -267,6 +378,7 @@ extension DeliveryFormViewController {
     @objc private func kbWillHide() {
         
         topScrollViewConstraint.constant = 0
+        bottomButtonConstraint.constant = -40
         UIView.animate(withDuration: 0.27, animations: {
             self.view.layoutSubviews()
         })

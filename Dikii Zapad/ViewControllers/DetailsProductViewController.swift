@@ -305,27 +305,30 @@ private extension DetailsProductViewController {
     
     func showDoneView() {
         let window = UIApplication.appDelegate.window ?? UIView()
-        let containerView = UIView()
-        containerView.alpha = 0
-        containerView.backgroundColor = .black.withAlphaComponent(0.8)
-        containerView.maskCorners(radius: 10)
-        containerView.frame = CGRect(x: (window.frame.width / 2) - 50,
-                                     y: (window.frame.height / 2) - 50,
-                                     width: 100,
-                                     height: 100)
+        let lastItem = UIApplication.tabBar?.tabBar.subviews.last ?? UIView()
+        let windowCoordinates = lastItem.convert(CGPoint.zero, to: window)
         
-        let imageView = UIImageView(image: UIImage(named: "done")?.withRenderingMode(.alwaysOriginal))
-        imageView.frame = CGRect(x: 12.5, y: 12.5, width: 75, height: 75)
+        let newImage = UIImageView(frame: pictureImage.frame)
+        newImage.contentMode = .scaleAspectFill
+        newImage.layer.cornerRadius = 20
+        newImage.layer.borderColor = UIColor.customOrange.withAlphaComponent(0.5).cgColor
+        newImage.layer.borderWidth = 1
+        newImage.clipsToBounds = true
+        newImage.image = self.pictureImage.image
         
-        window.addSubview(containerView)
-        containerView.addSubview(imageView)
+        window.addSubview(newImage)
         
-        containerView.fadeIn {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                containerView.fadeOut {
-                    containerView.removeFromSuperview()
-                }
-            }
+        view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5) {
+            newImage.frame = CGRect(
+                x: windowCoordinates.x + (lastItem.bounds.width / 2),
+                y: windowCoordinates.y + (lastItem.bounds.height / 2),
+                width: newImage.bounds.width * 0.01,
+                height: newImage.bounds.height * 0.01
+            )
+            newImage.layoutSubviews()
+        } completion: { [weak newImage] _ in
+            newImage?.removeFromSuperview()
         }
     }
 }

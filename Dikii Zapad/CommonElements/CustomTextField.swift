@@ -100,6 +100,14 @@ final class CustomTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func showError() {
+        containerView.layer.borderColor = UIColor.red.cgColor
+    }
+    
+    func hideError() {
+        containerView.layer.borderColor = UIColor.orange.cgColor
+    }
+    
     private func displayMaskLabelIfNeeded() {
         if let text = text, !text.isEmpty, !visibleMask.isEmpty {
             maskLabel.isHidden = false

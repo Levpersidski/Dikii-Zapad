@@ -7,7 +7,7 @@
 
 import UIKit
 import MapKit
-import CoreLocation
+//import CoreLocation
 import EasyPeasy
 
 struct UserDeliveryLocationModel {
@@ -18,8 +18,8 @@ struct UserDeliveryLocationModel {
 
 class MapDeliveryViewController: UIViewController {
     var geoCoder: CLGeocoder = CLGeocoder()
-    var searchLocation: [CLPlacemark] = []
     
+    private var locationManager = LocationDataManager.shared
     var usedModel: UserDeliveryLocationModel?
     
     private let generalSettings = DataStore.shared.generalSettings
@@ -87,6 +87,11 @@ class MapDeliveryViewController: UIViewController {
         mapView.showAnnotations([shopAnnotation], animated: true)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.endEditing(true)
+    }
+    
     private func setupView() {
         view.addSubviews(
             mapView,
@@ -133,36 +138,17 @@ class MapDeliveryViewController: UIViewController {
                 guard let placeMark = placeMark?.first else { return }
                 
                 let isValidName = Double(placeMark.name ?? "") == nil
-                self.searchLocation.insert(placeMark, at: 0)
-                self.annotationSearch.subtitle = self.createNameLocation(from: placeMark)
-                self.bottomSheet.addressTextField.text = self.createNameLocation(from: placeMark)
+                LocationDataManager.shared.searchLocation.insert(placeMark, at: 0)
+                self.annotationSearch.subtitle = placeMark.name ?? ""
+                self.bottomSheet.addressTextField.text = placeMark.name ?? ""
                 self.buildingWay(isValidName: isValidName)
             }
         }
-    }
-    
-    private func calculateSum(distance: CLLocationDistance) -> (Double, Bool) {
-        let pointDistance = generalSettings?.deliveryInfo.distances ?? []
-        for point in pointDistance {
-            if distance < Double(point.maxDistance) {
-                ///Если входим в диапазон возвращаем значение
-                return (Double(point.price), point.hasSale)
-            }
-        }
-        ///Если не входим в диапазон возвращаем ошибку значение 9999
-        return (9999, false)
-    }
-    
-    private func createNameLocation(from placeMark: CLPlacemark) -> String {        
-        let name = placeMark.name ?? ""
-        return name
     }
 }
 
 //MARK: - display locations
 private extension MapDeliveryViewController {
-
-    
     func showSearchAnnotation(coordinate: CLLocationCoordinate2D) {
         mapView.removeAnnotation(annotationSearch)
         
@@ -171,110 +157,53 @@ private extension MapDeliveryViewController {
         mapView.showAnnotations([annotationSearch], animated: true)
         mapView.selectAnnotation(annotationSearch, animated: true)
     }
-}
 
-//MARK: - Get data locations
-private extension MapDeliveryViewController {
-    func getLocation(from string: String, completion: @escaping ([CLPlacemark]?) -> Void) {
-        DispatchQueue.global().async { [weak self] in
-            self?.geoCoder.geocodeAddressString(string) { placeMarks, error in
-                if let _ = error {
-                    completion(nil)
-                    return
-                }
-                
-                guard let placeMarks = placeMarks else {
-                    completion(nil)
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion(placeMarks)
-                }
-            }
-        }
-    }
-    
-    func addAndFilterLocations(placeMarks: [CLPlacemark], completion: @escaping ([CLPlacemark]) -> Void) {
-        let countryFilter = "RU"
-        
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            var oldPlaceMarks = self.searchLocation
-            let newPlaceMarks = placeMarks.filter { $0.isoCountryCode == countryFilter }
-            
-            newPlaceMarks.forEach { placeMark in
-                let isHadObject = oldPlaceMarks.contains { ($0.location?.coordinate.longitude == placeMark.location?.coordinate.longitude) && ($0.location?.coordinate.latitude == placeMark.location?.coordinate.latitude) }
-                
-                if !isHadObject {
-                    oldPlaceMarks.insert(placeMark, at: 0)
-                }
-            }
-            
-            DispatchQueue.main.async {
-                completion(Array(oldPlaceMarks.prefix(1)))
-            }
-        }
-    }
-    
     func buildingWay(isValidName: Bool = true) {
-        let saleInfo = generalSettings?.deliveryInfo.saleInfo
-
         mapView.removeOverlays(mapView.overlays)
         
-        let startPoint = MKPlacemark(coordinate: shopAnnotation.coordinate)
-        let endPoint = MKPlacemark(coordinate: annotationSearch.coordinate)
-        
-        let request = MKDirections.Request()
-        request.source = MKMapItem(placemark: startPoint)
-        request.destination = MKMapItem(placemark: endPoint)
-        request.transportType = .automobile
-        
-        let direction = MKDirections(request: request)
-        direction.calculate { [weak self] response, error in
-            guard let self else { return }
-
-            guard let response = response else {
-                self.showAlert("Ошибка",
+        locationManager.buildingWay(
+            startLocation: shopAnnotation.coordinate,
+            endLocation: annotationSearch.coordinate
+        ) { [weak self] error, rout in
+            guard let self = self, error == nil, let rout = rout else {
+                self?.showAlert("Ошибка",
                                 message: "Не удалось построить маршрут",
                                 showCancel: true,
                                 cancelTitle: "Закрыть",
                                 okTitle: "Повторить",
                                 present: true,
                                 completion: { [weak self] in self?.buildingWay() })
-                
                 return
             }
             
-            if let rout = response.routes.first {
-                self.mapView.addOverlay(rout.polyline)
-                let distance = rout.distance
-                let cordage = self.calculateSum(distance: distance)
-                let value = isValidName ? cordage.0 : 9999
-                let hasSale = cordage.1
-                
-                let price: String
-                if value == 9999 {
-                    price = "НЕ ВЕЗЕМ!"
-                } else {
-                    price = "\(value) ₽ \(hasSale ? (saleInfo?.textSale ?? "") : "")"
-                }
-                
-                self.usedModel = UserDeliveryLocationModel(
-                    address: self.annotationSearch.subtitle ?? "",
-                    hasSale: hasSale,
-                    priceDelivery: Int(value)
-                )
-                
-                let modelBottomSheet = BottomSheetMapViewModel(
-                    distance: distance,
-                    price: price,
-                    hasDiscount: hasSale,
-                    state: value != 9999 ? .valid : .notValid
-                )
-                
-                self.bottomSheet.model = modelBottomSheet
+            let saleInfo = self.generalSettings?.deliveryInfo.saleInfo
+            self.mapView.addOverlay(rout.polyline)
+            
+            let cortage = self.locationManager.getSumDelyvery(rout.distance)
+            let value = isValidName ? cortage.0 : 9999
+            let hasSale = cortage.1
+            
+            let price: String
+            if value == 9999 {
+                price = "НЕ ВЕЗЕМ!"
+            } else {
+                price = "\(value) ₽ \(hasSale ? (saleInfo?.textSale ?? "") : "")"
             }
+            
+            self.usedModel = UserDeliveryLocationModel(
+                address: self.annotationSearch.subtitle ?? "",
+                hasSale: hasSale,
+                priceDelivery: Int(value)
+            )
+            
+            let modelBottomSheet = BottomSheetMapViewModel(
+                distance: rout.distance,
+                price: price,
+                hasDiscount: hasSale,
+                state: value != 9999 ? .valid : .notValid
+            )
+            
+            self.bottomSheet.model = modelBottomSheet
         }
     }
 }
@@ -291,9 +220,8 @@ extension MapDeliveryViewController: MKMapViewDelegate {
 
 //MARK: - BottomSheetMapViewDelegate
 extension MapDeliveryViewController: BottomSheetMapViewDelegate {
- 
     func cleanLocations() {
-        searchLocation = []
+        locationManager.cleanLocations()
     }
     
     func buttonDidTouch() {
@@ -302,28 +230,17 @@ extension MapDeliveryViewController: BottomSheetMapViewDelegate {
     }
     
     func updateLocations(newText: String) {
-        let searchCity = DataStore.shared.searchCity ?? ""
-        let updatedText = searchCity + newText
-        getLocation(from: updatedText) { [weak self] newPlaceMarks in
-            guard let newPlaceMarks = newPlaceMarks else { return }
-            
-            self?.addAndFilterLocations(placeMarks: newPlaceMarks) { [weak self] filteredPlaceMarks in
-                guard let self else { return }
-                guard !filteredPlaceMarks.isEmpty else {
-                    self.cleanLocations()
-                    return
-                }
-                
-                self.searchLocation = filteredPlaceMarks
-                self.bottomSheet.setStackView(locations: self.searchLocation)
-            }
-            
+        locationManager.getLocations(
+            prefixSearch: DataStore.shared.searchCity ?? "",
+            name: newText
+        ) { [weak self] placeMarks in
+            self?.bottomSheet.setStackView(locations: placeMarks)
         }
     }
     
     func showSearchAnnotationWithName(placeMark: CLPlacemark) {
         mapView.removeAnnotation(annotationSearch)
-        annotationSearch.subtitle = createNameLocation(from: placeMark)
+        annotationSearch.subtitle = placeMark.name ?? ""
         
         if let coordinate = placeMark.location?.coordinate {
             self.annotationSearch.coordinate = coordinate

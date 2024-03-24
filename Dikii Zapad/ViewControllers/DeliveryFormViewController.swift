@@ -133,6 +133,8 @@ class DeliveryFormViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.backItem?.title = ""
+        navigationController?.navigationBar.tintColor = UIColor.customOrange
         
         streetTextField.text = DataStore.shared.userDeliveryLocation?.address
         numberPhoneTextField.text = DataStore.shared.phoneNumber?.maskAsPhone()

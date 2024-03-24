@@ -148,7 +148,9 @@ class DetailsProductViewController: UIViewController {
         var descriptionText = modelProduct?.description
         descriptionText = descriptionText?.replacingOccurrences(of: "<p>", with: "")
         descriptionText = descriptionText?.replacingOccurrences(of: "</p>", with: "")
+        descriptionText = descriptionText?.replacingOccurrences(of: "<br />", with: "\n")
 
+        
         descriptionLabel.text = descriptionText
         nameLabel.text = modelProduct?.name
         
@@ -162,6 +164,8 @@ class DetailsProductViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.backItem?.title = ""
+        navigationController?.navigationBar.tintColor = UIColor.customOrange
     }    
 }
 
@@ -260,8 +264,8 @@ private extension DetailsProductViewController {
         )
         descriptionLabel.easy.layout(
             Top(35).to(pictureImage, .bottom),
-            Left(30),
-            Right(30)
+            Left(20),
+            Right(20)
         )
         tableView.easy.layout(
             Top(35).to(descriptionLabel, .bottom),
@@ -270,14 +274,14 @@ private extension DetailsProductViewController {
             Height(heightCell * CGFloat(additives.count))
         )
         orderButton.easy.layout(
-            Top(50).to(tableView, .bottom),
-            Left(30), Right(30),
+            Top(60).to(tableView, .bottom),
+            Left(20), Right(20),
             Height(54),
             Bottom(10)
         )
         quantityStepper.easy.layout(
             Bottom(10).to(orderButton, .top),
-            Left(30),
+            Left(20),
             Height(30)
         )
         quantityLabel.easy.layout(
@@ -288,8 +292,8 @@ private extension DetailsProductViewController {
         )
         priceLabel.easy.layout(
             Bottom(10).to(orderButton, .top),
-            Right(30),
-            Height(30)
+            Right(20),
+            Height(20)
         )
     }
     

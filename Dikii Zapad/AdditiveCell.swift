@@ -17,20 +17,25 @@ class AdditiveCell: UITableViewCell {
     weak var delegate: AdditiveCellDelegate?
     var index: Int = 0
     
-    let nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 19)
         label.textColor = .white
         return label
     }()
     
-    let priceLabel: UILabel = {
+    private lazy var priceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
         label.textColor = .white
         return label
     }()
     
+    private lazy var overlayButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(didTapOverlayButton), for: .touchUpInside)
+        return button
+    }()
     
     private lazy var checkBox: CheckBoxButton = {
         let checkBox = CheckBoxButton()
@@ -40,8 +45,6 @@ class AdditiveCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapCheckbox))
-        checkBox.addGestureRecognizer(gesture)
     }
     
     required init?(coder: NSCoder) {
@@ -49,9 +52,12 @@ class AdditiveCell: UITableViewCell {
     }
     
     private func setupCell() {
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(priceLabel)
-        contentView.addSubview(checkBox)
+        contentView.addSubviews(
+            nameLabel,
+            priceLabel,
+            checkBox,
+            overlayButton
+        )
         
         checkBox.easy.layout(
             Left(20),
@@ -69,6 +75,7 @@ class AdditiveCell: UITableViewCell {
             Right(20),
             CenterY()
         )
+        overlayButton.easy.layout( Edges() )
     }
     
     func configure(additive: AdditiveProduct) {
@@ -76,7 +83,7 @@ class AdditiveCell: UITableViewCell {
         priceLabel.text = "+\(additive.price)руб."
     }
     
-    @objc func didTapCheckbox() {
+    @objc func didTapOverlayButton() {
         checkBox.toggle()
         delegate?.checkBoxDidTap(index: index)
     }

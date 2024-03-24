@@ -24,19 +24,14 @@ final class ActionCell: UICollectionViewCell {
         }
     }
     
-    private lazy var containerView: UIView = {
-        let view = UIView()
-//        view.backgroundColor = .customClearGray
-        view.layer.cornerRadius = 15
-        view.roundCorners(20)
-        view.layer.borderColor = UIColor.customOrange.withAlphaComponent(0.5).cgColor
-        view.layer.borderWidth = 1
-        return view
-    }()
-    
     private lazy var image: UIImageView = {
         let image = UIImageView()
+        image.layer.cornerRadius = 15
+        image.roundCorners(20)
         image.contentMode = .scaleAspectFill
+        image.layer.borderColor = UIColor.customOrange.withAlphaComponent(0.5).cgColor
+        image.layer.borderWidth = 1
+        image.backgroundColor = .black
         return image
     }()
     
@@ -51,41 +46,10 @@ final class ActionCell: UICollectionViewCell {
     }
     
     func setupView() {
-        addSubview(containerView)
-        containerView.addSubview(image)
+        addSubview(image)
     }
     
     func setupConstrains() {
-        containerView.easy.layout(Edges())
         image.easy.layout(Edges())
     }
-    
-//    //методы по нажатию и отпусканию на экран
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesBegan(touches, with: event)
-//
-//        UIView.animate(withDuration: 0.1) {
-//            self.alpha = 0.5
-//            self.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-//        }
-//    }
-//
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesEnded(touches, with: event)
-//           resetCellState()
-//    }
-//
-//    // Если касание было отменено (например, при скроллинге)...
-//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesCancelled(touches, with: event)
-//        resetCellState()
-//    }
-//
-//    // Эта функция восстанавливает исходное состояние ячейки после касания.
-//    private func resetCellState() {
-//        UIView.animate(withDuration: 0.2) {
-//            self.transform = .identity
-//            self.alpha = 0.0
-//        }
-//    }
 }

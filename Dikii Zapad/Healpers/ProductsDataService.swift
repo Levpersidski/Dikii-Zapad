@@ -41,6 +41,8 @@ class ProductsDataService {
         download(urlProduct, groupLoading) { [weak self] result, error in
             DispatchQueue.main.async { [weak self] in
                 self?.products = result
+                self?.products = self?.products?.sorted(by: { $0.dateUpdated > $1.dateUpdated })
+                
                 print("DBG loaded \(self?.products?.count ?? 0) products")
                 self?.groupLoading.leave()
             }
@@ -49,6 +51,8 @@ class ProductsDataService {
         download(urlCategories, groupLoading) { [weak self] result, error in
             DispatchQueue.main.async { [weak self] in
                 self?.categories = result
+                self?.categories = self?.categories?.sorted(by: { $0.menu_order ?? 0 < $1.menu_order ?? 0 })
+                
                 print("DBG loaded \(self?.categories?.count ?? 0) categories")
                 self?.groupLoading.leave()
             }

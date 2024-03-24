@@ -26,19 +26,20 @@ struct Product: Codable {
     let date_created: String
     let description: String
     let price: String
-    let date_modified: String
+//    let date_modified: String
     let regular_price: String
     let sale_price: String
+    let menu_order: Int
     let categories: [Category]
     let images: [MediaData]
     let stock_status: String
     
     let attributes: [Attribute]
-    var dateUpdated: Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        return dateFormatter.date(from: date_modified) ?? Date()
-    }
+//    var dateUpdated: Date {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+//        return dateFormatter.date(from: date_modified) ?? Date()
+//    }
     
     ///Если не удалось распарсить статус - состояние = .inStock
     var stockStatusType: StockStatusType {

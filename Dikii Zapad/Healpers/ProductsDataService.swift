@@ -41,7 +41,14 @@ class ProductsDataService {
         download(urlProduct, groupLoading) { [weak self] result, error in
             DispatchQueue.main.async { [weak self] in
                 self?.products = result
-                self?.products = self?.products?.sorted(by: { $0.dateUpdated > $1.dateUpdated })
+                self?.products = self?.products?.sorted(by: { $0.menu_order < $1.menu_order })
+                
+                
+                let productTest = self?.products?.filter{ $0.categories.first?.name == "Бургеры" }
+//                
+//                productTest?.forEach { element in
+//                    print("=-= \(element.name), order - \(element.menu_order)" )
+//                }
                 
                 print("DBG loaded \(self?.products?.count ?? 0) products")
                 self?.groupLoading.leave()

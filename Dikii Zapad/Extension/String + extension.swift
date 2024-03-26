@@ -36,4 +36,8 @@ extension String {
     var length: Int {
         return self.count
     }
+    
+    var numbers: String {
+        return filter { "0"..."9" ~= $0 }
+    }
 }

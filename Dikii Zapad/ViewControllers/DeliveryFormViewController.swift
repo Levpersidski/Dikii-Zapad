@@ -18,9 +18,7 @@ class DeliveryFormViewController: UIViewController {
     private var topScrollViewConstraint: NSLayoutConstraint!
     private var bottomButtonConstraint: NSLayoutConstraint!
 
-    let phoneListener = PhoneInputListener { _, string, completed, _ in
-        DataStore.shared.phoneNumber = completed ? string : nil
-    }
+    let phoneListener = PhoneInputListener {_, string, completed, _ in }
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: .zero)
@@ -32,13 +30,32 @@ class DeliveryFormViewController: UIViewController {
         return scrollView
     }()
     
+    private lazy var gradientView: GradientView = {
+        let view = GradientView()
+        view.applyGradient(fromColor: .black,
+                           toColor: .clear,
+                           fromPoint: CGPoint(x: 0.5, y: 0),
+                           toPoint: CGPoint(x: 0.5, y: 1))
+        view.isUserInteractionEnabled = false
+        return view
+    }()
+    
     private lazy var confirmButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setTitle("Тест. применить", for: .normal)
-        btn.roundCorners(10)
-        btn.backgroundColor = .orange
-        btn.addTarget(self, action: #selector(confirmButtonDidTap), for: .touchUpInside)
-        return btn
+        let button  = UIButton(type: .system)
+        button.backgroundColor = UIColor.customOrange
+        button.roundCorners(15)
+        button.setTitle("Применить".uppercased(), for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        button.addTarget(self, action: #selector(confirmButtonDidTap), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
+        button.applyGradient(fromColor: UIColor(hex: "FF5929"),
+                             toColor: UIColor(hex: "993C1F"),
+                             fromPoint: CGPoint(x: 0.5, y: 0),
+                             toPoint: CGPoint(x: 0.5, y: 1),
+                             location: [0, 1])
+        button.isHidden = true
+        return button
     }()
     
     private lazy var containerView: UIView = {
@@ -67,6 +84,7 @@ class DeliveryFormViewController: UIViewController {
     private lazy var streetTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Улица"
+        textField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         textField.delegate = self
         return textField
     }()
@@ -98,7 +116,9 @@ class DeliveryFormViewController: UIViewController {
     private lazy var nameTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Ваше имя"
+        textField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         textField.delegate = self
+        textField.autocorrectionType = .no
         return textField
     }()
     
@@ -106,6 +126,7 @@ class DeliveryFormViewController: UIViewController {
         let textField = CustomTextField()
         textField.placeholder = "Номер телефона"
         textField.visibleMask = "+7 (XXX) XXX-XX-XX"
+        textField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         textField.keyboardType = .phonePad
         textField.delegate = phoneListener
         return textField
@@ -144,7 +165,7 @@ class DeliveryFormViewController: UIViewController {
     
     func setupView() {
         view.addSubview(backgroundView)
-        view.addSubviews(scrollView, confirmButton)
+        view.addSubviews(scrollView, gradientView, confirmButton)
         scrollView.addSubview(containerView)
         
         containerView.addSubviews(
@@ -162,6 +183,12 @@ class DeliveryFormViewController: UIViewController {
             Edges()
         )
         
+        gradientView.easy.layout(
+            Top(),
+            Left(), Right(),
+            Bottom(-40).to(view.safeAreaLayoutGuide, .top)
+        )
+        
         scrollView.easy.layout(
             Top().to(view.safeAreaLayoutGuide, .top),
             Left(), Right(),
@@ -176,7 +203,7 @@ class DeliveryFormViewController: UIViewController {
         )
         
         addressLabel.easy.layout(
-            Top(40),
+            Top(10),
             Left(16), Right(16)
         )
         
@@ -213,11 +240,33 @@ class DeliveryFormViewController: UIViewController {
         )
         
         confirmButton.easy.layout(
-            Height(40),
+            Height(54),
             Left(16), Right(16)
         )
         
         bottomButtonConstraint = confirmButton.easy.layout(Bottom(40)).first
+    }
+    
+    private func datasWasChanged() -> Bool {
+        let phoneInDataStore = DataStore.shared.phoneNumber ?? ""
+        let name = DataStore.shared.name ?? ""
+        let address = DataStore.shared.userDeliveryLocation?.address ?? ""
+        
+        let newPhone = (numberPhoneTextField.text ?? "").numbers
+        let validCountPhone = newPhone.count == 11 || newPhone.count == 0
+        let newName = nameTextField.text
+        let newAddress = streetTextField.text
+        
+        return (phoneInDataStore != newPhone && validCountPhone) || (name != newName) || (address != newAddress)
+    }
+    
+    private func displayConformButtonIfNeeded() {
+        confirmButton.isHidden = !datasWasChanged()
+    }
+    
+    
+    @objc private func textFieldEditingChanged() {
+        displayConformButtonIfNeeded()
     }
 }
 
@@ -272,8 +321,7 @@ extension DeliveryFormViewController: UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        //Seet numberPhoneTextField
+
         if textField == numberPhoneTextField {
             let startEditPhone = (textField.text == "" || textField.text == "+") && textField == numberPhoneTextField
             
@@ -281,11 +329,6 @@ extension DeliveryFormViewController: UITextFieldDelegate {
                 numberPhoneTextField.text = "+7"
                 return false
             } else {
-                return true
-            }
-        }
-        if textField == streetTextField {
-            guard let newText = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) else {
                 return true
             }
         }
@@ -351,7 +394,17 @@ extension DeliveryFormViewController {
     
     @objc
     func confirmButtonDidTap() {
-        searchLocation(streetTextField.text ?? "")
+        view.endEditing(true)
+        DataStore.shared.name = nameTextField.text ?? ""
+        if let number = numberPhoneTextField.text?.numbers, number.count == 11 || number.count == 0 {
+            DataStore.shared.phoneNumber = number
+        }
+        
+        let addressInDataStore = DataStore.shared.userDeliveryLocation?.address ?? ""
+        if addressInDataStore != streetTextField.text {
+            searchLocation(streetTextField.text ?? "")
+        }
+        confirmButton.isHidden = true
     }
     
     private func addObserverKeyboard() {

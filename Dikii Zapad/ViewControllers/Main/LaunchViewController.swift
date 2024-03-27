@@ -65,7 +65,32 @@ final class LaunchViewController: UIViewController {
         setupView()
         setupConstrains()
         
-        loadData()
+        checkValidVersion{ [weak self] result, error  in
+            guard let self, error == nil else {
+                self?.showAlert("Что то пошло не так",
+                                message: "Не удалось загрузить меню",
+                                okTitle: "Повторить",
+                                present: true)
+                return
+            }
+            
+            if result == true {
+                self.loadData()
+            } else {
+                self.showAlert(
+                    "Обнови приложение!",
+                    message: "Обнови приложение Dikiy Zapad до новой версии. Мы исправили критичные ошибки.\n\nНовая версия доступна в App Store.",
+                    okTitle: "Перейти в App Store",
+                    present: true,
+                    completion: {
+                        let url = URL(string: DataStore.shared.generalSettings?.appStoreURL ?? "")!
+                        
+                        if UIApplication.shared.canOpenURL(url) {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        }
+                    })
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -147,6 +172,44 @@ final class LaunchViewController: UIViewController {
         navigationController?.pushViewController(mainViewController, animated: true)
     }
     
+    private func checkValidVersion(completion: @escaping (Bool?, Error?) -> Void)  {
+        dataService.loadGeneralSettings { settings, error in
+            guard let settings, error == nil else {
+                completion(false, DZError.badData)
+                return
+            }
+            
+            let currentVersion = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""
+            let currentComponents = currentVersion.components(separatedBy: ".")
+            let serverComponents = settings.minVersion.components(separatedBy: ".")
+            let count = min(currentComponents.count, serverComponents.count)
+
+            for i in 0..<count {
+                guard let current = Int(currentComponents[i]) else {
+                    continue
+                }
+                guard let server = Int(serverComponents[i]) else {
+                    continue
+                }
+                
+                if current < server {
+                    completion(false, nil)
+                    return
+                } else if current > server {
+                    completion(true, nil)
+                    return
+                }
+            }
+            
+            if currentComponents.count < serverComponents.count {
+                completion(false, nil)
+                return
+            } else {
+                completion(true, nil)
+                return
+            }
+        }
+    }
     
     private func loadData() {
         endedLoadingData = false

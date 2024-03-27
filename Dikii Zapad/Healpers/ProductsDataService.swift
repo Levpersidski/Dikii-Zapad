@@ -43,13 +43,6 @@ class ProductsDataService {
                 self?.products = result
                 self?.products = self?.products?.sorted(by: { $0.menu_order < $1.menu_order })
                 
-                
-                let productTest = self?.products?.filter{ $0.categories.first?.name == "Бургеры" }
-//                
-//                productTest?.forEach { element in
-//                    print("=-= \(element.name), order - \(element.menu_order)" )
-//                }
-                
                 print("DBG loaded \(self?.products?.count ?? 0) products")
                 self?.groupLoading.leave()
             }
@@ -61,15 +54,6 @@ class ProductsDataService {
                 self?.categories = self?.categories?.sorted(by: { $0.menu_order ?? 0 < $1.menu_order ?? 0 })
                 
                 print("DBG loaded \(self?.categories?.count ?? 0) categories")
-                self?.groupLoading.leave()
-            }
-        }
-        
-        groupLoading.enter()
-        loadGeneralSettings { settings, error in
-            DispatchQueue.main.async { [weak self] in
-                DataStore.shared.generalSettings = settings
-                print("DBG loaded \(settings == nil ? "error general settings" : "has general settings") categories")
                 self?.groupLoading.leave()
             }
         }
@@ -101,6 +85,37 @@ class ProductsDataService {
         DataStore.shared.allProducts = products
         DataStore.shared.allCategories = categories
     }
+    
+    func loadGeneralSettings(completion: @escaping (GeneralSettings?, Error?) -> Void) {
+        let urlString = "https://dikiyzapad-161.ru/test/getGlobalSettings.php"
+        let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
+        
+        var request = URLRequest(url: URL(string: urlString)!)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(secretToken)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                DispatchQueue.main.async {
+                    completion(nil, DZError.badData)
+                }
+                return
+            }
+            
+            do {
+                let result = try JSONDecoder().decode(GeneralSettings.self, from: data)
+                DataStore.shared.generalSettings = result
+                
+                DispatchQueue.main.async {
+                    completion(result, nil)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(nil, DZError.parce)
+                }
+            }
+        }.resume()
+    }
 }
 
 //Private
@@ -131,29 +146,6 @@ private extension ProductsDataService {
                 completion(nil, error)
             }
         }
-    }
-    
-    func loadGeneralSettings(completion: @escaping (GeneralSettings?, Error?) -> Void) {
-        let urlString = "https://dikiyzapad-161.ru/test/getGlobalSettings.php"
-        let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
-        
-        var request = URLRequest(url: URL(string: urlString)!)
-        request.httpMethod = "GET"
-        request.setValue("Bearer \(secretToken)", forHTTPHeaderField: "Authorization")
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                completion(nil, DZError.badData)
-                return
-            }
-            
-            do {
-                let result = try JSONDecoder().decode(GeneralSettings.self, from: data)
-                completion(result, nil)
-            } catch {
-                completion(nil, DZError.parce)
-            }
-        }.resume()
     }
     
     func loadPromotionsUrl(completion: @escaping ([String]?, Error?) -> Void) {

@@ -25,8 +25,7 @@ class DataStore {
         }
     }
     
-    
-    
+
     var userDeliveryLocation: UserDeliveryLocationModel? {
         get {
             let addressUserDeliveryLocation = UserDefaults.standard.string(forKey: "addressUserDeliveryLocation")

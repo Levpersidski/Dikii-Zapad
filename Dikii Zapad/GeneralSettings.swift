@@ -8,6 +8,8 @@
 import Foundation
 
 struct GeneralSettings: Codable {
+    let appStoreURL: String
+    let minVersion: String
     let shopLocation: ShopLocation
     let contacts: Contacts
     let deliveryInfo: DeliveryInfo

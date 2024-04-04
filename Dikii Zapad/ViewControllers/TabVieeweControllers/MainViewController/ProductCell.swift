@@ -46,13 +46,18 @@ class ProductCell: UICollectionViewCell {
         return image
     }()
     
+    private lazy var skeletonView: SkeletonView = {
+        let view = SkeletonView()
+        view.alpha = 0.3
+        return view
+    }()
+    
     private lazy var whiteOverlayView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
         view.alpha = 0.0 // Задайте нужную прозрачность (от 0.0 до 1.0)
         return view
     }()
-
     
     private lazy var labelName: UILabel = {
         let label = UILabel()
@@ -129,9 +134,14 @@ class ProductCell: UICollectionViewCell {
         labelName.text = model.title
         image.image = model.image
         priceLabel.text = "\(model.price) РУБ."
-                
+        skeletonView.isHidden = false
+        skeletonView.startAnimating()
+        
         if let url = model.imageURL {
-            image.kf.setImage(with: url)
+            image.kf.setImage(with: url) { [weak self] _ in
+                self?.skeletonView.stopAnimating()
+                self?.skeletonView.isHidden = true
+            }
         }
         
         topBlockedOverlay.isHidden = model.stockStatusType != .outOfStock
@@ -142,7 +152,7 @@ class ProductCell: UICollectionViewCell {
         containerView.addSubview(image)
         containerView.addSubview(labelName)
         containerView.addSubview(priceLabel)
-        image.addSubview(whiteOverlayView)
+        image.addSubviews(skeletonView, whiteOverlayView)
         containerView.addSubview(topBlockedOverlay)
         image.clipsToBounds = true
     }
@@ -155,6 +165,9 @@ class ProductCell: UICollectionViewCell {
         )
         image.easy.layout(
             Top(8), Left(8), Right(8), Height(heightImage)
+        )
+        skeletonView.easy.layout(
+            Edges()
         )
         labelName.easy.layout(
             Top(10).to(image, .bottom), Left(), Right()

@@ -60,6 +60,12 @@ class DetailsProductViewController: UIViewController {
         return image
     }()
     
+    private lazy var skeletonView: SkeletonView = {
+        let view = SkeletonView()
+        view.alpha = 0.3
+        return view
+    }()
+    
     private lazy var descriptionLabel: UILabel = {
         let text  = UILabel()
         text.textColor = .white
@@ -140,8 +146,12 @@ class DetailsProductViewController: UIViewController {
         addSubViews()
         setupConstraints()
         
+        skeletonView.startAnimating()
         if let url = modelProduct?.imageURL {
-            pictureImage.kf.setImage(with: url)
+            pictureImage.kf.setImage(with: url) { [weak self] _ in
+                self?.skeletonView.stopAnimating()
+                self?.skeletonView.isHidden = true
+            }
         }
         
         //TO DO: move replacingOccurrences in maping
@@ -184,6 +194,8 @@ private extension DetailsProductViewController {
                                 quantityLabel,
                                 priceLabel,
                                 tableView)
+        
+        pictureImage.addSubview(skeletonView)
     }
     
     
@@ -262,6 +274,11 @@ private extension DetailsProductViewController {
             Right(20),
             Height(widthImage)
         )
+        
+        skeletonView.easy.layout(
+            Edges()
+        )
+        
         descriptionLabel.easy.layout(
             Top(35).to(pictureImage, .bottom),
             Left(20),

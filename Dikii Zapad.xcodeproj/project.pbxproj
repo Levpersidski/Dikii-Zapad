@@ -55,6 +55,7 @@
 		B6F3EA542AD57B4000270662 /* SectionHeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */; };
 		B6F3EA562AD5DD1400270662 /* CustomRegisterTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */; };
 		B6F3EA5A2AD9604000270662 /* DeliveryFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */; };
+		DF1E102B2BBF17BE0035C464 /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +105,7 @@
 		B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderReusableView.swift; sourceTree = "<group>"; };
 		B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRegisterTextfield.swift; sourceTree = "<group>"; };
 		B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryFormViewController.swift; sourceTree = "<group>"; };
+		DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +190,7 @@
 				042487E32B8A2F89000F9CEC /* CustomAlert.swift */,
 				04E675A32B890EC7007559C6 /* DropDownList.swift */,
 				04E675A52B891343007559C6 /* ItemSelectableDropDown.swift */,
+				DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */,
 			);
 			path = CommonElements;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 				B6306BBD2AC088D800B0BF80 /* MainViewController.swift in Sources */,
 				04FC3D9F2BA550FC00B5B666 /* Array + extension.swift in Sources */,
 				B66D7BAC2B0A9307009C34CB /* CartCell.swift in Sources */,
+				DF1E102B2BBF17BE0035C464 /* SkeletonView.swift in Sources */,
 				B67122992B7E747D00E051EF /* OrderViewController.swift in Sources */,
 				B6DB40FE2AEFF2E6005963ED /* CustomButton.swift in Sources */,
 				B66D7BA92AFD271F009C34CB /* CheckBoxButton.swift in Sources */,
@@ -527,27 +531,32 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F7X8B5584B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dikii Zapad/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = s;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "BakaevRoman.Dikii-Zapad";
+				PRODUCT_BUNDLE_IDENTIFIER = ru.dikiizapad.dikiizapad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -556,27 +565,32 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F7X8B5584B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dikii Zapad/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = s;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "BakaevRoman.Dikii-Zapad";
+				PRODUCT_BUNDLE_IDENTIFIER = ru.dikiizapad.dikiizapad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -11,7 +11,8 @@ import EasyPeasy
 struct CartViewModel {
     var cells: [CartCellViewModel] = [] {
         didSet {
-            UIApplication.tabBar?.tabBar.setBageValue(.cart, value: cells.count)
+            let count = cells.map({ $0.count }).reduce(0, { $0 + $1 })
+            UIApplication.tabBar?.tabBar.setBageValue(.cart, value: count)
         }
     }
 }

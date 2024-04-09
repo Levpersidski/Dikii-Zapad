@@ -17,9 +17,13 @@ final class ActionCell: UICollectionViewCell {
     var model: ActionCellViewModel? {
         didSet {
             guard let model = model else { return }
+            skeletonView.isHidden = false
+            skeletonView.startAnimating()
             
             if let url = URL(string: model.urlString) {
-                image.kf.setImage(with:url)
+                image.kf.setImage(with: url)
+                skeletonView.stopAnimating()
+                skeletonView.isHidden = true
             }
         }
     }
@@ -35,6 +39,12 @@ final class ActionCell: UICollectionViewCell {
         return image
     }()
     
+    private lazy var skeletonView: SkeletonView = {
+        let view = SkeletonView()
+        view.alpha = 0.3
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -47,9 +57,11 @@ final class ActionCell: UICollectionViewCell {
     
     func setupView() {
         addSubview(image)
+        image.addSubview(skeletonView)
     }
     
     func setupConstrains() {
         image.easy.layout(Edges())
+        skeletonView.easy.layout(Edges())
     }
 }

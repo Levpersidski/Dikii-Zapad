@@ -88,7 +88,7 @@ class ProductsDataService {
     
     func loadGeneralSettings(completion: @escaping (GeneralSettings?, Error?) -> Void) {
         let urlString = "https://dikiyzapad-161.ru/test/getGlobalSettings.php"
-        let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
+        let secretToken = DataStore.shared.secretToken
         
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "GET"
@@ -150,7 +150,7 @@ private extension ProductsDataService {
     
     func loadPromotionsUrl(completion: @escaping ([String]?, Error?) -> Void) {
         let urlString = "https://dikiyzapad-161.ru/test/getPromotions.php"
-        let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
+        let secretToken = DataStore.shared.secretToken
         
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "GET"

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import InputMask
 import EasyPeasy
 
 enum DayType: Int {
@@ -23,6 +24,8 @@ enum DayType: Int {
 }
 
 final class OrderViewController: UIViewController {
+    let phoneListener = PhoneInputListener {_, string, completed, _ in }
+    
     private var isValidDeliveryTime: Bool = true {
         didSet {
             timeSecondButton.titleLabel?.tintColor = isValidDeliveryTime ? .white : .red
@@ -111,6 +114,19 @@ final class OrderViewController: UIViewController {
         button.layer.borderWidth = 1
         button.addTarget(self, action: #selector(timeSecondButtonDidTap), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var numberPhoneTextField: CustomTextField = {
+        let textField = CustomTextField()
+        textField.placeholder = "Номер телефона"
+        textField.visibleMask = "+7 (XXX) XXX-XX-XX"
+        textField.keyboardType = .phonePad
+        textField.delegate = phoneListener
+        textField.backgroundColor = UIColor(hex: "1C1C1C").withAlphaComponent(0.6)
+        textField.borderBolor = .clear
+        textField.roundCorners(10)
+        textField.borderWidth = 1
+        return textField
     }()
     
     private lazy var textView: UITextView = {
@@ -240,6 +256,7 @@ final class OrderViewController: UIViewController {
         super.viewDidLoad()
         addSubViews()
         setupConstraints()
+        phoneListener.textFieldDelegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -259,6 +276,7 @@ final class OrderViewController: UIViewController {
         sumValueOrderLabel.text = sumModel.1
         
         sumDeliveryLabel.isHidden = sumModel.0.isEmpty
+        numberPhoneTextField.text = DataStore.shared.phoneNumber?.maskAsPhone()
     }
     
     private func prepareSumDelivery() -> (String, String) {
@@ -350,6 +368,7 @@ final class OrderViewController: UIViewController {
             deliveryTimeLabel,
             timeFirstButton,
             timeSecondButton,
+            numberPhoneTextField,
             textView,
             textViewPlaceholder,
             makeOrderButton,
@@ -392,8 +411,14 @@ final class OrderViewController: UIViewController {
             Height(40)
         )
         
-        textView.easy.layout(
+        numberPhoneTextField.easy.layout(
             Top(20).to(timeSecondButton, .bottom),
+            Left(16), Right(16),
+            Height(40)
+        )
+        
+        textView.easy.layout(
+            Top(20).to(numberPhoneTextField, .bottom),
             Height(>=40),
             Left(16), Right(16),
             Bottom(<=16).to(payDropList, .top)
@@ -522,6 +547,8 @@ final class OrderViewController: UIViewController {
             address = "На вынос"
         }
         
+        let comment = textView.text ?? ""
+        
         let orderText = model.cells.map { model in
             let category = DataStore.shared.allCategories.first(where: { $0.id == model.categoryId })?.name ?? ""
             
@@ -533,25 +560,35 @@ final class OrderViewController: UIViewController {
 """
         }
         
-        return "\(price + priceDelivery) Руб.\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(name) т: +\(DataStore.shared.phoneNumber ?? "")"
+        return "\(price + priceDelivery) Руб.\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(name) т: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)"))"
     }
     
     @objc private func makeOrderButtonDidTap() {
         view.endEditing(true)
+        payDropList.hiddenItems(true)
+        deliveryDropList.hiddenItems(true)
+        dataPicker.fadeOut()
+        numberPhoneTextField.hideError()
 
-        guard DataStore.shared.phoneNumber != nil else {
+        guard checkValidTimeInDataSore() else { return }
+        
+        guard checkValidationPhone() else {
+            numberPhoneTextField.showError()
+            return
+        }
+        
+        guard let name = DataStore.shared.name, !name.isEmpty else {
             let window = UIApplication.appDelegate.window ?? UIView()
-            let model = CustomAlertViewModel(title: "Не хватает данных",
-                                             subtitle: "Укажите номер телефона для заказа")
+            let model = CustomAlertViewModel(
+                title: "Укажите имя для заказа",
+                hasTextField: true,
+                titleButton: "Сохранить"
+            )
+            
             CustomAlert.open(in: window, model: model)
             return
         }
         
-        guard checkValidTimeInDataSore() else { return }
-        
-        payDropList.hiddenItems(true)
-        deliveryDropList.hiddenItems(true)
-        dataPicker.fadeOut()
         startLoadingAnimation(true)
         
         TelegramManager.shared.sendMessage(createTextForMessage()) { [weak self] result in
@@ -723,5 +760,41 @@ extension OrderViewController: UITextViewDelegate {
         let isEmptyText = textView.text.isEmpty
         textViewPlaceholder.isHidden = !isEmptyText
         textView.layer.borderColor = UIColor.clear.cgColor
+    }
+}
+
+//MARK: - UITextFieldDelegate
+extension OrderViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        guard textField == numberPhoneTextField else { return }
+        numberPhoneTextField.hideError()
+        
+        guard checkValidationPhone() else { return }
+        DataStore.shared.phoneNumber = textField.text?.numbers
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        guard textField == numberPhoneTextField else { return }
+        numberPhoneTextField.showFocusBorder()
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if textField == numberPhoneTextField {
+            let startEditPhone = (textField.text == "" || textField.text == "+") && textField == numberPhoneTextField
+            
+            if startEditPhone {
+                numberPhoneTextField.text = "+7"
+                return false
+            } else {
+                return true
+            }
+        }
+        return true
+    }
+    
+    private func checkValidationPhone() -> Bool {
+        let phone = (numberPhoneTextField.text ?? "").numbers
+        return phone.count == 11
     }
 }

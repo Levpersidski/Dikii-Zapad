@@ -94,7 +94,7 @@ class CartViewController: UIViewController {
     private lazy var pricelabel: UILabel = {
         let label  = UILabel()
         label.text = "000"
-        label.font = UIFont(name: "Capture it", size: 30)
+        label.font = UIFont.systemFont(ofSize: 30, weight: .regular)
         label.textColor = .white
         return label
     }()
@@ -143,6 +143,7 @@ class CartViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 50
         tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
         return tableView
     }()
     

@@ -10,14 +10,24 @@ import EasyPeasy
 
 final class CustomTextField: UITextField {
     
+    var borderBolor: UIColor = .orange {
+        didSet {
+            containerView.layer.borderColor = borderBolor.cgColor
+        }
+    }
+    
+    var borderWidth: CGFloat = 1.5 {
+        didSet {
+            containerView.layer.borderWidth = borderWidth
+        }
+    }
+    
     private let insets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     private let colorText = UIColor(hex: "#F39578")
     private let colorPlaceholderText = UIColor(hex: "#892B0E")
     private let fontPlaceholder: UIFont = UIFont.systemFont(ofSize: 16)
-    
     private var oldText: String? = nil
 
-    
     var fontText: UIFont = UIFont.systemFont(ofSize: 16) {
         didSet {
             font = fontText
@@ -51,7 +61,7 @@ final class CustomTextField: UITextField {
         let view = UIView()
         view.backgroundColor = .clear
         view.layer.borderWidth = 1.5
-        view.layer.borderColor = UIColor.orange.cgColor
+        view.layer.borderColor = borderBolor.cgColor
         view.isUserInteractionEnabled = false
         view.layer.cornerRadius = 10
         return view
@@ -73,13 +83,7 @@ final class CustomTextField: UITextField {
         
         textColor = colorText
         addTarget(self, action: #selector(handleEditingDidBegin), for: .editingDidBegin)
-//        addObserver(self, forKeyPath: "text", options: NSKeyValueObservingOptions.new, context: nil)
         addTarget(self, action: #selector(handleEditingDidBegin), for: .editingChanged)
-
-    }
-    
-    deinit {
-//        removeObserver(self, forKeyPath: "text")
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -105,6 +109,10 @@ final class CustomTextField: UITextField {
     }
     
     func hideError() {
+        containerView.layer.borderColor = borderBolor.cgColor
+    }
+    
+    func showFocusBorder() {
         containerView.layer.borderColor = UIColor.orange.cgColor
     }
     

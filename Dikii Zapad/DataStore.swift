@@ -18,6 +18,8 @@ class DataStore {
     var allProducts: [Product] = []
     var promotionURLs: [String] = []
     
+    let secretToken = "0f2087abd0760c7faf0f67c0770d5a9081885394f7ad76c7cd0975e88d96fd41"
+    
     var generalSettings: GeneralSettings?
     var searchCity: String? {
         get {

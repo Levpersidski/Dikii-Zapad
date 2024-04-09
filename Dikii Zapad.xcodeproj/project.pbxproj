@@ -537,6 +537,7 @@
 				DEVELOPMENT_TEAM = F7X8B5584B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dikii Zapad/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Dikiy Zapad";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = s;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -571,6 +572,7 @@
 				DEVELOPMENT_TEAM = F7X8B5584B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dikii Zapad/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Dikiy Zapad";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = s;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;

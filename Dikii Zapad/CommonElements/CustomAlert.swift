@@ -11,6 +11,10 @@ import EasyPeasy
 struct CustomAlertViewModel {
     var title: String = ""
     var subtitle: String = ""
+    var hasTextField: Bool = false
+    
+    var titleButton: String = ""
+    var actionButton: (() -> Void)? = nil
 }
 
 class CustomAlert: UIView {
@@ -19,6 +23,9 @@ class CustomAlert: UIView {
         didSet {            
             titleLabel.text = model.title
             subtitleLabel.text = model.subtitle
+            textField.isHidden = !model.hasTextField
+            actionButton.isHidden = model.titleButton.isEmpty
+            actionButton.setTitle(model.titleButton, for: .normal)
         }
     }
     
@@ -71,6 +78,32 @@ class CustomAlert: UIView {
         lbl.textAlignment = .center
         lbl.numberOfLines = 0
         return lbl
+    }()
+    
+    private lazy var textField: CustomTextField = {
+        let textField = CustomTextField()
+        textField.placeholder = "Ваше имя"
+        textField.autocorrectionType = .no
+        textField.isHidden = !model.hasTextField
+        return textField
+    }()
+    
+    private  lazy var actionButton: UIButton = {
+        let button  = UIButton(type: .system)
+        button.maskCorners(radius: 15)
+        button.isHidden = model.titleButton.isEmpty
+        button.setTitle(model.titleButton, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        button.addTarget(self, action: #selector(actionButtonDidTap), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
+        button.applyGradient(fromColor: UIColor(hex: "FF5929"),
+                             toColor: UIColor(hex: "993C1F"),
+                             fromPoint: CGPoint(x: 0.5, y: 0),
+                             toPoint: CGPoint(x: 0.5, y: 1),
+                             location: [0, 1])
+        
+        return button
     }()
     
     private lazy var closeButton: UIButton = {
@@ -126,13 +159,12 @@ class CustomAlert: UIView {
             self.easy.layout(Edges())
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.bottomContainerConstraint.constant = -self.offset
+        view.layoutIfNeeded()
+            bottomContainerConstraint.constant = -self.offset
             UIView.springAnimate {
                 self.layoutSubviews()
                 self.overlayView.alpha = 1
             }
-        }
     }
     
     func close() {
@@ -157,8 +189,19 @@ class CustomAlert: UIView {
     
     // MARK: - Setup Views
     private func setupViews() {
-        addSubviews(overlayView, containerView)
-        containerView.addSubviews(closeButton, logoImage, titleLabel, subtitleLabel)
+        addSubviews(
+            overlayView,
+            containerView
+        )
+        
+        containerView.addSubviews(
+            closeButton,
+            logoImage,
+            titleLabel,
+            subtitleLabel,
+            textField,
+            actionButton
+        )
     }
     
     private func setupConstraints() {
@@ -193,10 +236,31 @@ class CustomAlert: UIView {
             Right(16),
             Bottom(62)
         )
+        
+        textField.easy.layout(
+            Top(25).to(titleLabel, .bottom),
+            Left(16),
+            Right(16),
+            Height(40)
+        )
+        
+        actionButton.easy.layout(
+            Bottom(16),
+            Left(20),
+            Right(20),
+            Height(40)
+        )
     }
     
     @objc
     private func closeButtonDidTap() {
         close()
+    }
+    
+    @objc
+    private func actionButtonDidTap() {
+        DataStore.shared.name = textField.text
+        close()
+        model.actionButton?()
     }
 }

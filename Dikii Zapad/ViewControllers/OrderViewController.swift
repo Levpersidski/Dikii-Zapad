@@ -26,6 +26,8 @@ enum DayType: Int {
 final class OrderViewController: UIViewController {
     let phoneListener = PhoneInputListener {_, string, completed, _ in }
     
+    private var uuidNumber: String = "0"
+    
     private var isValidDeliveryTime: Bool = true {
         didSet {
             timeSecondButton.titleLabel?.tintColor = isValidDeliveryTime ? .white : .red
@@ -548,7 +550,8 @@ final class OrderViewController: UIViewController {
         
         let address: String
         if DataStore.shared.outSideOrder {
-            address = "Адрес: \(userModel?.address ?? "")"
+            let priceDelivery = sumValueDeliveryLabel.text ?? ""
+            address = "Доставка: \(priceDelivery)" + "\n• " + "Адрес: \(userModel?.address ?? "")"
         } else {
             address = "На вынос"
         }
@@ -565,7 +568,15 @@ final class OrderViewController: UIViewController {
         
         let payTape = "Оплата: " + (payDropList.viewModel?.items.first(where: { $0.isSelected })?.title ?? "")
         
-        return "\(price + priceDelivery) Руб.\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(payTape)\n• \(name) т: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)")"
+        return "\(price + priceDelivery) Руб.          #\(uuidNumber)\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(payTape)\n• \(name) Тел: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)")"
+    }
+    
+    func createCustomUUID() -> String {
+        var uuid = ""
+        for count in (0...4) {
+            uuid += "\(Int.random(in: 1..<10))"
+        }
+        return uuid
     }
     
     @objc private func makeOrderButtonDidTap() {
@@ -595,6 +606,7 @@ final class OrderViewController: UIViewController {
         }
         
         startLoadingAnimation(true)
+        uuidNumber = createCustomUUID()
         
         TelegramManager.shared.sendMessage(createTextForMessage()) { [weak self] result in
             guard let self = self else { return }
@@ -602,7 +614,7 @@ final class OrderViewController: UIViewController {
             switch result {
             case .success(_):
                 if let window =  UIApplication.appDelegate.window {
-                    let model = CustomAlertViewModel(title: "Благодарим за заказ!", subtitle: "Мы перезвоним вам на номер: \(DataStore.shared.phoneNumber?.maskAsPhone() ?? "") в течении 15 минут для подтверждения заказа!")
+                    let model = CustomAlertViewModel(title: "Благодарим за заказ!", subtitle: "Мы перезвоним вам на номер: \(DataStore.shared.phoneNumber?.maskAsPhone() ?? "") в течении 15 минут для подтверждения заказа!\n Номер заказа: \(uuidNumber)")
                     CustomAlert.open(in: window, model: model)
                 }
                 self.navigationController?.popViewController(animated: true)

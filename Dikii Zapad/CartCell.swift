@@ -189,6 +189,7 @@ class CartCell: UITableViewCell {
         )
 
         separatorView.easy.layout(
+            Top(>=20).to(priceLabel, .bottom),
             Height(0.5),
             Left(16), Right(16),
             Bottom()

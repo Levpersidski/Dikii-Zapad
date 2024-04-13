@@ -44,9 +44,9 @@ class DeliveryFormViewController: UIViewController {
         let button  = UIButton(type: .system)
         button.backgroundColor = UIColor.customOrange
         button.roundCorners(15)
-        button.setTitle("Применить".uppercased(), for: .normal)
+        button.setTitle("Применить", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.addTarget(self, action: #selector(confirmButtonDidTap), for: .touchUpInside)
         button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
         button.applyGradient(fromColor: UIColor(hex: "FF5929"),

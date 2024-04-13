@@ -117,7 +117,13 @@ final class OrderViewController: UIViewController {
     }()
     
     private lazy var numberPhoneTextField: CustomTextField = {
-        let textField = CustomTextField()
+        let textField = CustomTextField(
+            frame: .zero,
+            colorText: .white,
+            colorPlaceholderText: .white.withAlphaComponent(0.6),
+            fontPlaceholder: .systemFont(ofSize: 16, weight: .medium)
+        )
+            
         textField.placeholder = "Номер телефона"
         textField.visibleMask = "+7 (XXX) XXX-XX-XX"
         textField.keyboardType = .phonePad
@@ -231,9 +237,9 @@ final class OrderViewController: UIViewController {
     private  lazy var makeOrderButton: UIButton = {
         let button  = UIButton(type: .system)
         button.maskCorners(radius: 15)
-        button.setTitle("ОФОРМИТЬ ЗАКАЗ", for: .normal)
+        button.setTitle("Оформить заказ", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.addTarget(self, action: #selector(makeOrderButtonDidTap), for: .touchUpInside)
         button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
         button.applyGradient(fromColor: UIColor(hex: "FF5929"),
@@ -327,7 +333,7 @@ final class OrderViewController: UIViewController {
                     self?.sumValueDeliveryLabel.text = sumModel?.0
                     self?.sumValueOrderLabel.text = sumModel?.1
                 },
-                DropDownItemViewModel(title: "Указать новый адресс", isSelected: false) { [weak self] in
+                DropDownItemViewModel(title: "Указать новый адрес", isSelected: false) { [weak self] in
                     DataStore.shared.outSideOrder = true
                     let mapView = MapDeliveryViewController()
                     self?.navigationController?.pushViewController(mapView, animated: true)
@@ -542,7 +548,7 @@ final class OrderViewController: UIViewController {
         
         let address: String
         if DataStore.shared.outSideOrder {
-            address = "Адресс: \(userModel?.address ?? "")"
+            address = "Адрес: \(userModel?.address ?? "")"
         } else {
             address = "На вынос"
         }
@@ -550,17 +556,16 @@ final class OrderViewController: UIViewController {
         let comment = textView.text ?? ""
         
         let orderText = model.cells.map { model in
-            let category = DataStore.shared.allCategories.first(where: { $0.id == model.categoryId })?.name ?? ""
-            
-            let categoryAndName = "(\(category))" + " " + model.title
-            let count = model.count > 1 ? "(x\(model.count))" : ""
+            let count = "(x\(model.count))" + " " + "\(model.price/model.count)" + "₽"
             
             return """
-\(categoryAndName)\(count) \(model.additives.isEmpty ? "" : " - (\(model.additives.joined(separator: ", ")))")
+\(model.title)\(count) \(model.additives.isEmpty ? "" : " - (\(model.additives.joined(separator: ", ")))")
 """
         }
         
-        return "\(price + priceDelivery) Руб.\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(name) т: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)"))"
+        let payTape = "Оплата: " + (payDropList.viewModel?.items.first(where: { $0.isSelected })?.title ?? "")
+        
+        return "\(price + priceDelivery) Руб.\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(payTape)\n• \(name) т: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)")"
     }
     
     @objc private func makeOrderButtonDidTap() {

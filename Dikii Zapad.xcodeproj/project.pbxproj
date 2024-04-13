@@ -56,6 +56,7 @@
 		B6F3EA562AD5DD1400270662 /* CustomRegisterTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */; };
 		B6F3EA5A2AD9604000270662 /* DeliveryFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */; };
 		DF1E102B2BBF17BE0035C464 /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */; };
+		DFB941B32BCAEBE700F20061 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFB941B22BCAEBE700F20061 /* NavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -106,6 +107,7 @@
 		B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRegisterTextfield.swift; sourceTree = "<group>"; };
 		B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryFormViewController.swift; sourceTree = "<group>"; };
 		DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonView.swift; sourceTree = "<group>"; };
+		DFB941B22BCAEBE700F20061 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,6 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				B6DF27242ACC7E2A00FC45D0 /* UIColorExtension.swift */,
+				DFB941B22BCAEBE700F20061 /* NavigationController.swift */,
 				B645C3622AC353060079C8F2 /* UIView + extension.swift */,
 				04D5E5472B64350C004F336E /* UIViewController + Extension.swift */,
 				04ECD5FD2B66CF4500F29F2C /* UIStackView + Extension.swift */,
@@ -396,6 +399,7 @@
 				B645C3632AC353060079C8F2 /* UIView + extension.swift in Sources */,
 				042487EA2B8B296C000F9CEC /* ActionsCell.swift in Sources */,
 				04AE02C42B8A2C000032C3A4 /* String + extension.swift in Sources */,
+				DFB941B32BCAEBE700F20061 /* NavigationController.swift in Sources */,
 				04E6F8DD2B653B5C0014398B /* MapDeliveryViewController.swift in Sources */,
 				04A9AB442B5C79C6002A8A79 /* ProductsDataService.swift in Sources */,
 				B6DF27232ACC649E00FC45D0 /* CartViewController.swift in Sources */,
@@ -543,7 +547,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -578,7 +582,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

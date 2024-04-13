@@ -103,9 +103,9 @@ class CartViewController: UIViewController {
         let button  = UIButton(type: .system)
         button.backgroundColor = UIColor.customOrange
         button.roundCorners(15)
-        button.setTitle("ПРОДОЛЖИТЬ", for: .normal)
+        button.setTitle("Продолжить", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.addTarget(self, action: #selector(makeOrderButtonDidTap), for: .touchUpInside)
         button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
         button.applyGradient(fromColor: UIColor(hex: "FF5929"),

@@ -308,7 +308,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func createAdditivesModel(_ from: String ) -> AdditiveProduct? {
-        let separatedString = from.components(separatedBy: "+")
+        let separatedString = from.components(separatedBy: " +")
         
         guard separatedString.count == 2 else { return nil }
         guard let title = separatedString.first else { return nil }

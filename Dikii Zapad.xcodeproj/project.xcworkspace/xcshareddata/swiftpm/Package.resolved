@@ -1,4 +1,5 @@
 {
+  "originHash" : "6aa7ecc457996afccd9909fe81383008b6e5a6cbd11921e7b5d01329794e0d51",
   "pins" : [
     {
       "identity" : "brightfutures",
@@ -91,5 +92,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

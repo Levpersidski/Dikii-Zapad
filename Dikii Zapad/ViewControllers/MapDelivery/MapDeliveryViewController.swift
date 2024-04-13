@@ -75,9 +75,10 @@ class MapDeliveryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.backItem?.title = ""
         navigationController?.navigationBar.tintColor = UIColor.customOrange
+        view.backgroundColor = .black
         setupView()
         setupConstrains()
         

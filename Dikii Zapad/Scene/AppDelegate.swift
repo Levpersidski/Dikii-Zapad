@@ -14,14 +14,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static var shared: AppDelegate {
         return (UIApplication.shared.delegate as! AppDelegate)
     }
+    var orientationLock = UIInterfaceOrientationMask.portrait
+
     
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        ImageCache.default.diskStorage.config.expiration = .days(30)
+        let cache = ImageCache.default
+        cache.diskStorage.config.expiration = .days(30)
+        cache.diskStorage.config.sizeLimit = 1024 * 1024 * 1024 // Например, 1 ГБ
+        
+//        setreq
         return true
+    }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return self.orientationLock
     }
 
     // MARK: UISceneSession Lifecycle

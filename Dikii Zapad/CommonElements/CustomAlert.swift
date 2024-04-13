@@ -85,6 +85,7 @@ class CustomAlert: UIView {
         textField.placeholder = "Ваше имя"
         textField.autocorrectionType = .no
         textField.isHidden = !model.hasTextField
+        textField.delegate = self
         return textField
     }()
     
@@ -121,6 +122,11 @@ class CustomAlert: UIView {
         backgroundColor = .clear
         setupViews()
         setupConstraints()
+        addObserverKeyboard()
+    }
+    
+    deinit {
+        removeObserverKeyboard()
     }
     
     required init?(coder: NSCoder) {
@@ -262,5 +268,42 @@ class CustomAlert: UIView {
         DataStore.shared.name = textField.text
         close()
         model.actionButton?()
+    }
+    
+    private func addObserverKeyboard() {
+        NotificationCenter.default.addObserver( self, selector: #selector(kbWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver( self, selector: #selector(kbWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func removeObserverKeyboard() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func kbWillShow(_ notification: Notification) {
+        let userInfo = notification.userInfo
+        let kbFrameSize = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        
+        bottomContainerConstraint.constant = -self.offset - kbFrameSize.height / 2
+        UIView.animate(withDuration: 0.27, animations: {
+            self.layoutSubviews()
+        })
+    }
+    
+    @objc private func kbWillHide() {
+        
+        bottomContainerConstraint.constant = -self.offset
+        UIView.animate(withDuration: 0.27, animations: {
+            self.layoutSubviews()
+        })
+    }
+}
+
+extension CustomAlert: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        endEditing(true)
+        close()
+        model.actionButton?()
+        return true
     }
 }

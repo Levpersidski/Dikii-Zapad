@@ -23,9 +23,9 @@ final class CustomTextField: UITextField {
     }
     
     private let insets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-    private let colorText = UIColor(hex: "#F39578")
-    private let colorPlaceholderText = UIColor(hex: "#892B0E")
-    private let fontPlaceholder: UIFont = UIFont.systemFont(ofSize: 16)
+    private var colorText = UIColor(hex: "#F39578")
+    private var colorPlaceholderText = UIColor(hex: "#892B0E")
+    private var fontPlaceholder: UIFont = UIFont.systemFont(ofSize: 16)
     private var oldText: String? = nil
 
     var fontText: UIFont = UIFont.systemFont(ofSize: 16) {
@@ -67,7 +67,14 @@ final class CustomTextField: UITextField {
         return view
     }()
     
-    override init(frame: CGRect) {
+    init(frame: CGRect = .zero,
+         colorText: UIColor = UIColor(hex: "#F39578"),
+         colorPlaceholderText: UIColor = UIColor(hex: "#892B0E"),
+         fontPlaceholder: UIFont = UIFont.systemFont(ofSize: 16)
+    ) {
+        self.fontPlaceholder = fontPlaceholder
+        self.colorText = colorText
+        self.colorPlaceholderText = colorPlaceholderText
         super.init(frame: frame)
         
         self.addSubviews(containerView, maskLabel)

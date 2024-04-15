@@ -91,6 +91,7 @@ final class OrderViewController: UIViewController {
         label.text = "Время доставки"
         label.font = .systemFont(ofSize: 20, weight: .medium)
         label.textColor = .white
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -285,6 +286,8 @@ final class OrderViewController: UIViewController {
         
         sumDeliveryLabel.isHidden = sumModel.0.isEmpty
         numberPhoneTextField.text = DataStore.shared.phoneNumber?.maskAsPhone()
+        
+        deliveryTimeLabel.text = DataStore.shared.outSideOrder ? "Время доставки" : "Время к которому приготовить заказ"
     }
     
     private func prepareSumDelivery() -> (String, String) {
@@ -331,12 +334,14 @@ final class OrderViewController: UIViewController {
             items: [
                 DropDownItemViewModel(title: "На вынос", isSelected: !isOutSideOrder) { [weak self] in
                     DataStore.shared.outSideOrder = false
+                    self?.deliveryTimeLabel.text = "Время к которому приготовить заказ"
                     let sumModel = self?.prepareSumDelivery()
                     self?.sumValueDeliveryLabel.text = sumModel?.0
                     self?.sumValueOrderLabel.text = sumModel?.1
                 },
                 DropDownItemViewModel(title: "Указать новый адрес", isSelected: false) { [weak self] in
                     DataStore.shared.outSideOrder = true
+                    self?.deliveryTimeLabel.text = "Время доставки"
                     let mapView = MapDeliveryViewController()
                     self?.navigationController?.pushViewController(mapView, animated: true)
                 }
@@ -345,6 +350,7 @@ final class OrderViewController: UIViewController {
         if let address = address {
             let item = DropDownItemViewModel(title: address, isSelected: isOutSideOrder) { [weak self] in
                 DataStore.shared.outSideOrder = true
+                self?.deliveryTimeLabel.text = "Время доставки"
                 let sumModel = self?.prepareSumDelivery()
                 self?.sumValueDeliveryLabel.text = sumModel?.0
                 self?.sumValueOrderLabel.text = sumModel?.1

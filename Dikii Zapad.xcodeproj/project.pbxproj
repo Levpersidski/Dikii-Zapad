@@ -106,6 +106,7 @@
 		B6F3EA532AD57B4000270662 /* SectionHeaderReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderReusableView.swift; sourceTree = "<group>"; };
 		B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRegisterTextfield.swift; sourceTree = "<group>"; };
 		B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryFormViewController.swift; sourceTree = "<group>"; };
+		DF01BF002BCD8F6100B1374F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonView.swift; sourceTree = "<group>"; };
 		DFB941B22BCAEBE700F20061 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -200,6 +201,7 @@
 		B6306BAC2AC088D800B0BF80 = {
 			isa = PBXGroup;
 			children = (
+				DF01BF002BCD8F6100B1374F /* PrivacyInfo.xcprivacy */,
 				B6306BB72AC088D800B0BF80 /* Dikii Zapad */,
 				B6306BB62AC088D800B0BF80 /* Products */,
 			);
@@ -573,7 +575,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WZJ6JFW8X2;
+				DEVELOPMENT_TEAM = F7X8B5584B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dikii Zapad/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Dikiy Zapad";

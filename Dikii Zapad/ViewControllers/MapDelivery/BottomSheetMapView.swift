@@ -112,9 +112,9 @@ final class BottomSheetMapView: UIView {
         let button  = UIButton(type: .system)
         button.backgroundColor = UIColor.customOrange
         button.roundCorners(15)
-        button.setTitle("ПОДТВЕРДИТЬ", for: .normal)
+        button.setTitle("Подтвердить", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.addTarget(self, action: #selector(confirmButtonDidTap), for: .touchUpInside)
         button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
         button.applyGradient(fromColor: UIColor(hex: "FF5929"),
@@ -248,11 +248,7 @@ final class BottomSheetMapView: UIView {
         
         let name = placeMark.name ?? "" //Улица, дом
         let locality = placeMark.locality ?? "" //Город
-//        let thoroughfare = placeMark.thoroughfare ?? "" // Улица
-//        let subThoroughfare = placeMark.subThoroughfare ?? "" //Дом
-//        let administrativeArea = placeMark.administrativeArea
-//        let region = placeMark.region
-        
+
         if locality != name {
             string = name + ", " + locality
         } else {

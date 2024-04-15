@@ -574,12 +574,12 @@ final class OrderViewController: UIViewController {
         
         let payTape = "Оплата: " + (payDropList.viewModel?.items.first(where: { $0.isSelected })?.title ?? "")
         
-        return "\(price + priceDelivery) Руб.      Номер заказа: \(uuidNumber)\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(payTape)\n• \(name) Тел: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)")"
+        return "номер: \(uuidNumber)\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(payTape)\n• \(name) Тел: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)")\n• Итого: \(price + priceDelivery) Руб."
     }
     
     func createCustomUUID() -> String {
         var uuid = ""
-        for count in (0...4) {
+        for _ in (0...4) {
             uuid += "\(Int.random(in: 1..<10))"
         }
         return uuid

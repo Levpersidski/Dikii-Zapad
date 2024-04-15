@@ -23,10 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         let cache = ImageCache.default
-        cache.diskStorage.config.expiration = .days(30)
+        cache.diskStorage.config.expiration = .never
         cache.diskStorage.config.sizeLimit = 1024 * 1024 * 1024 // Например, 1 ГБ
         
-//        setreq
+        cache.memoryStorage.config.expiration = .seconds(300)
         return true
     }
     

@@ -29,27 +29,6 @@ extension Array where Element == Int {
         return closestElement
     }
     
-//    func closestIndex(to number: Int) -> Int? {
-//        guard !self.isEmpty else {
-//            return nil
-//        }
-//
-//        var closestIndex = 0
-//        var minDifference = abs(number - self[0])
-//
-//        for (index, element) in self.enumerated() {
-//            let difference = abs(number - element)
-//            if difference < minDifference {
-//                minDifference = difference
-//                closestIndex = index
-//            } else if difference == 0 {
-//                return index
-//            }
-//        }
-//
-//        return closestIndex
-//    }
-    
     func closestIndexGreaterOrEqual(to number: Int) -> Int? {
           guard !self.isEmpty else {
               return nil

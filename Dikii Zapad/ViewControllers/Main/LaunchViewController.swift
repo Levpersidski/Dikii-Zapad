@@ -65,32 +65,7 @@ final class LaunchViewController: UIViewController {
         setupView()
         setupConstrains()
         
-        checkValidVersion{ [weak self] result, error  in
-            guard let self, error == nil else {
-                self?.showAlert("Что то пошло не так",
-                                message: "Не удалось загрузить меню",
-                                okTitle: "Повторить",
-                                present: true)
-                return
-            }
-            
-            if result == true {
-                self.loadData()
-            } else {
-                self.showAlert(
-                    "Обнови приложение!",
-                    message: "Обнови приложение Dikiy Zapad до новой версии. Мы исправили критичные ошибки.\n\nНовая версия доступна в App Store.",
-                    okTitle: "Перейти в App Store",
-                    present: true,
-                    completion: {
-                        let url = URL(string: DataStore.shared.generalSettings?.appStoreURL ?? "")!
-                        
-                        if UIApplication.shared.canOpenURL(url) {
-                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                        }
-                    })
-            }
-        }
+        loadDataIfNeeded()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -98,7 +73,10 @@ final class LaunchViewController: UIViewController {
         logoImage.fadeIn(1.5)
         logoLabel.fadeIn(1.5)
         blackOverlayView.fadeOut(1)
-        
+        startWelcomeTime()
+    }
+    
+    private func startWelcomeTime() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
             self?.endedWelcomeTime = true
             self?.tryOpenApp()
@@ -146,6 +124,44 @@ final class LaunchViewController: UIViewController {
         activityIndicator.transform = CGAffineTransform.init(scaleX: 2, y: 2)
     }
     
+    func restartApp() {
+        endedWelcomeTime = false
+        dataService.products = []
+        dataService.categories = []
+        startWelcomeTime()
+        
+        loadDataIfNeeded()
+    }
+    
+    private func loadDataIfNeeded() {
+        checkValidVersion { [weak self] result, error  in
+            guard let self, error == nil else {
+                self?.showAlert("Что то пошло не так",
+                                message: "Не удалось загрузить меню",
+                                okTitle: "Повторить",
+                                present: true)
+                return
+            }
+            
+            if result == true {
+                self.loadData()
+            } else {
+                self.showAlert(
+                    "Обнови приложение!",
+                    message: "Обнови приложение Dikiy Zapad до новой версии. Мы исправили критичные ошибки.\n\nНовая версия доступна в App Store.",
+                    okTitle: "Перейти в App Store",
+                    present: true,
+                    completion: {
+                        let url = URL(string: DataStore.shared.generalSettings?.appStoreURL ?? "")!
+                        
+                        if UIApplication.shared.canOpenURL(url) {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        }
+                    })
+            }
+        }
+    }
+    
     private func tryOpenApp() {
         if !hasData && endedLoadingData {
             self.activityIndicator.isHidden = true
@@ -164,6 +180,10 @@ final class LaunchViewController: UIViewController {
             return
         }
         guard endedLoadingData else {
+            return
+        }
+        
+        guard let vc = navigationController?.viewControllers.last, !(vc is MainTabBarController) else {
             return
         }
         

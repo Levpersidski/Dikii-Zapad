@@ -287,7 +287,7 @@ final class OrderViewController: UIViewController {
         sumDeliveryLabel.isHidden = sumModel.0.isEmpty
         numberPhoneTextField.text = DataStore.shared.phoneNumber?.maskAsPhone()
         
-        deliveryTimeLabel.text = DataStore.shared.outSideOrder ? "Время доставки" : "Время к которому приготовить заказ"
+        deliveryTimeLabel.text = DataStore.shared.outSideOrder ? "Время доставки" : "Время выдачи"
     }
     
     private func prepareSumDelivery() -> (String, String) {
@@ -334,7 +334,7 @@ final class OrderViewController: UIViewController {
             items: [
                 DropDownItemViewModel(title: "На вынос", isSelected: !isOutSideOrder) { [weak self] in
                     DataStore.shared.outSideOrder = false
-                    self?.deliveryTimeLabel.text = "Время к которому приготовить заказ"
+                    self?.deliveryTimeLabel.text = "Время выдачи"
                     let sumModel = self?.prepareSumDelivery()
                     self?.sumValueDeliveryLabel.text = sumModel?.0
                     self?.sumValueOrderLabel.text = sumModel?.1
@@ -547,7 +547,7 @@ final class OrderViewController: UIViewController {
         let name = DataStore.shared.name ?? "Нет имени"
         let price = Int(model.cells.map { Double($0.price) }.reduce(0, { $0 + $1 }))
         
-        var time: String = "Время доставки: "
+        var time: String = "\(deliveryTimeLabel.text): " ?? ""
         if let timeDelivery = DataStore.shared.timeDelivery {
             time += timeDelivery.0.description + " " + timeDelivery.1
         } else {
@@ -568,13 +568,13 @@ final class OrderViewController: UIViewController {
             let count = "(x\(model.count))" + " " + "\(model.price/model.count)" + "₽"
             
             return """
-\(model.title)\(count) \(model.additives.isEmpty ? "" : " - (\(model.additives.joined(separator: ", ")))")
+\(model.title) \(count) \(model.additives.isEmpty ? "" : " - (\(model.additives.joined(separator: ", ")))")
 """
         }
         
         let payTape = "Оплата: " + (payDropList.viewModel?.items.first(where: { $0.isSelected })?.title ?? "")
         
-        return "номер: \(uuidNumber)\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(payTape)\n• \(name) Тел: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)")\n• Итого: \(price + priceDelivery) Руб."
+        return "номер: \(uuidNumber)\n\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(payTape)\n• \(name) Тел: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)")\n• Итого: \(price + priceDelivery) Руб."
     }
     
     func createCustomUUID() -> String {

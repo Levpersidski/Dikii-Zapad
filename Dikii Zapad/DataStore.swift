@@ -14,6 +14,9 @@ struct AdditiveProduct {
 }
 
 class DataStore {
+    //  TODO: should be 10 minutes
+    static let allowedSecondsInBackground: Double = 10 * 60.0
+    
     var allCategories: [Category] = []
     var allProducts: [Product] = []
     var promotionURLs: [String] = []

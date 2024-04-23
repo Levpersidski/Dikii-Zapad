@@ -56,6 +56,7 @@
 		B6F3EA562AD5DD1400270662 /* CustomRegisterTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA552AD5DD1400270662 /* CustomRegisterTextfield.swift */; };
 		B6F3EA5A2AD9604000270662 /* DeliveryFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */; };
 		DF1E102B2BBF17BE0035C464 /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */; };
+		DF547D322BD80DB1000E8501 /* LoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF547D312BD80DB1000E8501 /* LoadingImageView.swift */; };
 		DFB941B32BCAEBE700F20061 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFB941B22BCAEBE700F20061 /* NavigationController.swift */; };
 /* End PBXBuildFile section */
 
@@ -108,6 +109,7 @@
 		B6F3EA592AD9604000270662 /* DeliveryFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryFormViewController.swift; sourceTree = "<group>"; };
 		DF01BF002BCD8F6100B1374F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonView.swift; sourceTree = "<group>"; };
+		DF547D312BD80DB1000E8501 /* LoadingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingImageView.swift; sourceTree = "<group>"; };
 		DFB941B22BCAEBE700F20061 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -181,6 +183,7 @@
 				04E6F8DA2B652AE00014398B /* GestureRecognizerHealpers.swift */,
 				04E675A12B890415007559C6 /* TelegramManager.swift */,
 				04BDEEF02BAA20DE005C1095 /* LocationDataManager.swift */,
+				DF547D312BD80DB1000E8501 /* LoadingImageView.swift */,
 			);
 			path = Healpers;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6306BBD2AC088D800B0BF80 /* MainViewController.swift in Sources */,
+				DF547D322BD80DB1000E8501 /* LoadingImageView.swift in Sources */,
 				04FC3D9F2BA550FC00B5B666 /* Array + extension.swift in Sources */,
 				B66D7BAC2B0A9307009C34CB /* CartCell.swift in Sources */,
 				DF1E102B2BBF17BE0035C464 /* SkeletonView.swift in Sources */,

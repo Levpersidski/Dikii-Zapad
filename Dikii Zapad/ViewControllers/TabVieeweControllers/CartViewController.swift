@@ -275,7 +275,7 @@ private extension CartViewController {
         containerFull.isHidden = (model.cells.isEmpty)
         
         let testSub = model.cells.map { Double($0.price) }.reduce(0, { $0 + $1 })
-        pricelabel.text = "\(Int(testSub))"
+        pricelabel.text = "\(Int(testSub))" + " РУБ."
         
         if reload {
             tableView.reloadData()

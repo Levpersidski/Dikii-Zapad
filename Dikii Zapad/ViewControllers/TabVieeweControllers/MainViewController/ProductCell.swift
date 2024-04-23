@@ -37,8 +37,8 @@ class ProductCell: UICollectionViewCell {
         return view
     }()
     
-    private lazy var image: UIImageView = {
-        let image = UIImageView()
+    private lazy var image: LoadingImageView = {
+        let image = LoadingImageView()
         image.contentMode = .scaleAspectFill
         image.layer.borderColor = UIColor.customOrange.withAlphaComponent(0.5).cgColor
         image.layer.cornerRadius = 8
@@ -132,16 +132,17 @@ class ProductCell: UICollectionViewCell {
     func update(_ model: ProductCellViewModel) {
         self.model = model
         labelName.text = model.title
-        image.image = model.image
         priceLabel.text = "\(model.price) РУБ."
+        
+        
         skeletonView.isHidden = false
         skeletonView.startAnimating()
         
-        if let url = model.imageURL {
-            image.kf.setImage(with: url) { [weak self] _ in
-                self?.skeletonView.stopAnimating()
-                self?.skeletonView.isHidden = true
-            }
+        image.image = nil
+        
+        image.set(imageURL: model.imageURL?.absoluteString ?? "") { [weak self] in
+            self?.skeletonView.stopAnimating()
+            self?.skeletonView.isHidden = true
         }
         
         topBlockedOverlay.isHidden = model.stockStatusType != .outOfStock

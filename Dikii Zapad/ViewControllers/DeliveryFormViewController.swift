@@ -82,10 +82,11 @@ class DeliveryFormViewController: UIViewController {
     }()
     
     private lazy var streetTextField: CustomTextField = {
-        let textField = CustomTextField()
+        let textField = CustomTextField(colorText: .white, colorPlaceholderText: .white)
         textField.placeholder = "Улица"
         textField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         textField.delegate = self
+        
         return textField
     }()
     
@@ -93,7 +94,7 @@ class DeliveryFormViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Указать на карте", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18)
-        button.setTitleColor(UIColor(hex: "#F39578"), for: .normal)
+        button.setTitleColor(.white, for: .normal)
         let image = UIImage(named: "arrowMap")?.withRenderingMode(.alwaysOriginal)
         button.setImage(image, for: .normal)
         button.semanticContentAttribute = .forceRightToLeft
@@ -114,7 +115,7 @@ class DeliveryFormViewController: UIViewController {
     }()
     
     private lazy var nameTextField: CustomTextField = {
-        let textField = CustomTextField()
+        let textField = CustomTextField(colorText: .white, colorPlaceholderText: .white)
         textField.placeholder = "Ваше имя"
         textField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         textField.delegate = self
@@ -123,7 +124,7 @@ class DeliveryFormViewController: UIViewController {
     }()
     
     private lazy var numberPhoneTextField: CustomTextField = {
-        let textField = CustomTextField()
+        let textField = CustomTextField(colorText: .white, colorPlaceholderText: .white)
         textField.placeholder = "Номер телефона"
         textField.visibleMask = "+7 (XXX) XXX-XX-XX"
         textField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)

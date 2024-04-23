@@ -140,7 +140,7 @@ final class CustomTextField: UITextField {
         if !maskText.isEmpty {
             let attr = NSMutableAttributedString(string: maskText,
                                                  attributes: [.font : text.isEmpty ? fontPlaceholder : fontText])
-            attr.addAttributes([.foregroundColor : colorPlaceholderText],
+            attr.addAttributes([.foregroundColor : colorPlaceholderText.withAlphaComponent(0.6)],
                                range: NSRange(location: 0, length: maskText.count))
             attr.addAttributes([.foregroundColor : UIColor.clear],
                                range: NSRange(location: 0, length: text.count))

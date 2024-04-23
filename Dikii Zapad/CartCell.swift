@@ -38,8 +38,8 @@ class CartCell: UITableViewCell {
         return view
     }()
     
-    private lazy var image: UIImageView = {
-        let image = UIImageView()
+    private lazy var imageViewCustom: LoadingImageView = {
+        let image = LoadingImageView()
         image.contentMode = .scaleAspectFill
         image.layer.borderColor = UIColor.customOrange.withAlphaComponent(0.5).cgColor
         image.layer.cornerRadius = 8
@@ -98,7 +98,7 @@ class CartCell: UITableViewCell {
             
             productNameLabel.text = model.title
             if let url = model.imageURL {
-                image.kf.setImage(with: url)
+                imageViewCustom.set(imageURL: url.absoluteString ?? "") { }
             }
             
             priceLabel.text = "\(model.price) РУБ."
@@ -138,7 +138,7 @@ class CartCell: UITableViewCell {
         contentView.addSubview(containerView)
         
         containerView.addSubviews(
-            image,
+            imageViewCustom,
             productNameLabel,
             removeButton,
             stack,
@@ -154,7 +154,7 @@ class CartCell: UITableViewCell {
             Height(>=148)
         )
       
-        image.easy.layout(
+        imageViewCustom.easy.layout(
             Top(16),
             Left(16),
             Size(116)
@@ -162,7 +162,7 @@ class CartCell: UITableViewCell {
         
         productNameLabel.easy.layout(
             Top(26),
-            Left(17).to(image, .right),
+            Left(17).to(imageViewCustom, .right),
             Right(60)
         )
         
@@ -174,7 +174,7 @@ class CartCell: UITableViewCell {
         
         stack.easy.layout(
             Top(10).to(productNameLabel, .bottom),
-            Left(17).to(image, .right),
+            Left(17).to(imageViewCustom, .right),
             Right(17)
         )
         

@@ -20,16 +20,16 @@ final class ActionCell: UICollectionViewCell {
             skeletonView.isHidden = false
             skeletonView.startAnimating()
             
-            if let url = URL(string: model.urlString) {
-                image.kf.setImage(with: url)
-                skeletonView.stopAnimating()
-                skeletonView.isHidden = true
+            image.image = nil
+            image.set(imageURL: model.urlString) { [weak self] in
+                self?.skeletonView.stopAnimating()
+                self?.skeletonView.isHidden = true
             }
         }
     }
     
-    private lazy var image: UIImageView = {
-        let image = UIImageView()
+    private lazy var image: LoadingImageView = {
+        let image = LoadingImageView()
         image.layer.cornerRadius = 15
         image.roundCorners(20)
         image.contentMode = .scaleAspectFill

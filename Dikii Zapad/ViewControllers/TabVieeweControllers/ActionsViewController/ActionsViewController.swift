@@ -29,7 +29,10 @@ class ActionsViewController: UIViewController {
         //отступ между ячейками (лево право)
         collectionViewLayout.minimumInteritemSpacing = 5
         
-        collectionViewLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 32, height: UIScreen.main.bounds.height / 3)
+        
+        let widthCell = UIScreen.main.bounds.width - 32
+        let heightCell = widthCell/1.3
+        collectionViewLayout.itemSize = CGSize(width: widthCell, height: heightCell)
         collectionViewLayout.sectionInset = UIEdgeInsets(top: 30, left: 10, bottom: 20, right: 10)
         //        collectionViewLayout.minimumLineSpacing = 20
         

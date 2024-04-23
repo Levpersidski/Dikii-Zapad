@@ -50,8 +50,8 @@ class DetailsProductViewController: UIViewController {
         return view
     }()
     
-    private lazy var pictureImage: UIImageView = {
-        let image = UIImageView()
+    private lazy var pictureImage: LoadingImageView = {
+        let image = LoadingImageView()
         image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 20
         image.layer.borderColor = UIColor.customOrange.withAlphaComponent(0.5).cgColor
@@ -147,11 +147,11 @@ class DetailsProductViewController: UIViewController {
         setupConstraints()
         
         skeletonView.startAnimating()
-        if let url = modelProduct?.imageURL {
-            pictureImage.kf.setImage(with: url) { [weak self] _ in
-                self?.skeletonView.stopAnimating()
-                self?.skeletonView.isHidden = true
-            }
+        pictureImage.image = nil
+        
+        pictureImage.set(imageURL: modelProduct?.imageURL?.absoluteString ?? "") { [weak self] in
+            self?.skeletonView.stopAnimating()
+            self?.skeletonView.isHidden = true
         }
         
         //TO DO: move replacingOccurrences in maping

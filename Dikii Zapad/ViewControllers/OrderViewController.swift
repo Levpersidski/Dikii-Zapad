@@ -547,7 +547,7 @@ final class OrderViewController: UIViewController {
         let name = DataStore.shared.name ?? "Нет имени"
         let price = Int(model.cells.map { Double($0.price) }.reduce(0, { $0 + $1 }))
         
-        var time: String = "\(deliveryTimeLabel.text): " ?? ""
+        var time: String = "\(deliveryTimeLabel.text ?? ""): "
         if let timeDelivery = DataStore.shared.timeDelivery {
             time += timeDelivery.0.description + " " + timeDelivery.1
         } else {

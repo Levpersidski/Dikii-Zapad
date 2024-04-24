@@ -19,7 +19,7 @@ struct UserDeliveryLocationModel {
 class MapDeliveryViewController: UIViewController {
     var geoCoder: CLGeocoder = CLGeocoder()
     let locationManager2 = CLLocationManager()
-
+    var firstPermissionMyPosition = false
     
     private var locationManager = LocationDataManager.shared
     var usedModel: UserDeliveryLocationModel?
@@ -100,9 +100,7 @@ class MapDeliveryViewController: UIViewController {
             self?.view.endEditing(true)
         }
         mapView.showAnnotations([shopAnnotation], animated: true)
-        
         locationManager2.delegate = self
-        locationManager2.requestWhenInUseAuthorization()
         locationManager2.startUpdatingLocation()
         mapView.showsUserLocation = true
     }
@@ -119,6 +117,11 @@ class MapDeliveryViewController: UIViewController {
             bottomSheet,
             myPsitionButton
         )
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        locationManager2.stopUpdatingLocation()
     }
     
     private func setupConstrains() {
@@ -146,7 +149,19 @@ class MapDeliveryViewController: UIViewController {
         )
     }
     
-    @objc func myPositionButtonDidTap() {
+    private func showLocationPermissionAlert() {
+        let alert = UIAlertController(title: "Разрешите доступ к геопозиции", message: "Для использования некоторых функций приложения необходим доступ к вашей геопозиции. Пожалуйста, разрешите доступ в настройках приложения.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Настройки", style: .default, handler: { action in
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func showMyPosition() {
         if let userLocation = mapView.userLocation.location {
             let coordinate = userLocation.coordinate
             let accuracy: Double = userLocation.horizontalAccuracy * 2 + 50
@@ -168,6 +183,21 @@ class MapDeliveryViewController: UIViewController {
             
             let region = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: maxAccuracy, longitudinalMeters: maxAccuracy)
             mapView.setRegion(region, animated: true)
+        }
+    }
+    
+    
+    @objc func myPositionButtonDidTap() {
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedWhenInUse, .authorizedAlways:
+            showMyPosition()
+        case .denied, .restricted:
+            showLocationPermissionAlert()
+        case .notDetermined:
+            locationManager2.requestWhenInUseAuthorization() //Запрос разрешения (1 раз)
+            firstPermissionMyPosition = true
+        @unknown default:
+            return
         }
     }
     
@@ -270,11 +300,25 @@ extension MapDeliveryViewController: MKMapViewDelegate, CLLocationManagerDelegat
     }
     
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        if let location = locations.last {
-//            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-//            mapView.setRegion(region, animated: true)
-//        }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {}
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedWhenInUse, .authorizedAlways:
+            if firstPermissionMyPosition {
+                locationManager2.startUpdatingLocation()
+                mapView.showsUserLocation = true
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                    self?.showMyPosition()
+                }
+            }
+            print("Пользователь разрешил использование геолокации")
+        case .denied:
+            print("Пользователь запретил использование геолокации")
+        default:
+            break
+        }
     }
 }
 

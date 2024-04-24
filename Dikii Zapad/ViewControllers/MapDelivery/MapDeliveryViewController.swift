@@ -149,12 +149,16 @@ class MapDeliveryViewController: UIViewController {
     @objc func myPositionButtonDidTap() {
         if let userLocation = mapView.userLocation.location {
             let coordinate = userLocation.coordinate
-            showSearchAnnotation(coordinate: coordinate)
+            let accuracy: Double = userLocation.horizontalAccuracy * 2 + 50
+            let maxAccuracy = max(300, accuracy)
             
-            geoCoder.reverseGeocodeLocation(userLocation) { [weak self] placeMark, error in
+            let centerLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            
+            showSearchAnnotation(coordinate: coordinate)
+            geoCoder.reverseGeocodeLocation(centerLocation) { [weak self] placeMark, error in
                 guard let self = self else { return }
                 guard let placeMark = placeMark?.first else { return }
-                
+                                
                 let isValidName = Double(placeMark.name ?? "") == nil
                 LocationDataManager.shared.searchLocation.insert(placeMark, at: 0)
                 self.annotationSearch.subtitle = placeMark.name ?? ""
@@ -162,7 +166,7 @@ class MapDeliveryViewController: UIViewController {
                 self.buildingWay(isValidName: isValidName)
             }
             
-            let region = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: 300, longitudinalMeters: 300)
+            let region = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: maxAccuracy, longitudinalMeters: maxAccuracy)
             mapView.setRegion(region, animated: true)
         }
     }

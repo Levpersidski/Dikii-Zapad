@@ -18,6 +18,8 @@ struct UserDeliveryLocationModel {
 
 class MapDeliveryViewController: UIViewController {
     var geoCoder: CLGeocoder = CLGeocoder()
+    let locationManager2 = CLLocationManager()
+
     
     private var locationManager = LocationDataManager.shared
     var usedModel: UserDeliveryLocationModel?
@@ -62,6 +64,16 @@ class MapDeliveryViewController: UIViewController {
         return view
     }()
     
+    private lazy var myPsitionButton: UIButton = {
+        let button = UIButton(type: .system)
+        let image = UIImage(named: "arrowMap")?.withRenderingMode(.alwaysOriginal)
+        button.setBackgroundImage(image, for: .normal)
+        button.addTarget(self, action: #selector(myPositionButtonDidTap), for: .touchUpInside)
+        return button
+    }()
+    
+
+    
     private lazy var containerForBottomSheet: UIView = {
         let view = UIView()
         return view
@@ -88,6 +100,11 @@ class MapDeliveryViewController: UIViewController {
             self?.view.endEditing(true)
         }
         mapView.showAnnotations([shopAnnotation], animated: true)
+        
+        locationManager2.delegate = self
+        locationManager2.requestWhenInUseAuthorization()
+        locationManager2.startUpdatingLocation()
+        mapView.showsUserLocation = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -99,7 +116,8 @@ class MapDeliveryViewController: UIViewController {
         view.addSubviews(
             mapView,
             gradientView,
-            bottomSheet
+            bottomSheet,
+            myPsitionButton
         )
     }
     
@@ -120,6 +138,33 @@ class MapDeliveryViewController: UIViewController {
             Left(), Right(),
             Bottom()
         )
+        
+        myPsitionButton.easy.layout(
+            Bottom(10).to(bottomSheet, .top),
+            Right(16),
+            Size(50)
+        )
+    }
+    
+    @objc func myPositionButtonDidTap() {
+        if let userLocation = mapView.userLocation.location {
+            let coordinate = userLocation.coordinate
+            showSearchAnnotation(coordinate: coordinate)
+            
+            geoCoder.reverseGeocodeLocation(userLocation) { [weak self] placeMark, error in
+                guard let self = self else { return }
+                guard let placeMark = placeMark?.first else { return }
+                
+                let isValidName = Double(placeMark.name ?? "") == nil
+                LocationDataManager.shared.searchLocation.insert(placeMark, at: 0)
+                self.annotationSearch.subtitle = placeMark.name ?? ""
+                self.bottomSheet.addressTextField.text = placeMark.name ?? ""
+                self.buildingWay(isValidName: isValidName)
+            }
+            
+            let region = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: 300, longitudinalMeters: 300)
+            mapView.setRegion(region, animated: true)
+        }
     }
     
     @objc private func actionLongPressMap(_ gestureRecognizer: UIGestureRecognizer) {
@@ -212,12 +257,20 @@ private extension MapDeliveryViewController {
 }
 
 //MARK: - MKMapViewDelegate
-extension MapDeliveryViewController: MKMapViewDelegate {
+extension MapDeliveryViewController: MKMapViewDelegate, CLLocationManagerDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let render = MKPolylineRenderer (overlay: overlay)
         render.strokeColor = .customOrange
         render.lineWidth = 6
         return render
+    }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        if let location = locations.last {
+//            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+//            mapView.setRegion(region, animated: true)
+//        }
     }
 }
 

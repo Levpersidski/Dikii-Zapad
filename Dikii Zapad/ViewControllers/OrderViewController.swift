@@ -564,17 +564,20 @@ final class OrderViewController: UIViewController {
         
         let comment = textView.text ?? ""
         
-        let orderText = model.cells.map { model in
-            let count = "(x\(model.count))" + " " + "\(model.price/model.count)" + "₽"
+        let orderText = model.cells.enumerated().map { index, model in
+            let count = "\(model.price)" + " (\(model.count) x " + "\(model.price/model.count))"
             
+            let category = DataStore.shared.allCategories.first(where: { $0.id == model.categoryId })?.name ?? ""
+            let isDisplayCategory = DataStore.shared.generalSettings?.displayCategory.contains(category.lowercased()) ?? false
+    
             return """
-\(model.title) \(count) \(model.additives.isEmpty ? "" : " - (\(model.additives.joined(separator: ", ")))")
+\(index + 1). \(isDisplayCategory ? category + " " : "")\(model.title): \(count) \(model.additives.isEmpty ? "" : " - (\(model.additives.joined(separator: ", ")))")
 """
         }
         
         let payTape = "Оплата: " + (payDropList.viewModel?.items.first(where: { $0.isSelected })?.title ?? "")
         
-        return "номер: \(uuidNumber)\n\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(payTape)\n• \(name) Тел: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)")\n• Итого: \(price + priceDelivery) Руб."
+        return "номер: \(uuidNumber)\n\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(payTape)\n• \(name) Тел: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)")\n• Сумма платежа: \(price + priceDelivery) Руб. "
     }
     
     func createCustomUUID() -> String {

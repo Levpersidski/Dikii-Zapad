@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0416FD162B5D7AE6008A5600 /* OAuthSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD152B5D7AE6008A5600 /* OAuthSwift */; };
-		0416FD192B5D7F68008A5600 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD182B5D7F68008A5600 /* Kingfisher */; };
+		0416FD192B5D7F68008A5600 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0416FD182B5D7F68008A5600 /* Kingfisher */; settings = {ATTRIBUTES = (Required, ); }; };
 		042487E42B8A2F89000F9CEC /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042487E32B8A2F89000F9CEC /* CustomAlert.swift */; };
 		042487EA2B8B296C000F9CEC /* ActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042487E92B8B296C000F9CEC /* ActionsCell.swift */; };
 		042487EC2B8B5930000F9CEC /* Date + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042487EB2B8B5930000F9CEC /* Date + extension.swift */; };

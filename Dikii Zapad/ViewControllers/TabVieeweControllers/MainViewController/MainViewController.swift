@@ -113,6 +113,25 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
         setupConstraints()
         setupModels()
         setupScrollButtons()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.showTechnicalAlert()
+        }
+    }
+    
+    func showTechnicalAlert() {
+        guard let text = DataStore.shared.generalSettings?.technicalMessage, !text.isEmpty else {
+            return
+        }
+        
+        let window = UIApplication.appDelegate.window ?? UIView()
+        let model = CustomAlertViewModel(
+            title: text,
+            titleButton: "Понятно"
+        )
+        
+        CustomAlert.open(in: window, model: model)
+        return
     }
     
     override func viewWillAppear(_ animated: Bool) {

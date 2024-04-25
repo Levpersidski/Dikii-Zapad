@@ -13,6 +13,8 @@ struct GeneralSettings: Codable {
     let shopLocation: ShopLocation
     let contacts: Contacts
     let deliveryInfo: DeliveryInfo
+    let technicalMessage: String?
+    let displayCategory: [String]
 }
 
 struct ShopLocation: Codable {

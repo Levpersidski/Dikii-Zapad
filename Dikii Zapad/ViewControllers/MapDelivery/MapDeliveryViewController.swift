@@ -66,13 +66,17 @@ class MapDeliveryViewController: UIViewController {
     
     private lazy var myPsitionButton: UIButton = {
         let button = UIButton(type: .system)
-        let image = UIImage(named: "arrowMap")?.withRenderingMode(.alwaysOriginal)
-        button.setBackgroundImage(image, for: .normal)
+        button.backgroundColor = .white.withAlphaComponent(0.5)
+        button.roundCorners(20)
         button.addTarget(self, action: #selector(myPositionButtonDidTap), for: .touchUpInside)
         return button
     }()
     
-
+    private lazy var imageButton: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "arrowMap")?.withRenderingMode(.alwaysOriginal)
+        return image
+    }()
     
     private lazy var containerForBottomSheet: UIView = {
         let view = UIView()
@@ -117,6 +121,10 @@ class MapDeliveryViewController: UIViewController {
             bottomSheet,
             myPsitionButton
         )
+        
+        myPsitionButton.addSubview(
+            imageButton
+        )
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -145,7 +153,13 @@ class MapDeliveryViewController: UIViewController {
         myPsitionButton.easy.layout(
             Bottom(10).to(bottomSheet, .top),
             Right(16),
-            Size(50)
+            Size(40)
+        )
+        
+        imageButton.easy.layout(
+            Top(12),
+            Left(10), Right(13),
+            Bottom(10)
         )
     }
     

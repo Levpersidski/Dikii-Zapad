@@ -41,16 +41,16 @@ class LoadingImageView: UIImageView {
             
             if let image = UIImage(data: cachedResponse.data) {
                 self.image = image
-                print("DBG ImL изображение из кэша - \(url.absoluteString)")
+//                print("DBG ImL изображение из кэша - \(url.absoluteString)")
                 completion()
             } else {
-                print("DBG ERROR! bad data из кэша - \(url.absoluteString)")
+//                print("DBG ERROR! bad data из кэша - \(url.absoluteString)")
             }
             return
         }
         
         let dataTask = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
-            print("DBG ImL start loading - \(url.absoluteString)")
+//            print("DBG ImL start loading - \(url.absoluteString)")
 
             DispatchQueue.main.async {
                 completion()

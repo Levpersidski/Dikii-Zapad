@@ -623,7 +623,7 @@ final class OrderViewController: UIViewController {
             switch result {
             case .success(_):
                 if let window =  UIApplication.appDelegate.window {
-                    let model = CustomAlertViewModel(title: "Благодарим за заказ!", subtitle: "Мы перезвоним вам на номер: \(DataStore.shared.phoneNumber?.maskAsPhone() ?? "") в течении 15 минут для подтверждения заказа!\n Номер заказа: \(uuidNumber)")
+                    let model = CustomAlertViewModel(title: "Благодарим за заказ!", subtitle: "Мы перезвоним вам на номер: \(DataStore.shared.phoneNumber?.maskAsPhone() ?? "") в течении 15 минут для подтверждения заказа!\n Номер заказа: \(self.uuidNumber)")
                     CustomAlert.open(in: window, model: model)
                 }
                 self.navigationController?.popViewController(animated: true)

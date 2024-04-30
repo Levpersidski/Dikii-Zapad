@@ -118,6 +118,32 @@ extension UITabBar {
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("DEBUG / push notification token: \(fcmToken ?? "nil")")
+        guard let fcmToken = fcmToken else { return }
+        sendTokenToServer(token: fcmToken)
+    }
+    
+    private func sendTokenToServer(token: String) {
+        let url = URL(string: "https://dikiyzapad-161.ru/test/sendToken.php")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(DataStore.shared.secretToken)", forHTTPHeaderField: "Authorization")
+        request.setValue(token, forHTTPHeaderField: "Token")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                guard let data = data, error == nil else {
+                    print("PUSH ERROR! sendTokenToServer")
+                    return
+                }
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                    print("response = \(response!)")
+                }
+                let responseString = String(data: data, encoding: .utf8)
+                print("PUSH succes sendTokenToServer \(responseString ?? "")")
+            }
+        }
+        task.resume()
     }
     
     private func configureFirebase(for application: UIApplication) {

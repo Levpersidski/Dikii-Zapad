@@ -182,6 +182,15 @@ final class DropDownList: UIView {
             }
         }
     }
+    
+    func showError() {
+        addressButton.layer.borderWidth = 1
+        addressButton.layer.borderColor = UIColor.red.cgColor
+    }
+    
+    func hideError() {
+        addressButton.layer.borderColor = UIColor.clear.cgColor
+    }
 }
 
 //MARK: - ItemSelectableDropDownDelegate

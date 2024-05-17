@@ -594,8 +594,14 @@ final class OrderViewController: UIViewController {
         deliveryDropList.hiddenItems(true)
         dataPicker.fadeOut()
         numberPhoneTextField.hideError()
+        
+        guard checkValidTypeDelivery() else {
+            return
+        }
 
-        guard checkValidTimeInDataSore() else { return }
+        guard checkValidTimeInDataSore() else { 
+            return
+        }
         
         guard checkValidationPhone() else {
             numberPhoneTextField.showError()
@@ -715,6 +721,16 @@ extension OrderViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     @discardableResult
+    func checkValidTypeDelivery() -> Bool {
+        guard deliveryDropList.viewModel?.items.first(where: { $0.isSelected == true }) != nil else {
+            deliveryDropList.showError()
+            return false
+        }
+        
+        return true
+    }
+    
+    @discardableResult
     func checkValidTimeInDataSore() -> Bool {
         guard let timeToDelivery = DataStore.shared.timeDelivery else {
             isValidDeliveryTime = true
@@ -758,6 +774,7 @@ extension OrderViewController: DropDownListDelegate {
         }
         if dropDown === deliveryDropList {
             payDropList.hiddenItems(true)
+            deliveryDropList.hideError()
         }
     }
     

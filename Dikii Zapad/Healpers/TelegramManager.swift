@@ -24,6 +24,7 @@ final class TelegramManager {
         request.setValue("Bearer \(secretToken)", forHTTPHeaderField: "Authorization")
         request.httpBody = (keyMessage + "=" + text).data(using: .utf8)
         
+        //  TODO: should be remove
 //        let task = URLSession.shared.dataTask(with: request) { data, response, error in
 //            DispatchQueue.main.async {
 //                guard let data = data, error == nil else {

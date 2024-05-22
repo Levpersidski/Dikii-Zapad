@@ -38,4 +38,14 @@ extension Date {
         }
         return calendar.date(from: components)
     }
+    
+    func string(format: String, isMoscowTimezone: Bool = false) -> String? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        formatter.locale = Locale(identifier: "ru_RU")
+        if isMoscowTimezone {
+            formatter.timeZone = TimeZone(abbreviation: "MSK")!
+        }
+        return formatter.string(from: self)
+    }
 }

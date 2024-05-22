@@ -117,6 +117,17 @@ class CartViewController: UIViewController {
         return button
     }()
     
+    private  lazy var myOrdersButton: UIButton = {
+        let button  = UIButton(type: .system)
+        button.backgroundColor = .green.withAlphaComponent(0.7)
+        button.roundCorners(15)
+        button.setTitle("Мои заказы", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        button.addTarget(self, action: #selector(myOrdersButtonDidTap), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let loader = UIActivityIndicatorView()
         loader.color = .black
@@ -184,7 +195,8 @@ private extension CartViewController {
             emptyBurgerImage,
             titleLabel,
             descriptionLabel,
-            menuButton
+            menuButton,
+            myOrdersButton
         )
         
         containerFull.addSubviews(
@@ -235,6 +247,13 @@ private extension CartViewController {
         
         menuButton.easy.layout(
             Top(20).to(descriptionLabel, .bottom),
+            Left(30),
+            Right(30),
+            Height(54)
+        )
+        
+        myOrdersButton.easy.layout(
+            Top(20).to(menuButton, .bottom),
             Left(30),
             Right(30),
             Height(54),
@@ -289,6 +308,11 @@ private extension CartViewController {
     @objc func makeOrderButtonDidTap() {
         let orderVC = OrderViewController()
         navigationController?.pushViewController(orderVC, animated: true)
+    }
+    
+    @objc func myOrdersButtonDidTap() {
+       let historyVC = HistoryOrdersViewController()
+        navigationController?.pushViewController(historyVC, animated: true)
     }
 }
 

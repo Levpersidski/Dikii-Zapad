@@ -13,6 +13,15 @@ struct AdditiveProduct {
     var selected: Bool = false
 }
 
+struct UserOrder: Codable {
+    let date: Date
+    let number: String
+    let text: String
+    let allSum: String
+    let adress: String?
+    let sumDelyvery: String?
+}
+
 class DataStore {
     //  TODO: should be 10 minutes
     static let allowedSecondsInBackground: Double = 10 * 60.0
@@ -30,7 +39,6 @@ class DataStore {
         }
     }
     
-
     var userDeliveryLocation: UserDeliveryLocationModel? {
         get {
             let addressUserDeliveryLocation = UserDefaults.standard.string(forKey: "addressUserDeliveryLocation")
@@ -78,6 +86,29 @@ class DataStore {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: "outSideOrderDataStore")
+        }
+    }
+    
+    var userOrders: [UserOrder] {
+        get {
+            if let data = UserDefaults.standard.data(forKey: "userOrdersDataStore") {
+                let decodedArray = try? JSONDecoder().decode([UserOrder].self, from: data)
+                return decodedArray ?? []
+            } else {
+                return []
+            }
+        }
+        set {
+            var orders: [UserOrder] = newValue
+            
+            // Удаляем последний элемент, если превышено максимальное количество
+            if orders.count > 20 {
+                orders.removeLast()
+            }
+            
+            if let encoded = try? JSONEncoder().encode(orders) {
+                UserDefaults.standard.set(encoded, forKey: "userOrdersDataStore")
+            }
         }
     }
     

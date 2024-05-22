@@ -15,12 +15,20 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     private func generatetabBar() {
-        viewControllers = [
-            generateVC(MainViewController(), title: "Меню", image: UIImage(named:"tabIcon_menucard")),
-            generateVC(ActionsViewController(), title: "Акции", image: UIImage(named: "tabIcon_percent")),
-            generateVC(ContactsViewController(), title: "Контакты", image: UIImage(named: "tabIcon_contaccts")),
-            generateVC(CartViewController(), title: "Корзина", image: UIImage(named: "tabIcon_cart"))
-        ]
+        
+        var newViewControllers: [UIViewController] = []
+        newViewControllers.append(generateVC(MainViewController(), title: "Меню", image: UIImage(named:"tabIcon_menucard")))
+        newViewControllers.append(generateVC(ActionsViewController(), title: "Акции", image: UIImage(named: "tabIcon_percent")))
+        newViewControllers.append(generateVC(ContactsViewController(), title: "Контакты", image: UIImage(named: "tabIcon_contaccts")))
+        
+        if let vacancies = DataStore.shared.generalSettings?.vacancies, (vacancies.first(where: { $0.hasContent } ) != nil) {
+            let vacanciesVC = VacanciesViewController()
+            vacanciesVC.vacancies = vacancies.filter { $0.hasContent }
+            newViewControllers.append(generateVC(vacanciesVC, title: "Вакансии", image: UIImage(systemName: "square.and.arrow.down.fill")))
+        }
+        newViewControllers.append(generateVC(CartViewController(), title: "Корзина", image: UIImage(named: "tabIcon_cart")))
+        
+        viewControllers = newViewControllers
     }
     
     private func generateVC(_ viewController:UIViewController, title:String, image:UIImage?, changeImageTo:UIImage? = nil) -> UIViewController {

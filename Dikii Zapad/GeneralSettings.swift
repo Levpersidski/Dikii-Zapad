@@ -15,6 +15,17 @@ struct GeneralSettings: Codable {
     let deliveryInfo: DeliveryInfo
     let technicalMessage: String?
     let displayCategory: [String]
+    let vacancies: [Vacancy]?
+}
+
+struct Vacancy: Codable {
+    var name: String = ""
+    var description: String = ""
+    var salary: String = ""
+    
+    var hasContent: Bool {
+        !self.name.isEmpty || !self.description.isEmpty || !self.salary.isEmpty
+    }
 }
 
 struct ShopLocation: Codable {

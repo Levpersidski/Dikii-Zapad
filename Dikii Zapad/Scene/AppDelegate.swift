@@ -94,27 +94,6 @@ extension UIApplication {
     }
 }
 
-extension UITabBar {
-    enum TabItem: Int {
-        case main = 0
-        case sales = 1
-        case contacts = 2
-        case cart = 3
-    }
-    
-    func setBageValue(_ item: TabItem, value: Int) {
-        let indexTab = item.rawValue
-        items?[indexTab].badgeValue = value == 0 ? "" : "\(value)"
-        
-        if value == 0 {
-            items?[indexTab].badgeColor = .clear
-        } else {
-            items?[indexTab].badgeColor = .systemRed
-        }
-    }
-}
-
-
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("DEBUG / push notification token: \(fcmToken ?? "nil")")

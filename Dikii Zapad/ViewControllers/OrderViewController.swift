@@ -540,7 +540,7 @@ final class OrderViewController: UIViewController {
         self.makeOrderButton.setTitle(value ? "" : "ОФОРМИТЬ ЗАКАЗ", for: .normal)
     }
     
-    private func createTextForMessage() -> String {
+    private func createUserOrder() -> (String, UserOrder) {
         let model = DataStore.shared.cartViewModel
         let userModel = DataStore.shared.userDeliveryLocation
         
@@ -576,8 +576,18 @@ final class OrderViewController: UIViewController {
         }
         
         let payTape = "Оплата: " + (payDropList.viewModel?.items.first(where: { $0.isSelected })?.title ?? "")
+        let textTelegram = "номер: \(uuidNumber)\n\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(payTape)\n• \(name) Тел: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)")\n• Сумма платежа: \(price + priceDelivery) Руб. "
         
-        return "номер: \(uuidNumber)\n\n\(orderText.joined(separator: "\n\n")) \n\n• \(address)\n• \(time)\n• \(payTape)\n• \(name) Тел: +\(DataStore.shared.phoneNumber ?? "")\(comment.isEmpty ? "" : "\n• Комментарий: \(comment)")\n• Сумма платежа: \(price + priceDelivery) Руб. "
+        let userOrder = UserOrder(
+            date: Date(),
+            number: uuidNumber,
+            text: (orderText.joined(separator: "\n\n")),
+            allSum: "\(price + priceDelivery) Руб.",
+            adress: DataStore.shared.outSideOrder ? (userModel?.address ?? ""): nil,
+            sumDelyvery: sumValueDeliveryLabel.text?.isEmpty == true ? nil : (sumValueDeliveryLabel.text ?? "")
+        )
+        
+        return (textTelegram, userOrder)
     }
     
     func createCustomUUID() -> String {
@@ -623,7 +633,7 @@ final class OrderViewController: UIViewController {
         startLoadingAnimation(true)
         uuidNumber = createCustomUUID()
         
-        TelegramManager.shared.sendMessage(createTextForMessage()) { [weak self] result in
+        TelegramManager.shared.sendMessage(createUserOrder()) { [weak self] result in
             guard let self = self else { return }
             
             switch result {

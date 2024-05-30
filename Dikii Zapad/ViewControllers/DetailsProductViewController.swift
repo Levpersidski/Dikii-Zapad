@@ -75,20 +75,13 @@ class DetailsProductViewController: UIViewController {
         return text
     }()
     
-    private lazy var orderButton: UIButton = {
-        let button = UIButton(type: .system)
+    private lazy var orderButton: GradientButton = {
+        let button = GradientButton(type: .system)
         button.maskCorners(radius: 15)
         button.setTitle("Добавить в корзину", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.setTitleColor(UIColor.white, for: .normal)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
-        button.applyGradient(fromColor: UIColor(hex: "FF5929"),
-                             toColor: UIColor(hex: "993C1F"),
-                             fromPoint: CGPoint(x: 0.5, y: 0),
-                             toPoint: CGPoint(x: 0.5, y: 1),
-                             location: [0, 1])
-        
         return button
     }()
     

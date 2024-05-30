@@ -22,6 +22,7 @@ struct Vacancy: Codable {
     var name: String = ""
     var description: String = ""
     var salary: String = ""
+    var url: String = ""
     
     var hasContent: Bool {
         !self.name.isEmpty || !self.description.isEmpty || !self.salary.isEmpty

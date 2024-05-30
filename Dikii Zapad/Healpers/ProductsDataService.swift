@@ -25,36 +25,29 @@ class ProductsDataService {
     private let urlProduct = "https://dikiyzapad-161.ru/wp-json/wc/v3/products"
     private let urlCategories = "https://dikiyzapad-161.ru/wp-json/wc/v3/products/categories"
     
-    var products: [Product]? = []
-    var categories: [Category]? = []
+    var products: [Product] = []
+    var categories: [Category] = []
     
     func downloadProduct(completion: @escaping (_ hasData: Bool) -> Void) {
         products = []
         categories = []
         
-        guard products?.isEmpty ?? true && categories?.isEmpty ?? true else {
+        guard products.isEmpty && categories.isEmpty else {
             completion(true) //Если данные уже есть не загружаем по новой
             return
         }
         
         //Load products
-        download(urlProduct, groupLoading) { [weak self] result, error in
-            DispatchQueue.main.async { [weak self] in
-                self?.products = result
-                self?.products = self?.products?.sorted(by: { $0.menu_order < $1.menu_order })
-                
-                print("DBG loaded \(self?.products?.count ?? 0) products")
-                self?.groupLoading.leave()
-            }
-        }
+        loadProdacts(numberPage: 1, urlProduct: urlProduct, groupLoading)
         
         download(urlCategories, groupLoading) { [weak self] result, error in
             DispatchQueue.main.async { [weak self] in
-                self?.categories = result
-                self?.categories = self?.categories?.sorted(by: { $0.menu_order ?? 0 < $1.menu_order ?? 0 })
+                guard let self = self else { return }
+                let categories: [Category] = result ?? []
+                self.categories = categories
                 
-                print("DBG loaded \(self?.categories?.count ?? 0) categories")
-                self?.groupLoading.leave()
+                print("DBG loaded \(categories.count) categories")
+                self.groupLoading.leave()
             }
         }
         
@@ -71,19 +64,16 @@ class ProductsDataService {
             guard let self else { return }
             //Save in dataStore
             self.updateDataStore()
-            let isEmptyCategories = self.categories?.isEmpty ?? true
-            let isEmptyProducts = self.products?.isEmpty ?? true
+            let isEmptyCategories = self.categories.isEmpty
+            let isEmptyProducts = self.products.isEmpty
             
             completion(!(isEmptyCategories) && !(isEmptyProducts) && DataStore.shared.generalSettings != nil)
         }
     }
     
     func updateDataStore() {
-        let products = products ?? []
-        let categories = categories ?? []
-
-        DataStore.shared.allProducts = products
-        DataStore.shared.allCategories = categories
+        DataStore.shared.allProducts = products.sorted(by: { $0.menu_order < $1.menu_order })
+        DataStore.shared.allCategories = categories.sorted(by: { $0.menu_order ?? 0 < $1.menu_order ?? 0 })
     }
     
     func loadGeneralSettings(completion: @escaping (GeneralSettings?, Error?) -> Void) {
@@ -120,16 +110,15 @@ class ProductsDataService {
 
 //Private
 private extension ProductsDataService {
-    
-    func download<T: Codable>(_ urlString: String, _ group: DispatchGroup?, completion: @escaping (T?, Error?) -> Void) {
+    func download<T: Codable>(params: [URLQueryItem] = [], _ urlString: String, _ group: DispatchGroup?, completion: @escaping (T?, Error?) -> Void) {
         group?.enter()
         let oAuthSwift = OAuth1Swift(consumerKey: consumerKey, consumerSecret: consumerSecret)
         let baseURL = URL(string: urlString)!
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
-        let params = [
-            URLQueryItem(name: "per_page", value: "100")
-        ]
-        urlComponents?.queryItems = params
+        if !params.isEmpty {
+            urlComponents?.queryItems = params
+        }
+        
         let finalURL = urlComponents?.url
         
         oAuthSwift.client.get(finalURL!) { result in
@@ -169,6 +158,37 @@ private extension ProductsDataService {
                 completion(nil, DZError.parce)
             }
         }.resume()
+    }
+    
+    func loadProdacts(numberPage: Int, urlProduct: String, _ groupLoading: DispatchGroup?) {
+        var params = [
+            URLQueryItem(name: "per_page", value: "100"),
+            URLQueryItem(name: "page", value: "\(numberPage)")
+        ]
+        
+        if !DataStore.shared.devMode {
+            params.append(URLQueryItem(name: "status", value: "publish"))
+        }
+        
+        download(params: params, urlProduct, groupLoading) { [weak self] result, error in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                
+                let products: [Product] = result ?? []
+                self.products.append(contentsOf: products)
+                
+                
+                let countProducts = products.count
+                print("DBG loaded \(countProducts) products, page# \(numberPage)")
+                
+                //Если элементов на первой странице больше 100 - загружаем вторую страницу
+                if countProducts == 100 {
+                    loadProdacts(numberPage: numberPage + 1, urlProduct: urlProduct, groupLoading)
+                }
+                
+                self.groupLoading.leave()
+            }
+        }
     }
 }
 

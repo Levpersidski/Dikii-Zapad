@@ -15,6 +15,8 @@ final class VacancyCell: UITableViewCell {
             nameLabel.text = model.name
             descriptionLabel.text = model.description
             salaryLabel.text = model.salary
+            applyButton.isHidden = model.url.isEmpty
+            salaryLabel.easy.reload()
         }
     }
     private lazy var containerView: UIView = {
@@ -48,6 +50,18 @@ final class VacancyCell: UITableViewCell {
         return label
     }()
     
+    private lazy var applyButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
+        button.backgroundColor = .customOrange
+        button.roundCorners(10)
+        button.setTitle("Откликнуться на вакансию", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.contentEdgeInsets = .init(top: 0, left: 10, bottom: 0, right: 10)
+        button.addTarget(self, action: #selector(applyButtonDidTap), for: .touchUpInside)
+        return button
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
@@ -63,12 +77,13 @@ final class VacancyCell: UITableViewCell {
 
 private extension VacancyCell {
     func setupView() {
-        addSubview(containerView)
+        contentView.addSubview(containerView)
         
         containerView.addSubviews(
             nameLabel,
             descriptionLabel,
-            salaryLabel
+            salaryLabel,
+            applyButton
         )
     }
     
@@ -91,11 +106,33 @@ private extension VacancyCell {
         )
         
         salaryLabel.easy.layout(
-            Top(10).to(descriptionLabel, .bottom),
-            Right(16),
-            Bottom(5)
+            Top(10).to(descriptionLabel, .bottom).when{ [weak self] in
+                guard let self = self else { return false }
+                return applyButton.isHidden
+            },
+            Top(40).to(descriptionLabel, .bottom).when{ [weak self] in
+                guard let self = self else { return false }
+                return !applyButton.isHidden
+            },
+            Right(16).when{ [weak self] in
+                guard let self = self else { return false }
+                return applyButton.isHidden
+            },
+            Right(10).to(applyButton, .left).when{ [weak self] in
+                guard let self = self else { return false }
+                return !applyButton.isHidden
+            },
+            Bottom(16)
         )
-        
-   
+        applyButton.easy.layout(
+            Right(16),
+            Height(40),
+            Bottom(16)
+        )
+    }
+    
+    @objc private func applyButtonDidTap() {
+        guard let url = URL(string: model?.url ?? "") else { return }
+        UIApplication.shared.open(url)
     }
 }

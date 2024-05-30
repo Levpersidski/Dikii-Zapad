@@ -99,32 +99,14 @@ class CartViewController: UIViewController {
         return label
     }()
     
-    private  lazy var makeOrderButton: UIButton = {
-        let button  = UIButton(type: .system)
+    private  lazy var makeOrderButton: GradientButton = {
+        let button = GradientButton(type: .system)
         button.backgroundColor = UIColor.customOrange
         button.roundCorners(15)
         button.setTitle("Продолжить", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.addTarget(self, action: #selector(makeOrderButtonDidTap), for: .touchUpInside)
-        button.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32 , height: 54)
-        button.applyGradient(fromColor: UIColor(hex: "FF5929"),
-                             toColor: UIColor(hex: "993C1F"),
-                             fromPoint: CGPoint(x: 0.5, y: 0),
-                             toPoint: CGPoint(x: 0.5, y: 1),
-                             location: [0, 1])
-        
-        return button
-    }()
-    
-    private  lazy var myOrdersButton: UIButton = {
-        let button  = UIButton(type: .system)
-        button.backgroundColor = .green.withAlphaComponent(0.7)
-        button.roundCorners(15)
-        button.setTitle("Мои заказы", for: .normal)
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        button.addTarget(self, action: #selector(myOrdersButtonDidTap), for: .touchUpInside)
         return button
     }()
     
@@ -135,14 +117,27 @@ class CartViewController: UIViewController {
         return loader
     }()
     
-    private lazy var menuButton: UIButton = {
-        let button = UIButton(type: .system)
+    private lazy var menuButton: GradientButton = {
+        let button = GradientButton(type: .system)
         button.backgroundColor = UIColor.customOrange
         button.maskCorners(radius: 15)
         button.setTitle("Перейти в меню", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.setTitleColor(UIColor.white, for: .normal)
         button.addTarget(self, action: #selector(openMainVC), for: .touchUpInside)
+        return button
+    }()
+    
+    private  lazy var myOrdersButton: UIButton = {
+        let button  = UIButton(type: .system)
+        button.backgroundColor = .clear
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.customOrange.cgColor
+        button.roundCorners(15)
+        button.setTitle("Мои заказы", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        button.addTarget(self, action: #selector(myOrdersButtonDidTap), for: .touchUpInside)
         return button
     }()
     
@@ -247,15 +242,15 @@ private extension CartViewController {
         
         menuButton.easy.layout(
             Top(20).to(descriptionLabel, .bottom),
-            Left(30),
-            Right(30),
+            Left(16),
+            Right(16),
             Height(54)
         )
         
         myOrdersButton.easy.layout(
             Top(20).to(menuButton, .bottom),
-            Left(30),
-            Right(30),
+            Left(16),
+            Right(16),
             Height(54),
             Bottom()
         )

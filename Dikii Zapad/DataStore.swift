@@ -24,6 +24,7 @@ struct UserOrder: Codable {
 
 class DataStore {
     static let allowedSecondsInBackground: Double = 10 * 60.0
+    var devMode: Bool = false //При включенном дев моде показываем черновики товаров
     
     var allCategories: [Category] = []
     var allProducts: [Product] = []

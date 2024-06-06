@@ -92,9 +92,7 @@ class MapDeliveryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationController?.navigationBar.backItem?.title = ""
-        navigationController?.navigationBar.tintColor = UIColor.customOrange
-        view.backgroundColor = .black
+
         setupView()
         setupConstrains()
         
@@ -369,5 +367,13 @@ extension MapDeliveryViewController: BottomSheetMapViewDelegate {
     
     func buildingWayFromBottomSheet() {
         buildingWay()
+    }
+}
+
+
+//MARK: - UIGestureRecognizerDelegate
+extension MapDeliveryViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+       return true
     }
 }

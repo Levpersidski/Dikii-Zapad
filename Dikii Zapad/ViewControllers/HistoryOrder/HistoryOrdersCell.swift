@@ -20,8 +20,8 @@ final class HistoryOrdersCell: UITableViewCell {
             
             guard let model = model else { return }
             
-            numberLabel.text = "#\(model.number), сума: \(model.allSum)"
-            timeLabel.text = model.date.string(format: "dd MMMM HH:mm:ss") ?? ""
+            numberLabel.text = "#\(model.number), сумма: \(model.allSum)"
+            timeLabel.text = model.date.string(format: "dd MMMM HH:mm") ?? ""
             orderLabel.text = model.text
             
             if let adress = model.adress {
@@ -64,9 +64,12 @@ final class HistoryOrdersCell: UITableViewCell {
         return label
     }()
     
-    private var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white.withAlphaComponent(0.7)
+    private var separatorView: DotsView = {
+        let view = DotsView()
+        view.backgroundColor = .clear
+        view.dotColor = UIColor.white.withAlphaComponent(0.7)
+        view.dotSize = CGSize(width: 10, height: 1)
+        view.dotSpacing = 10
         return view
     }()
     

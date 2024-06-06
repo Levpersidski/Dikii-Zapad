@@ -170,8 +170,6 @@ class CartViewController: UIViewController {
         updateViews()
 
         navigationController?.setNavigationBarHidden(true, animated: true)
-        self.navigationController?.navigationBar.backItem?.title = ""
-
     }
 }
 

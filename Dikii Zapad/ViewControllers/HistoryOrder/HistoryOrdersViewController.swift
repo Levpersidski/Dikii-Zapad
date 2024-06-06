@@ -35,12 +35,6 @@ final class HistoryOrdersViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationController?.navigationBar.backItem?.title = ""
-
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.tintColor = UIColor.customOrange
-        navigationController?.navigationBar.barTintColor = .black
-        
         tableView.reloadData()
     }
     

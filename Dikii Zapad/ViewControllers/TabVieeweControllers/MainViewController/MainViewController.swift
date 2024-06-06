@@ -137,9 +137,6 @@ final class MainViewController: UIViewController, UICollectionViewDelegateFlowLa
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
-        
-        navigationController?.navigationBar.backItem?.title = ""
-        navigationController?.navigationBar.tintColor = UIColor.customOrange
         segmentedControl.selectedSegmentIndex = DataStore.shared.outSideOrder ? 0 : 1
         segmentedValueChanged()
     }

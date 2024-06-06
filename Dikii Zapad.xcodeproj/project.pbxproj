@@ -59,6 +59,7 @@
 		DF0E627B2BFDCCFD00F70903 /* TabBar + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0E627A2BFDCCFD00F70903 /* TabBar + extension.swift */; };
 		DF0E627E2BFDCF2D00F70903 /* VacanciesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0E627D2BFDCF2D00F70903 /* VacanciesViewController.swift */; };
 		DF0E62802BFDD72A00F70903 /* VacancyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0E627F2BFDD72A00F70903 /* VacancyCell.swift */; };
+		DF1257CD2C0DBFCA00750459 /* DotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1257CC2C0DBFCA00750459 /* DotsView.swift */; };
 		DF1E102B2BBF17BE0035C464 /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */; };
 		DF23D0A32C08C72B008E19B4 /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF23D0A22C08C72B008E19B4 /* GradientButton.swift */; };
 		DF547D322BD80DB1000E8501 /* LoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF547D312BD80DB1000E8501 /* LoadingImageView.swift */; };
@@ -123,6 +124,7 @@
 		DF0E627D2BFDCF2D00F70903 /* VacanciesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacanciesViewController.swift; sourceTree = "<group>"; };
 		DF0E627F2BFDD72A00F70903 /* VacancyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacancyCell.swift; sourceTree = "<group>"; };
 		DF10AD252BDD36EE00567B80 /* Dikii Zapad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Dikii Zapad.entitlements"; sourceTree = "<group>"; };
+		DF1257CC2C0DBFCA00750459 /* DotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsView.swift; sourceTree = "<group>"; };
 		DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonView.swift; sourceTree = "<group>"; };
 		DF23D0A22C08C72B008E19B4 /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
 		DF547D312BD80DB1000E8501 /* LoadingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingImageView.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				04E675A32B890EC7007559C6 /* DropDownList.swift */,
 				04E675A52B891343007559C6 /* ItemSelectableDropDown.swift */,
 				DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */,
+				DF1257CC2C0DBFCA00750459 /* DotsView.swift */,
 			);
 			path = CommonElements;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 				04E675A42B890EC7007559C6 /* DropDownList.swift in Sources */,
 				B667A04A2AE58C1E003D8069 /* AdditiveCell.swift in Sources */,
 				B6306BB92AC088D800B0BF80 /* AppDelegate.swift in Sources */,
+				DF1257CD2C0DBFCA00750459 /* DotsView.swift in Sources */,
 				B6F3EA5A2AD9604000270662 /* DeliveryFormViewController.swift in Sources */,
 				B645C3612AC34F960079C8F2 /* ProductCell.swift in Sources */,
 				DF23D0A32C08C72B008E19B4 /* GradientButton.swift in Sources */,

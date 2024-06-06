@@ -50,8 +50,8 @@ final class VacancyCell: UITableViewCell {
         return label
     }()
     
-    private lazy var applyButton: UIButton = {
-        let button = UIButton(type: .system)
+    private lazy var applyButton: GradientButton = {
+        let button = GradientButton(type: .system)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
         button.backgroundColor = .customOrange
         button.roundCorners(10)

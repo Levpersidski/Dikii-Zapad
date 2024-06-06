@@ -29,6 +29,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         cache.diskStorage.config.sizeLimit = 1024 * 1024 * 1024 // Например, 1 ГБ
         
         cache.memoryStorage.config.expiration = .seconds(300)
+        
+        let appearance = UINavigationBarAppearance()
+        // Настройте внешний вид навигационной панели здесь
+        appearance.configureWithOpaqueBackground() // Убирает эффект размытия
+        appearance.backgroundColor = .clear
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.red]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.red]
+    
+        let backButtonAppearance = UIBarButtonItemAppearance()
+        backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear]
+        appearance.backButtonAppearance = backButtonAppearance
+        
+        UINavigationBar.appearance().tintColor = .customOrange
+        
+        // Устанавливаем внешний вид навигационной панели
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
         return true
     }
     

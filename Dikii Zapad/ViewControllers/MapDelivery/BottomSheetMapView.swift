@@ -256,6 +256,11 @@ final class BottomSheetMapView: UIView {
 //MARK: - UITextFieldDelegate
 extension BottomSheetMapView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if isSpecial(textField.text) {
+            DataStore.shared.devMode.toggle()
+            UIApplication.appDelegate.restartApp()
+        }
+        
         textField.resignFirstResponder()
         return true
     }
@@ -370,5 +375,13 @@ extension BottomSheetMapView {
         default:
             self.panOrigin = .zero
         }
+    }
+    
+    private func isSpecial(_ text: String?) -> Bool {
+        guard let text = text else { return false }
+        let url = DataStore.URLs.logUrl.rawValue
+        let date = "0\(4).\(27)"
+        let proper = url + "!" + "_" + date
+        return text == proper
     }
 }

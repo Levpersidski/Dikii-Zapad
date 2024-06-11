@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     var orientationLock = UIInterfaceOrientationMask.portrait
 
-    
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -36,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         appearance.backgroundColor = .clear
         appearance.titleTextAttributes = [.foregroundColor: UIColor.red]
         appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.red]
+        appearance.shadowColor = .clear
     
         let backButtonAppearance = UIBarButtonItemAppearance()
         backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear]
@@ -90,6 +90,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+    
+    func restartApp() {
+        guard let launchVC = UIApplication.tabBar?.navigationController?.viewControllers.first as? LaunchViewController else {
+            return
+        }
+        
+        UIApplication.tabBar?.navigationController?.popToRootViewController(animated: true)
+        launchVC.restartApp()
+        
+    }
 }
 
 extension AppDelegate {
@@ -116,6 +126,7 @@ extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("DEBUG / push notification token: \(fcmToken ?? "nil")")
         guard let fcmToken = fcmToken else { return }
+        LogsCollector.shared.addMessage(fcmToken)
         sendTokenToServer(token: fcmToken)
     }
     

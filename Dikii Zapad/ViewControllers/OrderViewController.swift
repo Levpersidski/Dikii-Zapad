@@ -621,6 +621,9 @@ final class OrderViewController: UIViewController {
             return
         }
         
+        makeOrderButton.isEnabled = false
+        makeOrderButton.alpha = makeOrderButton.isEnabled ? 1 : 0.3
+        
         startLoadingAnimation(true)
         uuidNumber = createCustomUUID()
         
@@ -643,6 +646,8 @@ final class OrderViewController: UIViewController {
                 }
             }
             self.startLoadingAnimation(false)
+            makeOrderButton.isEnabled = true
+            makeOrderButton.alpha = makeOrderButton.isEnabled ? 1 : 0.3
         }
     }
     

@@ -62,12 +62,27 @@
 		DF1257CD2C0DBFCA00750459 /* DotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1257CC2C0DBFCA00750459 /* DotsView.swift */; };
 		DF1E102B2BBF17BE0035C464 /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */; };
 		DF23D0A32C08C72B008E19B4 /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF23D0A22C08C72B008E19B4 /* GradientButton.swift */; };
+		DF2BB1FC2C186ADF007A3EDA /* Dikii_ZapadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2BB1FB2C186ADF007A3EDA /* Dikii_ZapadTests.swift */; };
+		DF2BB2032C186D23007A3EDA /* CoffeeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2BB2022C186D23007A3EDA /* CoffeeTest.swift */; };
+		DF2BB2052C188396007A3EDA /* LogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2BB2042C188396007A3EDA /* LogsViewController.swift */; };
+		DF2BB2072C188832007A3EDA /* LogoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2BB2062C188832007A3EDA /* LogoCell.swift */; };
+		DF2BB2092C188A29007A3EDA /* LogsCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2BB2082C188A29007A3EDA /* LogsCollector.swift */; };
 		DF547D322BD80DB1000E8501 /* LoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF547D312BD80DB1000E8501 /* LoadingImageView.swift */; };
 		DF737ED42BF7B00A00C82165 /* HistoryOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF737ED32BF7B00A00C82165 /* HistoryOrdersViewController.swift */; };
 		DF9106D42BFCBE0100E4D609 /* HistoryOrdersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9106D32BFCBE0100E4D609 /* HistoryOrdersCell.swift */; };
 		DFB941B32BCAEBE700F20061 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFB941B22BCAEBE700F20061 /* NavigationController.swift */; };
 		DFF44F7A2BDEBC5B00395D69 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DFF44F792BDEBC5B00395D69 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DF2BB1FD2C186ADF007A3EDA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B6306BAD2AC088D800B0BF80 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B6306BB42AC088D800B0BF80;
+			remoteInfo = "Dikii Zapad";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		042487E32B8A2F89000F9CEC /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
@@ -127,6 +142,12 @@
 		DF1257CC2C0DBFCA00750459 /* DotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsView.swift; sourceTree = "<group>"; };
 		DF1E102A2BBF17BD0035C464 /* SkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonView.swift; sourceTree = "<group>"; };
 		DF23D0A22C08C72B008E19B4 /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
+		DF2BB1F92C186ADF007A3EDA /* Dikii ZapadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Dikii ZapadTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF2BB1FB2C186ADF007A3EDA /* Dikii_ZapadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dikii_ZapadTests.swift; sourceTree = "<group>"; };
+		DF2BB2022C186D23007A3EDA /* CoffeeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeTest.swift; sourceTree = "<group>"; };
+		DF2BB2042C188396007A3EDA /* LogsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsViewController.swift; sourceTree = "<group>"; };
+		DF2BB2062C188832007A3EDA /* LogoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoCell.swift; sourceTree = "<group>"; };
+		DF2BB2082C188A29007A3EDA /* LogsCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsCollector.swift; sourceTree = "<group>"; };
 		DF547D312BD80DB1000E8501 /* LoadingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingImageView.swift; sourceTree = "<group>"; };
 		DF737ED32BF7B00A00C82165 /* HistoryOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryOrdersViewController.swift; sourceTree = "<group>"; };
 		DF9106D32BFCBE0100E4D609 /* HistoryOrdersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryOrdersCell.swift; sourceTree = "<group>"; };
@@ -147,12 +168,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DF2BB1F62C186ADF007A3EDA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		042487E52B8B28B3000F9CEC /* TabVieeweControllers */ = {
 			isa = PBXGroup;
 			children = (
+				DF2BB20A2C18A773007A3EDA /* LogsViewController */,
 				DF0E627C2BFDCF0F00F70903 /* Vacancies */,
 				042487E72B8B2931000F9CEC /* MainViewController */,
 				042487E82B8B2952000F9CEC /* ActionsViewController */,
@@ -207,6 +236,7 @@
 				04E675A12B890415007559C6 /* TelegramManager.swift */,
 				04BDEEF02BAA20DE005C1095 /* LocationDataManager.swift */,
 				DF547D312BD80DB1000E8501 /* LoadingImageView.swift */,
+				DF2BB2082C188A29007A3EDA /* LogsCollector.swift */,
 			);
 			path = Healpers;
 			sourceTree = "<group>";
@@ -239,6 +269,7 @@
 			children = (
 				DF01BF002BCD8F6100B1374F /* PrivacyInfo.xcprivacy */,
 				B6306BB72AC088D800B0BF80 /* Dikii Zapad */,
+				DF2BB1FA2C186ADF007A3EDA /* Dikii ZapadTests */,
 				B6306BB62AC088D800B0BF80 /* Products */,
 				BA462CE9236710BF23C31CA5 /* Pods */,
 				7FF0FD147D2FA291983C235F /* Frameworks */,
@@ -249,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				B6306BB52AC088D800B0BF80 /* Dikii Zapad.app */,
+				DF2BB1F92C186ADF007A3EDA /* Dikii ZapadTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -345,6 +377,24 @@
 			path = Vacancies;
 			sourceTree = "<group>";
 		};
+		DF2BB1FA2C186ADF007A3EDA /* Dikii ZapadTests */ = {
+			isa = PBXGroup;
+			children = (
+				DF2BB1FB2C186ADF007A3EDA /* Dikii_ZapadTests.swift */,
+				DF2BB2022C186D23007A3EDA /* CoffeeTest.swift */,
+			);
+			path = "Dikii ZapadTests";
+			sourceTree = "<group>";
+		};
+		DF2BB20A2C18A773007A3EDA /* LogsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DF2BB2042C188396007A3EDA /* LogsViewController.swift */,
+				DF2BB2062C188832007A3EDA /* LogoCell.swift */,
+			);
+			path = LogsViewController;
+			sourceTree = "<group>";
+		};
 		DF9106D22BFCBDE200E4D609 /* HistoryOrder */ = {
 			isa = PBXGroup;
 			children = (
@@ -382,6 +432,24 @@
 			productReference = B6306BB52AC088D800B0BF80 /* Dikii Zapad.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DF2BB1F82C186ADF007A3EDA /* Dikii ZapadTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DF2BB2012C186ADF007A3EDA /* Build configuration list for PBXNativeTarget "Dikii ZapadTests" */;
+			buildPhases = (
+				DF2BB1F52C186ADF007A3EDA /* Sources */,
+				DF2BB1F62C186ADF007A3EDA /* Frameworks */,
+				DF2BB1F72C186ADF007A3EDA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DF2BB1FE2C186ADF007A3EDA /* PBXTargetDependency */,
+			);
+			name = "Dikii ZapadTests";
+			productName = "Dikii ZapadTests";
+			productReference = DF2BB1F92C186ADF007A3EDA /* Dikii ZapadTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -389,11 +457,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
+				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					B6306BB42AC088D800B0BF80 = {
 						CreatedOnToolsVersion = 14.3;
+					};
+					DF2BB1F82C186ADF007A3EDA = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = B6306BB42AC088D800B0BF80;
 					};
 				};
 			};
@@ -418,6 +490,7 @@
 			projectRoot = "";
 			targets = (
 				B6306BB42AC088D800B0BF80 /* Dikii Zapad */,
+				DF2BB1F82C186ADF007A3EDA /* Dikii ZapadTests */,
 			);
 		};
 /* End PBXProject section */
@@ -430,6 +503,13 @@
 				B645C36C2AC9D06B0079C8F2 /* Capture it.ttf in Resources */,
 				B6306BC22AC088D900B0BF80 /* Assets.xcassets in Resources */,
 				DFF44F7A2BDEBC5B00395D69 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DF2BB1F72C186ADF007A3EDA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,6 +570,7 @@
 				DF9106D42BFCBE0100E4D609 /* HistoryOrdersCell.swift in Sources */,
 				DF1E102B2BBF17BE0035C464 /* SkeletonView.swift in Sources */,
 				B67122992B7E747D00E051EF /* OrderViewController.swift in Sources */,
+				DF2BB2072C188832007A3EDA /* LogoCell.swift in Sources */,
 				B6DB40FE2AEFF2E6005963ED /* CustomButton.swift in Sources */,
 				B66D7BA92AFD271F009C34CB /* CheckBoxButton.swift in Sources */,
 				04E675A22B890415007559C6 /* TelegramManager.swift in Sources */,
@@ -501,6 +582,7 @@
 				04A9AB462B5C837D002A8A79 /* Product.swift in Sources */,
 				B6DF27252ACC7E2A00FC45D0 /* UIColorExtension.swift in Sources */,
 				04E675A62B891343007559C6 /* ItemSelectableDropDown.swift in Sources */,
+				DF2BB2092C188A29007A3EDA /* LogsCollector.swift in Sources */,
 				04E6F8D92B651C2E0014398B /* CustomTextField.swift in Sources */,
 				04ECD5FA2B66C71F00F29F2C /* BottomSheetMapView.swift in Sources */,
 				B6DF27182ACC387F00FC45D0 /* LaunchViewController.swift in Sources */,
@@ -532,12 +614,30 @@
 				B6F3EA5A2AD9604000270662 /* DeliveryFormViewController.swift in Sources */,
 				B645C3612AC34F960079C8F2 /* ProductCell.swift in Sources */,
 				DF23D0A32C08C72B008E19B4 /* GradientButton.swift in Sources */,
+				DF2BB2052C188396007A3EDA /* LogsViewController.swift in Sources */,
 				B6306BBB2AC088D800B0BF80 /* SceneDelegate.swift in Sources */,
 				0475E7A22B9F935C00BF48BF /* GeneralSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DF2BB1F52C186ADF007A3EDA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DF2BB1FC2C186ADF007A3EDA /* Dikii_ZapadTests.swift in Sources */,
+				DF2BB2032C186D23007A3EDA /* CoffeeTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DF2BB1FE2C186ADF007A3EDA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B6306BB42AC088D800B0BF80 /* Dikii Zapad */;
+			targetProxy = DF2BB1FD2C186ADF007A3EDA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B6306BC72AC088D900B0BF80 /* Debug */ = {
@@ -663,7 +763,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Dikii Zapad/Dikii Zapad.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = F7X8B5584B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dikii Zapad/Info.plist";
@@ -678,7 +778,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.dikiizapad.dikiizapad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -700,7 +800,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Dikii Zapad/Dikii Zapad.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = F7X8B5584B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Dikii Zapad/Info.plist";
@@ -715,7 +815,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.dikiizapad.dikiizapad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -725,6 +825,53 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		DF2BB1FF2C186ADF007A3EDA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WZJ6JFW8X2;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "SwiftUITest3.Dikii-ZapadTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dikii Zapad.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Dikii Zapad";
+			};
+			name = Debug;
+		};
+		DF2BB2002C186ADF007A3EDA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WZJ6JFW8X2;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "SwiftUITest3.Dikii-ZapadTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dikii Zapad.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Dikii Zapad";
 			};
 			name = Release;
 		};
@@ -745,6 +892,15 @@
 			buildConfigurations = (
 				B6306BCA2AC088D900B0BF80 /* Debug */,
 				B6306BCB2AC088D900B0BF80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DF2BB2012C186ADF007A3EDA /* Build configuration list for PBXNativeTarget "Dikii ZapadTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DF2BB1FF2C186ADF007A3EDA /* Debug */,
+				DF2BB2002C186ADF007A3EDA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

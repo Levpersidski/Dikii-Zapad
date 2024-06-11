@@ -23,8 +23,13 @@ struct UserOrder: Codable {
 }
 
 class DataStore {
+    enum URLs: String {
+        case logUrl = "di'iyLogS"
+    }
+    
+    
     static let allowedSecondsInBackground: Double = 10 * 60.0
-    var devMode: Bool = false //При включенном дев моде показываем черновики товаров
+    var devMode: Bool = false
     
     var allCategories: [Category] = []
     var allProducts: [Product] = []

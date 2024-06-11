@@ -30,7 +30,7 @@ final class VacancyCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 16, weight: .bold)
-        label.textColor = .white.withAlphaComponent(0.7)
+        label.textColor = UIColor.customOrange
         return label
     }()
     
@@ -46,14 +46,16 @@ final class VacancyCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 16, weight: .bold)
-        label.textColor = .orange
+        label.textColor = UIColor.customOrange.withAlphaComponent(0.9)
         return label
     }()
     
-    private lazy var applyButton: GradientButton = {
-        let button = GradientButton(type: .system)
+    private lazy var applyButton: UIButton = {
+        let button = UIButton(type: .system)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
-        button.backgroundColor = .customOrange
+        button.backgroundColor = .clear
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.customOrange.withAlphaComponent(0.9).cgColor
         button.roundCorners(10)
         button.setTitle("Откликнуться на вакансию", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -114,18 +116,11 @@ private extension VacancyCell {
                 guard let self = self else { return false }
                 return !applyButton.isHidden
             },
-            Right(16).when{ [weak self] in
-                guard let self = self else { return false }
-                return applyButton.isHidden
-            },
-            Right(10).to(applyButton, .left).when{ [weak self] in
-                guard let self = self else { return false }
-                return !applyButton.isHidden
-            },
+            Right(16),
             Bottom(16)
         )
         applyButton.easy.layout(
-            Right(16),
+            Left(16),
             Height(40),
             Bottom(16)
         )

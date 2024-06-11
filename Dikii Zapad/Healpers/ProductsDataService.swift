@@ -47,6 +47,7 @@ class ProductsDataService {
                 self.categories = categories
                 
                 print("DBG loaded \(categories.count) categories")
+                LogsCollector.shared.addMessage("loaded \(categories.count) categories")
                 self.groupLoading.leave()
             }
         }
@@ -55,6 +56,9 @@ class ProductsDataService {
         loadPromotionsUrl { urls, error in
             DispatchQueue.main.async { [weak self] in
                 print("DBG loaded \(urls == nil ? "error loadPromotions" : "has \(urls?.count ?? 0) promotions")")
+                
+                LogsCollector.shared.addMessage("loaded \(urls == nil ? "error loadPromotions" : "has \(urls?.count ?? 0) promotions")")
+
                 DataStore.shared.promotionURLs = urls ?? []
                 self?.groupLoading.leave()
             }
@@ -166,6 +170,7 @@ private extension ProductsDataService {
             URLQueryItem(name: "page", value: "\(numberPage)")
         ]
         
+        //При выключенном дев моде не отобразятся черновики товаров
         if !DataStore.shared.devMode {
             params.append(URLQueryItem(name: "status", value: "publish"))
         }
@@ -180,7 +185,8 @@ private extension ProductsDataService {
                 
                 let countProducts = products.count
                 print("DBG loaded \(countProducts) products, page# \(numberPage)")
-                
+                LogsCollector.shared.addMessage("loaded \(countProducts) products, page# \(numberPage)")
+
                 //Если элементов на первой странице больше 100 - загружаем вторую страницу
                 if countProducts == 100 {
                     loadProdacts(numberPage: numberPage + 1, urlProduct: urlProduct, groupLoading)

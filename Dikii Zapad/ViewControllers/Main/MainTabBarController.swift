@@ -28,6 +28,10 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         }
         newViewControllers.append(generateVC(CartViewController(), title: "Корзина", image: UIImage(named: "tabIcon_cart")))
         
+        if DataStore.shared.devMode {
+            newViewControllers.append(generateVC(LogsViewController(), title: "Логи", image: UIImage(systemName: "hammer")))
+        }
+        
         viewControllers = newViewControllers
     }
     

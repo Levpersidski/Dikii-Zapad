@@ -37,10 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         if Date().timeIntervalSince(date) > DataStore.allowedSecondsInBackground {
-            if let launchVC = UIApplication.tabBar?.navigationController?.viewControllers.first as? LaunchViewController {
-                UIApplication.tabBar?.navigationController?.popToRootViewController(animated: true)
-                launchVC.restartApp()
-            }
+            UIApplication.appDelegate.restartApp()
         }
     }
 

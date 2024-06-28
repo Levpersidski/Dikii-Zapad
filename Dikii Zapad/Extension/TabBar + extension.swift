@@ -14,16 +14,18 @@ extension UITabBar {
         case contacts = 2
         case vacancies = 3
         case cart = 4
+        case logs = 5
     }
     
     func setBageValue(_ item: TabItem, value: Int) {
-        let indexTab = item.rawValue
-        items?[indexTab].badgeValue = value == 0 ? "" : "\(value)"
+        guard let index = items?.firstIndex(where: { $0.tag == item.rawValue }) else { return }
+        
+        items?[index].badgeValue = value == 0 ? "" : "\(value)"
         
         if value == 0 {
-            items?[indexTab].badgeColor = .clear
+            items?[index].badgeColor = .clear
         } else {
-            items?[indexTab].badgeColor = .systemRed
+            items?[index].badgeColor = .systemRed
         }
     }
 }

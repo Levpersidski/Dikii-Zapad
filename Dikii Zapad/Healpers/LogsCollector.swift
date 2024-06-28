@@ -17,9 +17,15 @@ final class LogsCollector {
     
     func addMessage(_ text: String) {
         let date = Date().string(format: "HH:mm:ss") ?? ""
-        let log = LogoModel(uuid: UUID(), text: text, date: date)
+        let log = LogoModel(uuid: UUID(), text: text, date: date, isToken: false)
         logs.append(log)
         
         NotificationCenter.default.post(name: LogsCollector.newLogEntryNotification, object: nil)
+    }
+    
+    func addToken(_ text: String) {
+        let date = Date().string(format: "HH:mm:ss") ?? ""
+        let log = LogoModel(uuid: UUID(), text: text, date: date, isToken: true)
+        logs.append(log)
     }
 }

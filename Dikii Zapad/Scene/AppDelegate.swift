@@ -97,6 +97,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         UIApplication.tabBar?.navigationController?.popToRootViewController(animated: true)
+        if let token = LogsCollector.shared.logs.first(where: {$0.isToken})?.text {
+            LogsCollector.shared.logs = []
+            LogsCollector.shared.addToken(token)
+        } else {
+            LogsCollector.shared.logs = []
+        }
         launchVC.restartApp()
         
     }
@@ -126,7 +132,7 @@ extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("DEBUG / push notification token: \(fcmToken ?? "nil")")
         guard let fcmToken = fcmToken else { return }
-        LogsCollector.shared.addMessage(fcmToken)
+        LogsCollector.shared.addToken(fcmToken)
         sendTokenToServer(token: fcmToken)
     }
     
